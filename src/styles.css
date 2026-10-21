@@ -285,6 +285,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .gallery__item:nth-child(4) { margin-top: 20px; }
   .sec { padding: 80px 0; }
   [data-reveal] { --d: 0ms !important; }
+  .js [data-reveal] { transform: translateY(18px); transition-duration: .6s; }
+  .js .gallery__item img { transition-duration: .9s; }
 }
 @media (max-width: 620px) {
   .wrap { width: calc(100% - 36px); }

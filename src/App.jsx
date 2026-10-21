@@ -8,21 +8,37 @@ const wa = (msg = 'Olá, Rogério! Quero começar a treinar com você.') =>
 /* ---------- hooks ---------- */
 function useReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll('[data-reveal]')
+    let pending = Array.from(document.querySelectorAll('[data-reveal]:not(.is-in)'))
+    let raf = 0
+    // Reveal everything that is on screen, above it, or within one viewport height below it.
+    // Driven by scroll/touch/resize events AND IntersectionObserver: iOS Safari delays or skips
+    // observer callbacks during momentum scrolling, which left content invisible (black gaps).
+    const check = () => {
+      raf = 0
+      const limit = window.innerHeight * 2
+      pending = pending.filter((el) => {
+        if (el.getBoundingClientRect().top < limit) {
+          el.classList.add('is-in')
+          return false
+        }
+        return true
+      })
+      if (!pending.length) stop()
+    }
+    const queue = () => { if (!raf) raf = requestAnimationFrame(check) }
+    const events = ['scroll', 'touchmove', 'touchend', 'resize', 'orientationchange', 'pageshow', 'load']
+    const stop = () => {
+      events.forEach((n) => window.removeEventListener(n, queue))
+      io.disconnect()
+    }
     const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          // reveal when entering OR when already scrolled past (anchor jumps / fast scroll),
-          // otherwise skipped elements would stay invisible forever
-          if (e.isIntersecting || e.boundingClientRect.bottom <= 0) {
-            e.target.classList.add('is-in')
-            io.unobserve(e.target)
-          }
-        }),
-      { threshold: 0, rootMargin: '0px 0px 12% 0px' }
+      (entries) => entries.forEach((e) => (e.isIntersecting || e.boundingClientRect.bottom <= 0) && queue()),
+      { threshold: 0, rootMargin: '100% 0px 100% 0px' }
     )
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
+    pending.forEach((el) => io.observe(el))
+    events.forEach((n) => window.addEventListener(n, queue, { passive: true }))
+    check()
+    return () => { stop(); cancelAnimationFrame(raf) }
   }, [])
 }
 
@@ -334,7 +350,7 @@ function About() {
     <section className="sec about" id="rogerio">
       <div className="wrap about__grid">
         <figure className="about__photo" data-reveal>
-          <div className="clip"><img src="img/arbitro.jpg" alt="Rogério Déo, árbitro internacional de fisiculturismo" loading="lazy" /></div>
+          <div className="clip"><img src="img/arbitro.jpg" alt="Rogério Déo, árbitro internacional de fisiculturismo" decoding="async" /></div>
           <figcaption>Árbitro internacional de fisiculturismo</figcaption>
         </figure>
         <div className="about__copy">
@@ -365,7 +381,7 @@ function Gallery() {
         <div className="gallery">
           {gallery.map((g, i) => (
             <figure key={g.src} className="gallery__item" data-reveal style={{ '--d': `${(i % 2) * 140}ms` }}>
-              <img src={g.src} alt={g.alt} width="1333" height="1777" loading="lazy" decoding="async" />
+              <img src={g.src} alt={g.alt} width="1333" height="1777" decoding="async" />
             </figure>
           ))}
         </div>
@@ -457,7 +473,7 @@ function FinalCta() {
           </div>
         </div>
         <figure className="final__photo" data-reveal>
-          <div className="clip"><img src="img/arbitro.jpg" alt="Rogério Déo de terno, árbitro internacional" loading="lazy" /></div>
+          <div className="clip"><img src="img/arbitro.jpg" alt="Rogério Déo de terno, árbitro internacional" decoding="async" /></div>
         </figure>
       </div>
     </section>
