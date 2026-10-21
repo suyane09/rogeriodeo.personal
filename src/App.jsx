@@ -8,7 +8,7 @@ const wa = (msg = 'Olá, Rogério! Quero começar a treinar com você.') =>
 /* ---------- hooks ---------- */
 function useReveal() {
   useEffect(() => {
-    let pending = Array.from(document.querySelectorAll('[data-reveal]:not(.is-in)'))
+    let pending = Array.from(document.querySelectorAll('[data-reveal]:not([data-in])'))
     let raf = 0
     // Reveal everything that is on screen, above it, or within one viewport height below it.
     // Driven by scroll/touch/resize events AND IntersectionObserver: iOS Safari delays or skips
@@ -18,7 +18,7 @@ function useReveal() {
       const limit = window.innerHeight * 2
       pending = pending.filter((el) => {
         if (el.getBoundingClientRect().top < limit) {
-          el.classList.add('is-in')
+          el.setAttribute('data-in', '')
           return false
         }
         return true
