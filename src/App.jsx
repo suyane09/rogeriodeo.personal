@@ -12,16 +12,37 @@ function useReveal() {
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
-          if (e.isIntersecting) {
+          // reveal when entering OR when already scrolled past (anchor jumps / fast scroll),
+          // otherwise skipped elements would stay invisible forever
+          if (e.isIntersecting || e.boundingClientRect.bottom <= 0) {
             e.target.classList.add('is-in')
             io.unobserve(e.target)
           }
         }),
-      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+      { threshold: 0, rootMargin: '0px 0px 12% 0px' }
     )
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [])
+}
+
+/* hides the floating WhatsApp button while it would sit on top of interactive content (mobile only, see CSS) */
+function useFloatHide() {
+  const [hide, setHide] = useState(false)
+  useEffect(() => {
+    const targets = document.querySelectorAll('.faq, #contato, .footer')
+    const seen = new Set()
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)))
+        setHide(seen.size > 0)
+      },
+      { rootMargin: '0px 0px -10% 0px' }
+    )
+    targets.forEach((t) => io.observe(t))
+    return () => io.disconnect()
+  }, [])
+  return hide
 }
 
 function useSpotlight() {
@@ -184,6 +205,7 @@ const links = [
   ['Início', '#inicio'],
   ['Método', '#metodo'],
   ['Rogério', '#rogerio'],
+  ['Resultados', '#resultados'],
   ['Dúvidas', '#faq'],
 ]
 
@@ -460,8 +482,9 @@ function Footer() {
 }
 
 function WhatsFloat() {
+  const hide = useFloatHide()
   return (
-    <a className="wafloat" href={wa()} target="_blank" rel="noopener noreferrer" aria-label="Chamar no WhatsApp">
+    <a className={`wafloat ${hide ? 'wafloat--hide' : ''}`} tabIndex={hide ? -1 : undefined} href={wa()} target="_blank" rel="noopener noreferrer" aria-label="Chamar no WhatsApp">
       <svg viewBox="0 0 32 32" width="26" height="26" fill="currentColor" aria-hidden="true">
         <path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.3.6 4.4 1.7 6.3L3 29l7.4-1.9a12.6 12.6 0 005.6 1.3C23 28.4 28.6 22.8 28.6 15.8 28.6 8.6 23 3 16 3zm0 23.200c-1.800 0-3.600-.5-5.100-1.400l-.4-.2-4.400 1.100 1.200-4.300-.3-.4a10.300 10.300 0 01-1.600-5.500C5.400 9.800 10.100 5.200 16 5.200S26.500 9.800 26.500 15.500 21.800 26.200 16 26.200zm5.700-7.700c-.3-.2-1.900-.9-2.200-1s-.5-.2-.7.200-.8 1-1 1.200-.4.200-.7 0a8.500 8.500 0 01-4.200-3.700c-.3-.6.300-.6.900-1.800.1-.2 0-.4 0-.5l-1-2.300c-.2-.6-.5-.5-.7-.5h-.6a1.200 1.200 0 00-.9.400 3.600 3.600 0 00-1.100 2.700 6.300 6.300 0 001.300 3.300 14.300 14.300 0 005.500 4.900c2 .8 2.800.9 3.800.7a3.200 3.200 0 002.100-1.500 2.600 2.600 0 00.2-1.500c-.1-.1-.3-.2-.6-.4z" />
       </svg>
@@ -482,7 +505,7 @@ export default function App() {
         <Method />
         <About />
         <Gallery />
-        {/* <Results /> — oculto até haver depoimentos reais */}
+        <Results />
         <ForYouFaq />
         <FinalCta />
       </main>
