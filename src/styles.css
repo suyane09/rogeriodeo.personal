@@ -37,7 +37,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .wrap { width: min(1200px, 100% - 56px); margin-inline: auto; }
 
 /* ---------- type: condensed, heavy, campaign-style ---------- */
-.h2, .hero__title, .final__title, .row h3, .steps h3, .foryou__list li, .stat strong, .career__bar b, .sports h3, .faq__item button, .nav__logo {
+.h2, .hero__title, .final__title, .row h3, .steps h3, .stat strong, .career__bar b, .sports h3, .faq__item button, .nav__logo {
   font-family: var(--display);
   font-stretch: 68%;
   font-weight: 800;
@@ -79,8 +79,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .btn--solid:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(212, 175, 90, .32); }
 .btn--ghost { color: var(--cream); border: 1.5px solid rgba(244, 239, 232, .45); }
 .btn--ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
-.btn--dark { background: #0a0908; color: var(--gold-hi); }
-.btn--dark:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(0, 0, 0, .35); }
 .btn:active { transform: scale(.97); }
 
 /* ---------- hero: photo is the protagonist ---------- */
@@ -198,12 +196,13 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 /* for you */
 .foryou { background: var(--bg2); border-block: 1px solid var(--line); }
-.foryou__list { margin-top: clamp(40px, 6vw, 80px); border-top: 2px solid var(--cream); }
-.foryou__list li { text-transform: none; font-stretch: 78%; font-weight: 700; font-size: clamp(1.7rem, 3.6vw, 3.1rem); line-height: 1.02; padding: clamp(18px, 2.2vw, 30px) 0; border-bottom: 1px solid var(--line); text-wrap: balance; }
-.foryou__list li { position: relative; padding-left: 36px; }
-.foryou__list li::before { content: ''; position: absolute; left: 0; top: 50%; width: 14px; height: 14px; margin-top: -7px; background: var(--gold); transform: rotate(45deg); }
-.foryou__list li:nth-child(even) { padding-left: calc(36px + 12%); }
-.foryou__list li:nth-child(even)::before { left: 12%; }
+.foryou__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px clamp(36px, 7vw, 112px); align-items: start; }
+.foryou__head { position: sticky; top: calc(var(--nav-h) + 32px); display: grid; gap: clamp(24px, 3vw, 40px); justify-items: start; }
+.foryou__title { font-family: var(--display); font-stretch: 68%; font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 5vw, 4.4rem); line-height: 0.92; max-width: 7em; text-wrap: balance; }
+.foryou__list { border-top: 2px solid var(--cream); }
+.foryou__list li { display: grid; grid-template-columns: 3.2rem minmax(0, 1fr); gap: 8px 12px; align-items: baseline; padding: clamp(20px, 2.4vw, 30px) 0; border-bottom: 1px solid var(--line); }
+.foryou__n { font-family: var(--display); font-stretch: 75%; font-weight: 700; font-size: 1.1rem; color: var(--gold); font-variant-numeric: tabular-nums; }
+.foryou__list p { font-size: clamp(1.2rem, 1.9vw, 1.5rem); line-height: 1.38; font-weight: 500; color: var(--cream); max-width: 28em; text-wrap: pretty; }
 
 /* faq */
 .faq-sec__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px clamp(36px, 6vw, 96px); align-items: start; }
@@ -222,14 +221,21 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .faq__item.is-open .faq__panel { grid-template-rows: 1fr; }
 .faq__panel p { padding: 0 48px 28px 0; color: #cfc9c0; max-width: 34em; }
 
-/* final cta */
-.final { background: var(--gold); background-image: var(--gold-grad); color: #0a0908; padding: clamp(80px, 11vw, 160px) 0 clamp(64px, 8vw, 110px); overflow: hidden; }
-.final__title { font-size: clamp(3.4rem, 13.5vw, 13rem); line-height: 0.84; font-weight: 900; max-width: 8.5em; text-wrap: balance; }
-.final__row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 28px 56px; margin-top: clamp(32px, 5vw, 64px); }
-.final__row p { max-width: 24em; font-size: 1.25rem; font-weight: 500; line-height: 1.4; }
-.final__btns { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 28px; }
-.phone { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 1.9rem; line-height: 1; border-bottom: 2px solid #0a0908; padding-bottom: 2px; transition: opacity .3s; }
-.phone:hover { opacity: .65; }
+/* final cta: cinematic close */
+.final { position: relative; overflow: hidden; isolation: isolate; background: var(--bg); border-top: 1px solid rgba(212, 175, 90, .45); padding: clamp(64px, 9vw, 128px) 0; }
+.final::before { content: ''; position: absolute; z-index: -1; right: -10%; top: 50%; width: 70%; aspect-ratio: 1; transform: translateY(-50%); background: radial-gradient(closest-side, rgba(169, 127, 44, .28), transparent); pointer-events: none; }
+.final__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px clamp(32px, 6vw, 96px); align-items: center; }
+.final__title { font-family: var(--display); font-stretch: 68%; font-weight: 900; text-transform: uppercase; font-size: clamp(3rem, 6.8vw, 6.2rem); line-height: 0.9; max-width: 8em; text-wrap: balance; }
+.final__title::before { content: ''; display: block; width: 56px; height: 3px; background: var(--gold); margin-bottom: clamp(20px, 2.4vw, 32px); }
+.final__text { margin-top: clamp(22px, 2.6vw, 32px); max-width: 27em; font-size: 1.15rem; color: #d6d0c7; text-wrap: pretty; }
+.final__btns { display: flex; align-items: center; flex-wrap: wrap; gap: 18px 32px; margin-top: clamp(28px, 3.4vw, 44px); }
+.btn--lg { padding: 22px 44px; font-size: 1.12rem; box-shadow: 0 0 0 6px rgba(212, 175, 90, .16), 0 18px 44px rgba(212, 175, 90, .22); }
+.phone { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 1.7rem; line-height: 1; color: var(--cream); border-bottom: 1px solid var(--gold); padding-bottom: 3px; transition: color .3s; }
+.phone:hover { color: var(--gold); }
+.final__photo { position: relative; justify-self: end; width: min(100%, 440px); aspect-ratio: 4 / 5; }
+.final__photo::before { content: ''; position: absolute; inset: 22px -22px -22px 22px; border: 1px solid rgba(212, 175, 90, .55); pointer-events: none; }
+.final__photo img { position: relative; width: 100%; height: 100%; object-fit: cover; object-position: 50% 24%; filter: contrast(1.04) saturate(.92); }
+.final__photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(8, 8, 7, .7), rgba(8, 8, 7, 0) 42%), linear-gradient(90deg, rgba(8, 8, 7, .35), rgba(8, 8, 7, 0) 30%); pointer-events: none; }
 
 .footer { background: #0a0908; padding: 30px 0; }
 .footer__in { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
@@ -278,7 +284,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .steps { grid-template-columns: 1fr 1fr; }
   .steps li:nth-child(n) { transform: none; }
   .steps li:nth-child(even) { transform: translateY(40px); }
-  .about__grid, .faq-sec__grid { grid-template-columns: 1fr; }
+  .about__grid, .faq-sec__grid, .foryou__grid, .final__grid { grid-template-columns: 1fr; }
+  .foryou__head { position: static; }
+  .final__photo { order: -1; justify-self: start; width: min(100%, 380px); margin: 0 22px 22px 0; }
   .about__photo { position: relative; top: 0; max-width: 460px; }
   .faq-sec__head { position: static; }
   .transf__row { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
@@ -294,9 +302,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .transf__row { grid-template-columns: 1fr; }
   .transf__video { max-width: 320px; }
   .gallery { gap: 6px; }
-  .foryou__list li:nth-child(n) { padding-left: 30px; }
-  .foryou__list li:nth-child(even)::before { left: 0; }
+  .foryou__list li { grid-template-columns: 2.4rem minmax(0, 1fr); }
   .hero__btns .btn, .final__btns .btn { flex: 1 1 100%; }
+  .btn--lg { padding: 20px 28px; }
+  .final__photo { width: calc(100% - 22px); }
   .stat { flex-direction: column; gap: 4px; }
   .stat strong { font-size: 2.2rem; }
   .stat span { max-width: 9em; font-size: 0.85rem; }

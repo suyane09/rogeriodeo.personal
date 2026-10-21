@@ -64,8 +64,8 @@ function Stat({ n, label }) {
   )
 }
 
-const Btn = ({ href, children, variant = 'solid', ...p }) => (
-  <a className={`btn btn--${variant}`} href={href} {...p}>
+const Btn = ({ href, children, variant = 'solid', className = '', ...p }) => (
+  <a className={`btn btn--${variant} ${className}`.trim()} href={href} {...p}>
     {children}
   </a>
 )
@@ -385,13 +385,19 @@ function Gallery() {
 function ForYou() {
   return (
     <section className="sec foryou">
-      <div className="wrap">
-        <h2 className="h2">Esse treino é para você se…</h2>
-        <ul className="foryou__list">
-          {forYou.map((t) => (
-            <li key={t}>{t}</li>
+      <div className="wrap foryou__grid">
+        <div className="foryou__head">
+          <h2 className="foryou__title">Esse treino é para você se…</h2>
+          <Btn href={wa()} target="_blank" rel="noopener noreferrer">Quero começar</Btn>
+        </div>
+        <ol className="foryou__list">
+          {forYou.map((t, i) => (
+            <li key={t}>
+              <span className="foryou__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <p>{t}</p>
+            </li>
           ))}
-        </ul>
+        </ol>
       </div>
     </section>
   )
@@ -427,15 +433,18 @@ function Faq() {
 function FinalCta() {
   return (
     <section className="final" id="contato">
-      <div className="wrap">
-        <h2 className="final__title">Seu melhor corpo não tem idade</h2>
-        <div className="final__row">
-          <p>Chame o Rogério no WhatsApp, conte seu objetivo e comece com quem tem mais de 35 anos de estrada.</p>
+      <div className="wrap final__grid">
+        <div className="final__copy">
+          <h2 className="final__title">Seu melhor corpo não tem idade</h2>
+          <p className="final__text">Chame o Rogério no WhatsApp, conte seu objetivo e comece com quem tem mais de 35 anos de estrada.</p>
           <div className="final__btns">
-            <Btn href={wa()} variant="dark" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</Btn>
+            <Btn href={wa()} className="btn--lg" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</Btn>
             <a className="phone" href={`tel:+${PHONE}`}>{PHONE_LABEL}</a>
           </div>
         </div>
+        <figure className="final__photo">
+          <img src="img/arbitro.webp" alt="Rogério Déo de terno, árbitro internacional" width="515" height="784" loading="lazy" decoding="async" />
+        </figure>
       </div>
     </section>
   )
