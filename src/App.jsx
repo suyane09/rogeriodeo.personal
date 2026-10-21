@@ -193,10 +193,10 @@ const method = [
 ]
 
 const gallery = [
-  { src: 'img/g1.jpg', alt: 'Rogério Déo ajustando a postura de aluno no equipamento' },
-  { src: 'img/g2.jpg', alt: 'Rogério Déo orientando aluno durante o exercício' },
-  { src: 'img/g3.jpg', alt: 'Rogério Déo acompanhando de perto o treino do aluno' },
-  { src: 'img/g4.jpg', alt: 'Rogério Déo concentrado durante a sessão de treino' },
+  { id: 'g1', alt: 'Rogério Déo ajustando a postura de aluno no equipamento' },
+  { id: 'g2', alt: 'Rogério Déo orientando aluno durante o exercício' },
+  { id: 'g3', alt: 'Rogério Déo acompanhando de perto o treino do aluno' },
+  { id: 'g4', alt: 'Rogério Déo concentrado durante a sessão de treino' },
 ]
 
 const sports = ['Vôlei', 'Surfe', 'Futebol', 'Tênis', 'Corrida', 'Beach tennis', 'E outras modalidades']
@@ -278,7 +278,12 @@ function Hero() {
           </div>
         </div>
         <figure className="hero__photo" style={{ '--d': '250ms' }}>
-          <div className="frame"><img src="img/hero.jpg" alt="Rogério Déo, personal trainer, na academia" width="1333" height="1777" fetchpriority="high" decoding="async" /></div>
+          <div className="frame"><img
+              src="img/hero-800.webp"
+              srcSet="img/hero-480.webp 480w, img/hero-800.webp 800w, img/hero-1333.webp 1333w"
+              sizes="(max-width: 900px) 90vw, 560px"
+              alt="Rogério Déo, personal trainer, na academia" width="1333" height="1777" fetchpriority="high" decoding="async"
+            /></div>
         </figure>
       </div>
     </section>
@@ -349,7 +354,7 @@ function About() {
     <section className="sec about" id="rogerio">
       <div className="wrap about__grid">
         <figure className="about__photo" data-reveal>
-          <div className="clip"><img src="img/arbitro.jpg" alt="Rogério Déo, árbitro internacional de fisiculturismo" decoding="async" /></div>
+          <div className="clip"><img src="img/arbitro.webp" alt="Rogério Déo, árbitro internacional de fisiculturismo" width="515" height="784" loading="lazy" decoding="async" /></div>
           <figcaption>Árbitro internacional de fisiculturismo</figcaption>
         </figure>
         <div className="about__copy">
@@ -379,8 +384,13 @@ function Gallery() {
         <h2 className="h2" data-reveal>Do ajuste fino ao <em>último movimento</em></h2>
         <div className="gallery">
           {gallery.map((g, i) => (
-            <figure key={g.src} className="gallery__item" data-reveal style={{ '--d': `${(i % 2) * 140}ms` }}>
-              <img src={g.src} alt={g.alt} width="1333" height="1777" decoding="async" />
+            <figure key={g.id} className="gallery__item" data-reveal style={{ '--d': `${(i % 2) * 140}ms` }}>
+              <img
+                src={`img/${g.id}-800.webp`}
+                srcSet={`img/${g.id}-400.webp 400w, img/${g.id}-800.webp 800w`}
+                sizes="(max-width: 700px) 50vw, 400px"
+                alt={g.alt} width="1333" height="1777" loading="lazy" decoding="async"
+              />
             </figure>
           ))}
         </div>
@@ -472,7 +482,7 @@ function FinalCta() {
           </div>
         </div>
         <figure className="final__photo" data-reveal>
-          <div className="clip"><img src="img/arbitro.jpg" alt="Rogério Déo de terno, árbitro internacional" decoding="async" /></div>
+          <div className="clip"><img src="img/arbitro.webp" alt="Rogério Déo de terno, árbitro internacional" width="515" height="784" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
     </section>
