@@ -220,6 +220,7 @@ const links = [
   ['Início', '#inicio'],
   ['Método', '#metodo'],
   ['Rogério', '#rogerio'],
+  ['Transformação', '#transformacao'],
   ['Galeria', '#galeria'],
   ['Dúvidas', '#faq'],
 ]
@@ -370,6 +371,43 @@ function About() {
             <li><strong>Biomecânica e Cinesiologia</strong> · UNIGUAÇU<p>Foco em hipertrofia, emagrecimento, definição e condicionamento para quem tem 40+.</p></li>
             <li><strong>Treinamento Funcional</strong> · IHP<p>Desenvolvimento das capacidades físicas e da performance esportiva.</p></li>
           </ul>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Transformation() {
+  const shots = [
+    { id: 'transformacao-frente', alt: 'Transformação de Rogério Déo, de frente: antes, durante e depois' },
+    { id: 'transformacao-costas', alt: 'Transformação de Rogério Déo, de costas: antes, durante e depois' },
+  ]
+  return (
+    <section className="sec sec--tight" id="transformacao">
+      <div className="wrap">
+        <Eyebrow>Transformação real</Eyebrow>
+        <h2 className="h2" data-reveal>Antes, durante e <em>depois</em></h2>
+        <p className="sub" data-reveal>A evolução do próprio Rogério, fruto de constância, treino bem executado e disciplina. Veja de frente e de costas.</p>
+        <div className="transf">
+          {shots.map((g, i) => (
+            <figure key={g.id} className="transf__photo" data-reveal style={{ '--d': `${i * 140}ms` }}>
+              <img
+                src={`img/${g.id}-1200.webp`}
+                srcSet={`img/${g.id}-640.webp 640w, img/${g.id}-1200.webp 1200w`}
+                sizes="(max-width: 700px) 100vw, 540px"
+                alt={g.alt} width="1200" loading="lazy" decoding="async"
+              />
+            </figure>
+          ))}
+        </div>
+        <figure className="transf__video" data-reveal>
+          <video controls playsInline preload="none" poster="img/transformacao-poster.jpg" aria-label="Rogério Déo fala sobre treino focado para melhorar seu esporte favorito">
+            <source src="img/transformacao.mp4" type="video/mp4" />
+          </video>
+          <figcaption>Rogério explica como o treino focado melhora o seu esporte</figcaption>
+        </figure>
+        <div className="center" data-reveal>
+          <Btn href={wa('Olá, Rogério! Vi as transformações no site e quero começar a treinar.')} target="_blank" rel="noopener noreferrer">Quero a minha transformação</Btn>
         </div>
       </div>
     </section>
@@ -529,6 +567,7 @@ export default function App() {
         <Problem />
         <Method />
         <About />
+        <Transformation />
         <Gallery />
         <ForYouFaq />
         <FinalCta />
