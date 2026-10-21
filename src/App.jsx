@@ -377,6 +377,35 @@ function About() {
   )
 }
 
+function VideoCover() {
+  const ref = useRef(null)
+  const [started, setStarted] = useState(false)
+  const play = () => {
+    setStarted(true)
+    const v = ref.current
+    if (v) v.play().catch(() => {})
+  }
+  return (
+    <div className={`vcover ${started ? 'is-playing' : ''}`}>
+      <video
+        ref={ref}
+        controls={started}
+        playsInline
+        preload="metadata"
+        poster="img/transformacao-poster.jpg"
+        src="img/transformacao.mp4#t=0.1"
+        aria-label="Rogério Déo fala sobre treino focado para melhorar seu esporte favorito"
+        onPlay={() => setStarted(true)}
+      />
+      {!started && (
+        <button type="button" className="vcover__play" onClick={play} aria-label="Assistir ao vídeo">
+          <span><svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
+        </button>
+      )}
+    </div>
+  )
+}
+
 function Transformation() {
   const shots = [
     { id: 'transformacao-frente', alt: 'Transformação de Rogério Déo, de frente: antes, durante e depois' },
@@ -399,9 +428,7 @@ function Transformation() {
           ))}
         </div>
         <figure className="transf__video" data-reveal>
-          <video controls playsInline preload="none" poster="img/transformacao-poster.jpg" aria-label="Rogério Déo fala sobre treino focado para melhorar seu esporte favorito">
-            <source src="img/transformacao.mp4" type="video/mp4" />
-          </video>
+          <VideoCover />
           <figcaption>Rogério explica como o treino focado melhora o seu esporte</figcaption>
         </figure>
         <div className="center" data-reveal>

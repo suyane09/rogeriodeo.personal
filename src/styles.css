@@ -389,3 +389,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .transf__video figcaption { margin-top: 12px; text-align: center; color: var(--muted); font-size: .9rem; }
 #transformacao .center { margin-top: clamp(28px, 4vw, 44px); }
 @media (max-width: 700px) { .transf { grid-template-columns: 1fr; } }
+
+/* capa do vídeo com botão play */
+.vcover { position: relative; }
+.vcover video { display: block; width: 100%; aspect-ratio: 9 / 16; background: #000; object-fit: cover; border: 1px solid var(--line); clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px)); }
+.vcover__play { position: absolute; inset: 0; display: grid; place-items: center; cursor: pointer; background: linear-gradient(180deg, transparent 55%, rgba(8, 8, 7, .55)); }
+.vcover__play span { display: grid; place-items: center; width: 76px; height: 76px; padding-left: 4px; border-radius: 50%; color: #1a1408; background: var(--gold-grad); box-shadow: 0 8px 30px rgba(0, 0, 0, .55), 0 0 0 8px rgba(212, 175, 90, .22); transition: transform .3s var(--ease); }
+.vcover__play:hover span { transform: scale(1.08); }
