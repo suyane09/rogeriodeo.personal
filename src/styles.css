@@ -337,12 +337,35 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   visibility: visible;
   transform: none;
 }
-/* Avoid Safari clip-path/reveal issues on touch devices. */
+/* Touch/Safari: keep content visible even if IntersectionObserver is delayed,
+   while retaining movement and photo transitions. */
 @media (hover: none), (pointer: coarse) {
-  .js [data-reveal] { opacity: 1; visibility: visible; transform: none; }
-  .js .gallery__item img, .js .gallery__item.is-in img {
-    clip-path: none;
+  .js [data-reveal] {
+    /* Never hide content on iOS; the entrance still moves into place. */
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(24px);
+    transition: transform .8s var(--ease) var(--d, 0ms);
+  }
+  .js [data-reveal].is-in {
+    opacity: 1;
     transform: none;
+  }
+  .js .gallery__item img {
+    clip-path: none;
+    transform: scale(1.12);
+    filter: brightness(.86);
+    transition: transform 1.2s var(--ease) var(--d, 0ms), filter 1.2s var(--ease) var(--d, 0ms);
+  }
+  .js .gallery__item.is-in img { clip-path: none; transform: scale(1.0); filter: brightness(1); }
+  /* Scroll-linked drift can override the gallery entrance on mobile Safari. */
+  .gallery__item img { animation: none !important; translate: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal], .js [data-reveal].is-in,
+  .js .gallery__item img, .js .gallery__item.is-in img {
+    transform: none;
+    filter: none;
     animation: none;
   }
 }

@@ -10,12 +10,11 @@ function useReveal() {
   useEffect(() => {
     let pending = Array.from(document.querySelectorAll('[data-reveal]:not(.is-in)'))
     let raf = 0
-    // Reveal everything that is on screen, above it, or within one viewport height below it.
-    // Driven by scroll/touch/resize events AND IntersectionObserver: iOS Safari delays or skips
-    // observer callbacks during momentum scrolling, which left content invisible (black gaps).
+    // Animate when elements approach the viewport, not a full screen in advance.
+    // Scroll events provide a fallback for delayed IntersectionObserver callbacks on iOS.
     const check = () => {
       raf = 0
-      const limit = window.innerHeight * 2
+      const limit = window.innerHeight * 0.94
       pending = pending.filter((el) => {
         if (el.getBoundingClientRect().top < limit) {
           el.classList.add('is-in')
@@ -33,7 +32,7 @@ function useReveal() {
     }
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => (e.isIntersecting || e.boundingClientRect.bottom <= 0) && queue()),
-      { threshold: 0, rootMargin: '100% 0px 100% 0px' }
+      { threshold: 0, rootMargin: '0px 0px -6% 0px' }
     )
     pending.forEach((el) => io.observe(el))
     events.forEach((n) => window.addEventListener(n, queue, { passive: true }))
