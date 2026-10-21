@@ -392,9 +392,7 @@ function Transformation() {
           {shots.map((g, i) => (
             <figure key={g.id} className="transf__photo" data-reveal style={{ '--d': `${i * 140}ms` }}>
               <img
-                src={`img/${g.id}-1200.webp`}
-                srcSet={`img/${g.id}-640.webp 640w, img/${g.id}-1200.webp 1200w`}
-                sizes="(max-width: 700px) 100vw, 540px"
+                src={`img/${g.id}.webp`}
                 alt={g.alt} width="1200" loading="lazy" decoding="async"
               />
             </figure>
