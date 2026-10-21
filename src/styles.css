@@ -192,9 +192,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .gallery__item::before { content: '0' counter(g); position: absolute; left: 16px; bottom: 14px; z-index: 2; font-family: var(--display); font-stretch: 125%; font-style: italic; font-weight: 800; font-size: .72rem; letter-spacing: .14em; color: var(--cream); text-shadow: 0 1px 12px rgba(0, 0, 0, .6); }
 .gallery__item::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, transparent 60%, rgba(8, 8, 7, .6)); box-shadow: inset 0 0 0 0 var(--orange); transition: box-shadow .4s var(--ease); pointer-events: none; }
 .js .gallery__item img { transform: scale(1.22); clip-path: inset(0 0 100% 0); transition: transform 1.6s var(--ease) var(--d, 0ms), clip-path 1.2s var(--ease) var(--d, 0ms); }
-.js .gallery__item[data-in] img { transform: scale(1.04); clip-path: inset(0); }
+.js .gallery__item.is-in img { transform: scale(1.04); clip-path: inset(0); }
 @media (hover: hover) {
-  .gallery__item[data-in]:hover img { transform: scale(1.1); transition-delay: 0ms; transition-duration: 1.2s; }
+  .gallery__item.is-in:hover img { transform: scale(1.1); transition-delay: 0ms; transition-duration: 1.2s; }
   .gallery__item:hover::after { box-shadow: inset 0 -4px 0 0 var(--orange); }
 }
 @supports (animation-timeline: view()) {
@@ -245,8 +245,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 /* ---------- animations ---------- */
 .js [data-reveal] { opacity: 0; transform: translateY(34px); transition: opacity .9s var(--ease) var(--d, 0ms), transform .9s var(--ease) var(--d, 0ms); }
-.js [data-reveal][data-in] { opacity: 1; transform: none; }
-.js .card[data-reveal][data-in] { transition: opacity .9s var(--ease) var(--d, 0ms), transform .45s var(--ease), border-color .35s, background .35s; }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+.js .card[data-reveal].is-in { transition: opacity .9s var(--ease) var(--d, 0ms), transform .45s var(--ease), border-color .35s, background .35s; }
 .anim-up { opacity: 0; animation: up 1s var(--ease) var(--d, 0ms) forwards; }
 .anim-photo { opacity: 0; animation: photo 1.2s var(--ease) var(--d, 0ms) forwards; }
 @keyframes up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
@@ -316,7 +316,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
   .js [data-reveal], .anim-up, .anim-photo { opacity: 1; transform: none; }
-  .w > span, .gallery__item img, .gallery__item[data-in] img { transform: none; }
+  .w > span, .gallery__item img, .gallery__item.is-in img { transform: none; }
   .gallery__item img { translate: none; clip-path: none; }
   html { scroll-behavior: auto; }
 }
