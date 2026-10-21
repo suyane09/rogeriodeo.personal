@@ -221,7 +221,7 @@ const links = [
   ['Início', '#inicio'],
   ['Método', '#metodo'],
   ['Rogério', '#rogerio'],
-  ['Resultados', '#resultados'],
+  ['Galeria', '#galeria'],
   ['Dúvidas', '#faq'],
 ]
 
@@ -374,7 +374,7 @@ function About() {
 
 function Gallery() {
   return (
-    <section className="sec sec--tight" id="treino">
+    <section className="sec sec--tight" id="galeria">
       <div className="wrap">
         <Eyebrow>Treino de perto</Eyebrow>
         <h2 className="h2" data-reveal>Do ajuste fino ao <em>último movimento</em></h2>
@@ -443,7 +443,7 @@ function ForYouFaq() {
           <Eyebrow>Dúvidas frequentes</Eyebrow>
           <div className="faq">
             {faq.map(([q, a], i) => (
-              <div className={`faq__item ${open === i ? 'is-open' : ''}`} key={q} data-reveal style={{ '--d': `${i * 80}ms` }}>
+              <div className={`faq__item ${open === i ? 'is-open' : ''}`} key={q}>
                 <button id={`faq-b-${i}`} aria-expanded={open === i} aria-controls={`faq-p-${i}`} onClick={() => setOpen(open === i ? -1 : i)}>
                   <span>{q}</span><b aria-hidden="true">+</b>
                 </button>
@@ -521,7 +521,6 @@ export default function App() {
         <Method />
         <About />
         <Gallery />
-        <Results />
         <ForYouFaq />
         <FinalCta />
       </main>

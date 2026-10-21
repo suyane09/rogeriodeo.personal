@@ -320,3 +320,32 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .gallery__item img { translate: none; clip-path: none; }
   html { scroll-behavior: auto; }
 }
+/* Final fixes: aligned gallery and stable FAQ visibility */
+.gallery {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.6vw, 20px);
+}
+.gallery__item:nth-child(n) {
+  grid-column: auto;
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  align-self: stretch;
+}
+/* FAQ must never be hidden while waiting for scroll animations. */
+.faq__item, .js .faq__item {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+/* Avoid Safari clip-path/reveal issues on touch devices. */
+@media (hover: none), (pointer: coarse) {
+  .js [data-reveal] { opacity: 1; visibility: visible; transform: none; }
+  .js .gallery__item img, .js .gallery__item.is-in img {
+    clip-path: none;
+    transform: none;
+    animation: none;
+  }
+}
+@media (max-width: 620px) {
+  .gallery { gap: 10px; }
+}
