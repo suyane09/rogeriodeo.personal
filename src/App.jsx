@@ -26,6 +26,33 @@ function useFloatHide() {
   return hide
 }
 
+/* Pause media when the user scrolls away or leaves the browser tab.
+   Returning to the video never resumes playback automatically. */
+function usePauseOutsideViewport(videoRef, mediaKey = null) {
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio < 0.3) video.pause()
+      },
+      { threshold: [0, 0.3] }
+    )
+    observer.observe(video)
+
+    const pauseWhenHidden = () => {
+      if (document.hidden) video.pause()
+    }
+    document.addEventListener('visibilitychange', pauseWhenHidden)
+
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', pauseWhenHidden)
+    }
+  }, [videoRef, mediaKey])
+}
+
 function useCount(target, start) {
   const [v, setV] = useState(0)
   useEffect(() => {
@@ -78,7 +105,7 @@ const Ln = ({ i, className = '', children }) => (
 )
 
 /* ---------- data ---------- */
-const marquee = ['Biomecânica', 'Cinesiologia', 'Definição corporal', 'Treino funcional', 'Mobilidade', 'Performance', 'Hipertrofia', 'Emagrecimento']
+const focusAreas = ['Hipertrofia', 'Emagrecimento', 'Mobilidade', 'Condicionamento']
 
 const problems = [
   { title: 'Articulações pedem cuidado', text: 'Técnica e movimentos ajustados para treinar com segurança.' },
@@ -88,19 +115,15 @@ const problems = [
 ]
 
 const method = [
-  { title: 'Conversa e objetivo', text: 'Você conta sua rotina, seu histórico e o que quer alcançar. O plano nasce daí.' },
-  { title: 'Treino de hipertrofia', text: 'Estímulo certo para ganhar massa muscular e definição, respeitando seu momento.' },
-  { title: 'Foco em emagrecimento', text: 'Condicionamento e gasto energético organizados para você perder gordura mantendo músculo.' },
-  { title: 'Correção na hora', text: 'Rogério acompanha de perto, ajusta postura e execução durante o treino. Você aprende o movimento certo.' },
-  { title: 'Funcional e mobilidade', text: 'Força, equilíbrio e amplitude de movimento para o dia a dia e para o esporte que você pratica.' },
-  { title: 'Evolução contínua', text: 'O treino é ajustado conforme você progride. Constância com direção, sem platô eterno.' },
+  { title: 'Entender seu objetivo', text: 'Seu histórico, sua rotina e suas metas orientam cada escolha.' },
+  { title: 'Treinar com precisão', text: 'Força, hipertrofia e mobilidade com atenção à técnica e à execução.' },
+  { title: 'Evoluir com constância', text: 'O acompanhamento se ajusta ao seu progresso, no seu ritmo.' },
 ]
 
 const gallery = [
-  { id: 'g1', alt: 'Rogério Déo ajustando a postura de aluno no equipamento' },
-  { id: 'g2', alt: 'Rogério Déo orientando aluno durante o exercício' },
-  { id: 'g3', alt: 'Rogério Déo acompanhando de perto o treino do aluno' },
-  { id: 'g4', alt: 'Rogério Déo concentrado durante a sessão de treino' },
+  { id: 'g1', alt: 'Rogério Déo ajustando a postura de aluno no equipamento', label: 'Precisão nos movimentos' },
+  { id: 'g2', alt: 'Rogério Déo orientando aluno durante o exercício', label: 'Orientação de perto' },
+  { id: 'g4', alt: 'Rogério Déo concentrado durante a sessão de treino', label: 'Atenção aos detalhes' },
 ]
 
 const sports = ['Vôlei', 'Surfe', 'Futebol', 'Tênis', 'Corrida', 'Beach tennis', 'E outras modalidades']
@@ -109,14 +132,6 @@ const career = [
   [40, 'Anos de prática'],
   [35, 'Anos de profissão'],
   [25, 'Anos na arbitragem'],
-]
-
-const forYou = [
-  'Tem 40 anos ou mais e quer ganhar massa muscular de verdade.',
-  'Quer emagrecer e definir sem perder músculo nem se machucar.',
-  'Cansou de ficha genérica e quer alguém ao seu lado corrigindo cada movimento.',
-  'Pratica um esporte e quer render mais com um corpo forte e móvel.',
-  'É homem ou mulher e quer um profissional com experiência de verdade.',
 ]
 
 const faq = [
@@ -184,7 +199,7 @@ function Hero() {
         </h1>
         <div className="hero__row">
           <p className="hero__lead">
-            Treino individual baseado em biomecânica e cinesiologia, com mais de 35 anos de profissão. Para homens e mulheres que querem ganhar músculo, definir e se mover melhor, sem lesão e sem treino genérico.
+            Treinamento individual para ganhar força, melhorar a composição corporal e se movimentar melhor. Técnica, atenção aos detalhes e mais de 35 anos de experiência profissional.
           </p>
           <div className="hero__btns">
             <Btn href={wa()} target="_blank" rel="noopener noreferrer">Quero começar agora</Btn>
@@ -194,29 +209,25 @@ function Hero() {
       </div>
       <div className="hero__stats">
         <div className="wrap hero__stats-in">
-          <Stat n={40} label="Anos de musculação" />
-          <Stat n={35} label="Anos como profissional" />
-          <Stat n={25} label="Anos árbitro internacional" />
+          <Stat n={40} label="anos de musculação" />
+          <Stat n={35} label="anos de profissão" />
+          <Stat n={25} label="anos de arbitragem" />
         </div>
       </div>
     </section>
   )
 }
 
-function Marquee() {
-  const row = [...marquee, ...marquee]
+function FocusAreas() {
   return (
-    <div className="marquee" aria-hidden="true">
-      <div className="marquee__track">
-        {[0, 1].map((k) => (
-          <div className="marquee__row" key={k}>
-            {row.map((t, i) => (
-              <span key={i}>{t}<b /></span>
-            ))}
-          </div>
-        ))}
+    <section className="focus-strip" aria-label="Áreas de atuação do treinamento">
+      <div className="wrap focus-strip__inner">
+        <p className="focus-strip__eyebrow">TREINAMENTO COM PROPÓSITO</p>
+        <ul className="focus-strip__list">
+          {focusAreas.map((area) => <li key={area}>{area}</li>)}
+        </ul>
       </div>
-    </div>
+    </section>
   )
 }
 
@@ -246,11 +257,12 @@ function Method() {
       <div className="wrap">
         <div className="method__head">
           <h2 className="h2">Ciência do movimento aplicada ao seu treino</h2>
-          <p>Rogério é especialista em biomecânica e cinesiologia. Isso significa entender como cada articulação e cada músculo trabalham, e usar esse conhecimento a seu favor.</p>
+          <p>Biomecânica e cinesiologia aplicadas ao seu treino. Sem fórmulas prontas: um caminho pensado para seus objetivos.</p>
         </div>
         <ol className="steps">
-          {method.map((m) => (
+          {method.map((m, i) => (
             <li key={m.title}>
+              <span className="steps__number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3>{m.title}</h3>
               <p>{m.text}</p>
             </li>
@@ -293,14 +305,78 @@ function About() {
 }
 
 
+/* Validate optional clips before showing them. Vercel SPA fallbacks return HTML,
+   so a 200 response alone is not sufficient to prove an MP4 exists. */
+async function hasVideoFile(src) {
+  try {
+    const response = await fetch(src, { method: 'HEAD' })
+    const type = response.headers.get('content-type') || ''
+    return response.ok && (type.startsWith('video/') || type.startsWith('application/octet-stream'))
+  } catch {
+    return false
+  }
+}
+
+function pauseOtherVideos(currentVideo) {
+  document.querySelectorAll('video').forEach((video) => {
+    if (video !== currentVideo && !video.paused) video.pause()
+  })
+}
+
+const methodVideos = [
+  {
+    id: 'acompanhamento', title: 'Acompanhamento', label: 'Treino individual',
+    src: '/img/rogerio-acompanhamento.mp4', poster: '/img/hero-800.webp',
+    duration: '50s', available: true,
+  },
+  {
+    id: 'postura', title: 'Correção técnica', label: 'Postura e movimento',
+    src: '/img/rogerio-correcao-postura.mp4', poster: '/img/rogerio-correcao-postura.webp',
+    duration: '58s',
+  },
+  {
+    id: 'execucao', title: 'Execução orientada', label: 'Atenção em cada repetição',
+    src: '/img/rogerio-execucao-orientada.mp4', poster: '/img/rogerio-execucao-orientada.webp',
+    duration: '52s',
+  },
+  {
+    id: 'performance', title: 'Performance', label: 'Movimento e esporte',
+    src: '/img/transformacao.mp4', poster: '/img/g3-800.webp',
+    available: true,
+  },
+]
+
 function MethodInAction() {
   const videoRef = useRef(null)
-  const [available, setAvailable] = useState(false)
+  const [activeId, setActiveId] = useState('acompanhamento')
+  const [availableIds, setAvailableIds] = useState(['acompanhamento', 'performance'])
   const [started, setStarted] = useState(false)
+  const [videoError, setVideoError] = useState(false)
+  usePauseOutsideViewport(videoRef, activeId)
 
+  useEffect(() => {
+    let live = true
+    Promise.all(methodVideos.filter((v) => !v.available).map(async (v) => ({
+      id: v.id,
+      available: await hasVideoFile(v.src),
+    }))).then((results) => {
+      if (live) setAvailableIds(['acompanhamento', 'performance', ...results.filter((r) => r.available).map((r) => r.id)])
+    })
+    return () => { live = false }
+  }, [])
+
+  const current = methodVideos.find((v) => v.id === activeId) || methodVideos[0]
+  const videosAvailable = methodVideos.filter((v) => availableIds.includes(v.id))
+
+  const selectVideo = (id) => {
+    if (id === activeId) return
+    videoRef.current?.pause()
+    setStarted(false)
+    setVideoError(false)
+    setActiveId(id)
+  }
   const play = () => {
-    if (!available || !videoRef.current) return
-    videoRef.current.play().then(() => setStarted(true)).catch(() => {})
+    if (videoRef.current) videoRef.current.play().catch(() => {})
   }
 
   return (
@@ -308,55 +384,86 @@ function MethodInAction() {
       <div className="wrap method-action__grid">
         <div className="method-action__copy">
           <p className="method-action__label">O MÉTODO NA PRÁTICA</p>
-          <h2 className="h2" id="method-action-title">Treinar bem começa com atenção a cada movimento.</h2>
-          <p>Rogério acompanha cada aluno de perto, orienta a execução e adapta os exercícios para uma evolução consistente.</p>
+          <h2 className="h2" id="method-action-title">A diferença está em cada movimento.</h2>
+          <p>Veja o Rogério acompanhando alunos, corrigindo a execução e aplicando seu conhecimento no treino real.</p>
           <Btn href={wa('Olá, Rogério! Vi seu acompanhamento no site e quero saber como funcionam os treinos.')} target="_blank" rel="noopener noreferrer">Quero treinar com o Rogério</Btn>
         </div>
-        <div className="method-action__media">
-          <video
-            ref={videoRef}
-            src="/img/rogerio-acompanhamento.mp4"
-            poster="/img/hero-800.webp"
-            playsInline
-            preload="metadata"
-            controls={started}
-            onLoadedMetadata={() => setAvailable(true)}
-            onError={() => setAvailable(false)}
-            onPlay={() => setStarted(true)}
-            aria-label="Rogério Déo acompanhando e orientando os alunos durante o treino"
-            style={{ display: available ? 'block' : 'none' }}
-          />
-          {!available && <img className="method-action__poster" src="/img/hero-800.webp" alt="Rogério Déo orientando o treino de um aluno" loading="lazy" />}
-          {available && !started && <button className="method-action__play" onClick={play} type="button" aria-label="Reproduzir vídeo do acompanhamento">
-            <span aria-hidden="true">▶</span>
-          </button>}
+        <div className="method-action__watch">
+          <div className="method-action__media">
+            {!videoError ? (
+              <>
+                <video
+                  key={current.id}
+                  ref={videoRef}
+                  src={current.src}
+                  poster={current.poster}
+                  playsInline
+                  preload="none"
+                  controls={started}
+                  onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
+                  onEnded={() => setStarted(false)}
+                  onError={() => setVideoError(true)}
+                  aria-label={`Vídeo: ${current.title} — Rogério Déo`}
+                />
+                {!started && (
+                  <button className="method-action__play" onClick={play} type="button" aria-label={`Assistir: ${current.title}`}>
+                    <span className="method-action__play-icon" aria-hidden="true">▶</span>
+                    <span className="method-action__play-caption">{current.title}</span>
+                  </button>
+                )}
+              </>
+            ) : (
+              <div className="method-action__fallback" role="status">
+                <img src="/img/hero-800.webp" alt="Rogério Déo orientando aluno na academia" loading="lazy" />
+                <span>Não foi possível carregar este vídeo. Selecione outro abaixo.</span>
+              </div>
+            )}
+          </div>
+          <div className="method-action__chooser" aria-label="Escolher vídeo para assistir">
+            {videosAvailable.map((v) => (
+              <button
+                key={v.id}
+                type="button"
+                aria-pressed={activeId === v.id}
+                className={`method-action__choice ${activeId === v.id ? 'is-active' : ''}`}
+                onClick={() => selectVideo(v.id)}
+              >
+                <span className="method-action__thumb"><img src={v.poster} alt="" loading="lazy" /><span aria-hidden="true">▶</span></span>
+                <span className="method-action__choice-title">{v.title}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )
 }
 
-function VideoCover() {
+function VideoCover({ src = '/img/transformacao.mp4#t=0.1', poster, label = 'Rogério Déo explica como o treino direcionado melhora a prática esportiva' }) {
   const ref = useRef(null)
+  usePauseOutsideViewport(ref, src)
   const [started, setStarted] = useState(false)
+
   const play = () => {
-    setStarted(true)
-    const v = ref.current
-    if (v) v.play().catch(() => {})
+    ref.current?.play().catch(() => {})
   }
+
   return (
     <div className={`vcover ${started ? 'is-playing' : ''}`}>
       <video
+        key={src}
         ref={ref}
+        src={src}
+        poster={poster}
         controls={started}
         playsInline
-        preload="metadata"
-        src="img/transformacao.mp4#t=0.1"
-        aria-label="Rogério Déo fala sobre treino focado para melhorar seu esporte favorito"
-        onPlay={() => setStarted(true)}
+        preload="none"
+        aria-label={label}
+        onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
+        onEnded={() => setStarted(false)}
       />
       {!started && (
-        <button type="button" className="vcover__play" onClick={play} aria-label="Assistir ao vídeo">
+        <button type="button" className="vcover__play" onClick={play} aria-label="Reproduzir vídeo da transformação">
           <span><svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
         </button>
       )}
@@ -365,6 +472,15 @@ function VideoCover() {
 }
 
 function Transformation() {
+  const [hasInterview, setHasInterview] = useState(false)
+  useEffect(() => {
+    let live = true
+    hasVideoFile('/img/rogerio-entrevista-transformacao.mp4').then((exists) => {
+      if (live) setHasInterview(exists)
+    })
+    return () => { live = false }
+  }, [])
+
   const shots = [
     { id: 'transformacao-frente', cap: 'De frente', alt: 'Transformação de Rogério Déo, de frente: antes, durante e depois' },
     { id: 'transformacao-costas', cap: 'De costas', alt: 'Transformação de Rogério Déo, de costas: antes, durante e depois' },
@@ -384,10 +500,16 @@ function Transformation() {
         </div>
         <div className="transf__row">
           <figure className="transf__video">
-            <VideoCover />
+            {hasInterview ? (
+              <VideoCover
+                src="/img/rogerio-entrevista-transformacao.mp4"
+                poster="/img/rogerio-entrevista-transformacao.webp"
+                label="Rogério Déo fala sobre um caso de transformação corporal em entrevista"
+              />
+            ) : <VideoCover />}
           </figure>
           <div className="transf__copy">
-            <p>Rogério explica como o treino focado melhora o seu esporte.</p>
+            <p>{hasInterview ? 'Uma conversa real sobre transformação, dedicação e acompanhamento.' : 'Rogério explica como o treino focado melhora o seu esporte.'}</p>
             <Btn href={wa('Olá, Rogério! Vi as transformações no site e quero começar a treinar.')} target="_blank" rel="noopener noreferrer">Quero a minha transformação</Btn>
           </div>
         </div>
@@ -402,21 +524,25 @@ function Gallery() {
       <div className="wrap">
         <h2 className="h2">Do ajuste fino ao último movimento</h2>
         <div className="gallery">
-          {gallery.map((g) => (
+          {gallery.map((g, i) => (
             <figure key={g.id} className="gallery__item">
               <img
                 src={`img/${g.id}-800.webp`}
                 srcSet={`img/${g.id}-400.webp 400w, img/${g.id}-800.webp 800w`}
-                sizes="(max-width: 700px) 50vw, 560px"
+                sizes={i === 0 ? '(max-width: 700px) 100vw, 720px' : '(max-width: 700px) 50vw, 460px'}
                 alt={g.alt} width="800" height="1066" loading="lazy" decoding="async"
               />
+              <figcaption className="gallery__caption">
+                <span>{String(i + 1).padStart(2, '0')}</span>
+                <span>{g.label}</span>
+              </figcaption>
             </figure>
           ))}
         </div>
         <div className="sports">
           <div>
             <h3>Mais força e condicionamento na sua modalidade</h3>
-            <p>Com treinamento funcional, o treino é direcionado ao que o seu esporte pede.</p>
+            <p>O treino também pode fortalecer sua performance fora da academia.</p>
           </div>
           <ul>
             {sports.map((s) => (<li key={s}>{s}</li>))}
@@ -443,14 +569,19 @@ const testimonials = [
 ]
 
 function Results() {
+  const [expanded, setExpanded] = useState(false)
   return (
     <section className="sec results" id="resultados">
       <div className="wrap">
         <h2 className="h2">Quem treina com o Rogério fala</h2>
         <blockquote className="quote quote--feature">
-          <div className="quote__text">
+          <div className={`quote__text ${expanded ? '' : 'quote__text--collapsed'}`} id="featured-review">
             {featured.text.map((t) => (<p key={t}>{t}</p>))}
           </div>
+          <button className="quote__more" type="button" aria-controls="featured-review" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>
+            {expanded ? 'Mostrar menos' : 'Ler depoimento completo'}
+            <span aria-hidden="true">{expanded ? '−' : '+'}</span>
+          </button>
           <footer><strong>{featured.name}</strong><span>{featured.time}</span></footer>
         </blockquote>
         <div className="quotes">
@@ -466,26 +597,6 @@ function Results() {
   )
 }
 
-function ForYou() {
-  return (
-    <section className="sec foryou">
-      <div className="wrap foryou__grid">
-        <div className="foryou__head">
-          <h2 className="foryou__title">Esse treino é para você se…</h2>
-          <Btn href={wa()} target="_blank" rel="noopener noreferrer">Quero começar</Btn>
-        </div>
-        <ol className="foryou__list">
-          {forYou.map((t, i) => (
-            <li key={t}>
-              <span className="foryou__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <p>{t}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  )
-}
 
 function Faq() {
   const [open, setOpen] = useState(-1)
@@ -519,15 +630,21 @@ function FinalCta() {
     <section className="final" id="contato">
       <div className="wrap final__grid">
         <div className="final__copy">
+          <p className="final__eyebrow">SEU PRÓXIMO PASSO</p>
           <h2 className="final__title">Seu melhor corpo não tem idade</h2>
-          <p className="final__text">Chame o Rogério no WhatsApp, conte seu objetivo e comece com quem tem mais de 35 anos de estrada.</p>
+          <p className="final__text">Converse com o Rogério sobre seus objetivos, disponibilidade e possibilidades de acompanhamento.</p>
+          <div className="final__steps" aria-label="Como começar">
+            <span>01 / Conte seu objetivo</span>
+            <span>02 / Tire suas dúvidas</span>
+            <span>03 / Combine os próximos passos</span>
+          </div>
           <div className="final__btns">
             <Btn href={wa()} className="btn--lg" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</Btn>
             <a className="phone" href={`tel:+${PHONE}`}>{PHONE_LABEL}</a>
           </div>
         </div>
         <figure className="final__photo">
-          <img src="img/arbitro.webp" alt="Rogério Déo de terno, árbitro internacional" width="515" height="784" loading="lazy" decoding="async" />
+          <img src="/img/g3-800.webp" srcSet="/img/g3-400.webp 400w, /img/g3-800.webp 800w" sizes="(max-width: 960px) 90vw, 440px" alt="Rogério Déo acompanhando aluno durante o treino" width="800" height="1066" loading="lazy" decoding="async" />
         </figure>
       </div>
     </section>
@@ -568,7 +685,7 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        <Marquee />
+        <FocusAreas />
         <Problem />
         <Method />
         <MethodInAction />
@@ -576,7 +693,6 @@ export default function App() {
         <Transformation />
         <Gallery />
         <Results />
-        <ForYou />
         <Faq />
         <FinalCta />
       </main>
