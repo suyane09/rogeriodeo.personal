@@ -312,9 +312,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .row__number { padding-top: .2rem; }
   .row p { grid-column: 2; }
   .method__head { grid-template-columns: 1fr; }
-  .steps { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
   .about__grid, .faq-sec__grid, .final__grid { grid-template-columns: 1fr; }
-  .final__photo { order: -1; justify-self: start; width: min(100%, 380px); margin: 0 22px 22px 0; }
+  .final__photo { order: 0; justify-self: start; width: min(100%, 380px); margin: 12px 22px 22px 0; }
   .about__photo { position: relative; top: 0; max-width: 460px; }
   .faq-sec__head { position: static; }
   .transf__row { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
