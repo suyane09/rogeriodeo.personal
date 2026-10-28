@@ -320,7 +320,7 @@ function MethodInAction() {
             playsInline
             preload="metadata"
             controls={started}
-            onCanPlay={() => setAvailable(true)}
+            onLoadedMetadata={() => setAvailable(true)}
             onError={() => setAvailable(false)}
             onPlay={() => setStarted(true)}
             aria-label="Rogério Déo acompanhando e orientando os alunos durante o treino"
