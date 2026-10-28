@@ -292,6 +292,50 @@ function About() {
   )
 }
 
+
+function MethodInAction() {
+  const videoRef = useRef(null)
+  const [available, setAvailable] = useState(false)
+  const [started, setStarted] = useState(false)
+
+  const play = () => {
+    if (!available || !videoRef.current) return
+    videoRef.current.play().then(() => setStarted(true)).catch(() => {})
+  }
+
+  return (
+    <section className="sec method-action" aria-labelledby="method-action-title">
+      <div className="wrap method-action__grid">
+        <div className="method-action__copy">
+          <p className="method-action__label">O MÉTODO NA PRÁTICA</p>
+          <h2 className="h2" id="method-action-title">Treinar bem começa com atenção a cada movimento.</h2>
+          <p>Rogério acompanha cada aluno de perto, orienta a execução e adapta os exercícios para uma evolução consistente.</p>
+          <Btn href={wa('Olá, Rogério! Vi seu acompanhamento no site e quero saber como funcionam os treinos.')} target="_blank" rel="noopener noreferrer">Quero treinar com o Rogério</Btn>
+        </div>
+        <div className="method-action__media">
+          <video
+            ref={videoRef}
+            src="/img/rogerio-acompanhamento.mp4"
+            poster="/img/hero-800.webp"
+            playsInline
+            preload="none"
+            controls={started}
+            onCanPlay={() => setAvailable(true)}
+            onError={() => setAvailable(false)}
+            onPlay={() => setStarted(true)}
+            aria-label="Rogério Déo acompanhando e orientando os alunos durante o treino"
+            style={{ display: available ? 'block' : 'none' }}
+          />
+          {!available && <img className="method-action__poster" src="/img/hero-800.webp" alt="Rogério Déo orientando o treino de um aluno" loading="lazy" />}
+          {available && !started && <button className="method-action__play" onClick={play} type="button" aria-label="Reproduzir vídeo do acompanhamento">
+            <span aria-hidden="true">▶</span>
+          </button>}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function VideoCover() {
   const ref = useRef(null)
   const [started, setStarted] = useState(false)
@@ -527,6 +571,7 @@ export default function App() {
         <Marquee />
         <Problem />
         <Method />
+        <MethodInAction />
         <About />
         <Transformation />
         <Gallery />
