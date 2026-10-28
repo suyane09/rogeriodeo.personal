@@ -28,7 +28,7 @@ function useFloatHide() {
 
 /* Pause media when the user scrolls away or leaves the browser tab.
    Returning to the video never resumes playback automatically. */
-function usePauseOutsideViewport(videoRef) {
+function usePauseOutsideViewport(videoRef, mediaKey = null) {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -50,7 +50,7 @@ function usePauseOutsideViewport(videoRef) {
       observer.disconnect()
       document.removeEventListener('visibilitychange', pauseWhenHidden)
     }
-  }, [videoRef])
+  }, [videoRef, mediaKey])
 }
 
 function useCount(target, start) {
@@ -305,18 +305,78 @@ function About() {
 }
 
 
+/* Validate optional clips before showing them. Vercel SPA fallbacks return HTML,
+   so a 200 response alone is not sufficient to prove an MP4 exists. */
+async function hasVideoFile(src) {
+  try {
+    const response = await fetch(src, { method: 'HEAD' })
+    const type = response.headers.get('content-type') || ''
+    return response.ok && (/video\\//i.test(type) || /application\\/octet-stream/i.test(type))
+  } catch {
+    return false
+  }
+}
+
+function pauseOtherVideos(currentVideo) {
+  document.querySelectorAll('video').forEach((video) => {
+    if (video !== currentVideo && !video.paused) video.pause()
+  })
+}
+
+const methodVideos = [
+  {
+    id: 'acompanhamento', title: 'Acompanhamento', label: 'Treino individual',
+    src: '/img/rogerio-acompanhamento.mp4', poster: '/img/hero-800.webp',
+    duration: '50s', available: true,
+  },
+  {
+    id: 'postura', title: 'Correção técnica', label: 'Postura e movimento',
+    src: '/img/rogerio-correcao-postura.mp4', poster: '/img/rogerio-correcao-postura.webp',
+    duration: '58s',
+  },
+  {
+    id: 'execucao', title: 'Execução orientada', label: 'Atenção em cada repetição',
+    src: '/img/rogerio-execucao-orientada.mp4', poster: '/img/rogerio-execucao-orientada.webp',
+    duration: '52s',
+  },
+  {
+    id: 'performance', title: 'Performance', label: 'Movimento e esporte',
+    src: '/img/transformacao.mp4', poster: '/img/g3-800.webp',
+    available: true,
+  },
+]
+
 function MethodInAction() {
   const videoRef = useRef(null)
-  usePauseOutsideViewport(videoRef)
+  const [activeId, setActiveId] = useState('acompanhamento')
+  const [availableIds, setAvailableIds] = useState(['acompanhamento', 'performance'])
   const [started, setStarted] = useState(false)
   const [videoError, setVideoError] = useState(false)
+  usePauseOutsideViewport(videoRef, activeId)
 
-  const play = () => {
-    const video = videoRef.current
-    if (!video) return
-    video.play().catch(() => {
-      // Keep the play button visible if playback is blocked.
+  useEffect(() => {
+    let live = true
+    Promise.all(methodVideos.filter((v) => !v.available).map(async (v) => ({
+      id: v.id,
+      available: await hasVideoFile(v.src),
+    }))).then((results) => {
+      if (live) setAvailableIds(['acompanhamento', 'performance', ...results.filter((r) => r.available).map((r) => r.id)])
     })
+    return () => { live = false }
+  }, [])
+
+  const current = methodVideos.find((v) => v.id === activeId) || methodVideos[0]
+  const videosAvailable = methodVideos.filter((v) => availableIds.includes(v.id))
+
+  const selectVideo = (id) => {
+    if (id === activeId) return
+    videoRef.current?.pause()
+    setStarted(false)
+    setVideoError(false)
+    setActiveId(id)
+  }
+  const play = () => {
+    if (videoRef.current) videoRef.current.play().catch(() => {})
   }
 
   return (
@@ -325,65 +385,85 @@ function MethodInAction() {
         <div className="method-action__copy">
           <p className="method-action__label">O MÉTODO NA PRÁTICA</p>
           <h2 className="h2" id="method-action-title">A diferença está em cada movimento.</h2>
-          <p>Veja o Rogério orientando alunos, corrigindo a execução e acompanhando cada detalhe do treino.</p>
+          <p>Veja o Rogério acompanhando alunos, corrigindo a execução e aplicando seu conhecimento no treino real.</p>
           <Btn href={wa('Olá, Rogério! Vi seu acompanhamento no site e quero saber como funcionam os treinos.')} target="_blank" rel="noopener noreferrer">Quero treinar com o Rogério</Btn>
         </div>
-        <div className="method-action__media">
-          {!videoError ? (
-            <>
-              <video
-                ref={videoRef}
-                src="/img/rogerio-acompanhamento.mp4"
-                poster="/img/hero-800.webp"
-                playsInline
-                preload="none"
-                controls={started}
-                onPlay={() => setStarted(true)}
-                onEnded={() => setStarted(false)}
-                onError={() => setVideoError(true)}
-                aria-label="Rogério Déo orientando alunos durante o treinamento"
-              />
-              {!started && (
-                <button className="method-action__play" onClick={play} type="button" aria-label="Assistir ao vídeo do acompanhamento">
-                  <span className="method-action__play-icon" aria-hidden="true">▶</span>
-                  <span className="method-action__play-caption">ASSISTA AO ACOMPANHAMENTO REAL</span>
-                </button>
-              )}
-            </>
-          ) : (
-            <div className="method-action__fallback" role="status">
-              <img src="/img/hero-800.webp" alt="Rogério Déo orientando aluno na academia" loading="lazy" />
-              <span>Vídeo indisponível neste momento.</span>
-            </div>
-          )}
+        <div className="method-action__watch">
+          <div className="method-action__media">
+            {!videoError ? (
+              <>
+                <video
+                  key={current.id}
+                  ref={videoRef}
+                  src={current.src}
+                  poster={current.poster}
+                  playsInline
+                  preload="none"
+                  controls={started}
+                  onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
+                  onEnded={() => setStarted(false)}
+                  onError={() => setVideoError(true)}
+                  aria-label={`Vídeo: ${current.title} — Rogério Déo`}
+                />
+                {!started && (
+                  <button className="method-action__play" onClick={play} type="button" aria-label={`Assistir: ${current.title}`}>
+                    <span className="method-action__play-icon" aria-hidden="true">▶</span>
+                    <span className="method-action__play-caption">{current.title}</span>
+                  </button>
+                )}
+              </>
+            ) : (
+              <div className="method-action__fallback" role="status">
+                <img src="/img/hero-800.webp" alt="Rogério Déo orientando aluno na academia" loading="lazy" />
+                <span>Não foi possível carregar este vídeo. Selecione outro abaixo.</span>
+              </div>
+            )}
+          </div>
+          <div className="method-action__chooser" aria-label="Escolher vídeo para assistir">
+            {videosAvailable.map((v) => (
+              <button
+                key={v.id}
+                type="button"
+                aria-pressed={activeId === v.id}
+                className={`method-action__choice ${activeId === v.id ? 'is-active' : ''}`}
+                onClick={() => selectVideo(v.id)}
+              >
+                <span className="method-action__thumb"><img src={v.poster} alt="" loading="lazy" /><span aria-hidden="true">▶</span></span>
+                <span className="method-action__choice-title">{v.title}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )
 }
 
-function VideoCover() {
+function VideoCover({ src = '/img/transformacao.mp4#t=0.1', poster, label = 'Rogério Déo explica como o treino direcionado melhora a prática esportiva' }) {
   const ref = useRef(null)
-  usePauseOutsideViewport(ref)
+  usePauseOutsideViewport(ref, src)
   const [started, setStarted] = useState(false)
+
   const play = () => {
-    setStarted(true)
-    const v = ref.current
-    if (v) v.play().catch(() => {})
+    ref.current?.play().catch(() => {})
   }
+
   return (
     <div className={`vcover ${started ? 'is-playing' : ''}`}>
       <video
+        key={src}
         ref={ref}
+        src={src}
+        poster={poster}
         controls={started}
         playsInline
-        preload="metadata"
-        src="img/transformacao.mp4#t=0.1"
-        aria-label="Rogério Déo fala sobre treino focado para melhorar seu esporte favorito"
-        onPlay={() => setStarted(true)}
+        preload="none"
+        aria-label={label}
+        onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
+        onEnded={() => setStarted(false)}
       />
       {!started && (
-        <button type="button" className="vcover__play" onClick={play} aria-label="Assistir ao vídeo">
+        <button type="button" className="vcover__play" onClick={play} aria-label="Reproduzir vídeo da transformação">
           <span><svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
         </button>
       )}
@@ -392,6 +472,15 @@ function VideoCover() {
 }
 
 function Transformation() {
+  const [hasInterview, setHasInterview] = useState(false)
+  useEffect(() => {
+    let live = true
+    hasVideoFile('/img/rogerio-entrevista-transformacao.mp4').then((exists) => {
+      if (live) setHasInterview(exists)
+    })
+    return () => { live = false }
+  }, [])
+
   const shots = [
     { id: 'transformacao-frente', cap: 'De frente', alt: 'Transformação de Rogério Déo, de frente: antes, durante e depois' },
     { id: 'transformacao-costas', cap: 'De costas', alt: 'Transformação de Rogério Déo, de costas: antes, durante e depois' },
@@ -411,10 +500,16 @@ function Transformation() {
         </div>
         <div className="transf__row">
           <figure className="transf__video">
-            <VideoCover />
+            {hasInterview ? (
+              <VideoCover
+                src="/img/rogerio-entrevista-transformacao.mp4"
+                poster="/img/rogerio-entrevista-transformacao.webp"
+                label="Rogério Déo fala sobre um caso de transformação corporal em entrevista"
+              />
+            ) : <VideoCover />}
           </figure>
           <div className="transf__copy">
-            <p>Rogério explica como o treino focado melhora o seu esporte.</p>
+            <p>{hasInterview ? 'Uma conversa real sobre transformação, dedicação e acompanhamento.' : 'Rogério explica como o treino focado melhora o seu esporte.'}</p>
             <Btn href={wa('Olá, Rogério! Vi as transformações no site e quero começar a treinar.')} target="_blank" rel="noopener noreferrer">Quero a minha transformação</Btn>
           </div>
         </div>
