@@ -105,7 +105,7 @@ const Ln = ({ i, className = '', children }) => (
 )
 
 /* ---------- data ---------- */
-const marquee = ['Biomecânica', 'Cinesiologia', 'Definição corporal', 'Treino funcional', 'Mobilidade', 'Performance', 'Hipertrofia', 'Emagrecimento']
+const focusAreas = ['Hipertrofia', 'Emagrecimento', 'Mobilidade', 'Condicionamento']
 
 const problems = [
   { title: 'Articulações pedem cuidado', text: 'Técnica e movimentos ajustados para treinar com segurança.' },
@@ -209,29 +209,25 @@ function Hero() {
       </div>
       <div className="hero__stats">
         <div className="wrap hero__stats-in">
-          <Stat n={40} label="Anos de musculação" />
-          <Stat n={35} label="Anos como profissional" />
-          <Stat n={25} label="Anos árbitro internacional" />
+          <Stat n={40} label="anos de musculação" />
+          <Stat n={35} label="anos de profissão" />
+          <Stat n={25} label="anos de arbitragem" />
         </div>
       </div>
     </section>
   )
 }
 
-function Marquee() {
-  const row = [...marquee, ...marquee]
+function FocusAreas() {
   return (
-    <div className="marquee" aria-hidden="true">
-      <div className="marquee__track">
-        {[0, 1].map((k) => (
-          <div className="marquee__row" key={k}>
-            {row.map((t, i) => (
-              <span key={i}>{t}<b /></span>
-            ))}
-          </div>
-        ))}
+    <section className="focus-strip" aria-label="Áreas de atuação do treinamento">
+      <div className="wrap focus-strip__inner">
+        <p className="focus-strip__eyebrow">TREINAMENTO COM PROPÓSITO</p>
+        <ul className="focus-strip__list">
+          {focusAreas.map((area) => <li key={area}>{area}</li>)}
+        </ul>
       </div>
-    </div>
+    </section>
   )
 }
 
@@ -594,7 +590,7 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        <Marquee />
+        <FocusAreas />
         <Problem />
         <Method />
         <MethodInAction />
