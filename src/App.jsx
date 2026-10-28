@@ -326,7 +326,7 @@ function pauseOtherVideos(currentVideo) {
 const methodVideos = [
   {
     id: 'acompanhamento', title: 'Acompanhamento', label: 'Treino individual',
-    src: '/img/rogerio-acompanhamento.mp4', poster: null, liveFrame: true,
+    src: '/img/rogerio-acompanhamento.mp4', poster: '/img/acompanhamento-capa.webp',
     duration: '50s', available: true,
   },
   {
@@ -395,10 +395,10 @@ function MethodInAction() {
                 <video
                   key={current.id}
                   ref={videoRef}
-                  src={current.liveFrame ? `${current.src}#t=0.2` : current.src}
+                  src={current.src}
                   poster={current.poster || undefined}
                   playsInline
-                  preload={current.liveFrame ? 'metadata' : 'none'}
+                  preload="none"
                   controls={started}
                   onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
                   onPause={() => setStarted(false)}
@@ -436,9 +436,7 @@ function MethodInAction() {
                     aria-label={`Assistir ${v.title}`}
                   >
                     <span className="method-action__thumb">
-                      {v.liveFrame
-                        ? <video src={`${v.src}#t=0.2`} preload="metadata" muted playsInline aria-hidden="true" tabIndex={-1} />
-                        : <img src={v.poster} alt="" loading="lazy" />}
+                      <img src={v.poster} alt="" loading="lazy" />
                       <span aria-hidden="true">▶</span>
                     </span>
                     <span className="method-action__choice-copy">
@@ -508,8 +506,8 @@ function Transformation() {
       label: 'Rogério Déo fala sobre transformação corporal em entrevista',
     }
     : {
-      src: '/img/transformacao.mp4#t=0.2',
-      poster: null,
+      src: '/img/transformacao.mp4#t=0.1',
+      poster: '/img/treino-esporte-capa.webp',
       label: 'Rogério Déo comenta o treinamento para esportes',
     }
 
@@ -552,7 +550,7 @@ function Transformation() {
                     <span className="transf__video-arrow" aria-hidden="true">▶</span>
                   </button>
                   <button type="button" aria-pressed={!showingInterview} onClick={() => setSelected('esporte')} className={!showingInterview ? 'is-active' : ''}>
-                    <video src="/img/transformacao.mp4#t=0.2" preload="metadata" muted playsInline aria-hidden="true" tabIndex={-1} />
+                    <img src="/img/treino-esporte-capa.webp" alt="" loading="lazy" />
                     <span className="transf__video-tab-copy">
                       <strong>Treino e esporte</strong>
                       <small>Vídeo anterior</small>
