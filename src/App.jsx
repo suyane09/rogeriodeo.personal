@@ -438,7 +438,7 @@ function Gallery() {
               <img
                 src={`img/${g.id}-800.webp`}
                 srcSet={`img/${g.id}-400.webp 400w, img/${g.id}-800.webp 800w`}
-                sizes="(max-width: 700px) 50vw, 560px"
+                sizes={i === 0 ? '(max-width: 700px) 100vw, 720px' : '(max-width: 700px) 50vw, 460px'}
                 alt={g.alt} width="800" height="1066" loading="lazy" decoding="async"
               />
               <figcaption className="gallery__caption">
