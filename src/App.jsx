@@ -115,19 +115,15 @@ const problems = [
 ]
 
 const method = [
-  { title: 'Conversa e objetivo', text: 'Você conta sua rotina, seu histórico e o que quer alcançar. O plano nasce daí.' },
-  { title: 'Treino de hipertrofia', text: 'Estímulo certo para ganhar massa muscular e definição, respeitando seu momento.' },
-  { title: 'Foco em emagrecimento', text: 'Condicionamento e gasto energético organizados para você perder gordura mantendo músculo.' },
-  { title: 'Correção na hora', text: 'Rogério acompanha de perto, ajusta postura e execução durante o treino. Você aprende o movimento certo.' },
-  { title: 'Funcional e mobilidade', text: 'Força, equilíbrio e amplitude de movimento para o dia a dia e para o esporte que você pratica.' },
-  { title: 'Evolução contínua', text: 'O treino é ajustado conforme você progride. Constância com direção, sem platô eterno.' },
+  { title: 'Entender seu objetivo', text: 'Seu histórico, sua rotina e suas metas orientam cada escolha.' },
+  { title: 'Treinar com precisão', text: 'Força, hipertrofia e mobilidade com atenção à técnica e à execução.' },
+  { title: 'Evoluir com constância', text: 'O acompanhamento se ajusta ao seu progresso, no seu ritmo.' },
 ]
 
 const gallery = [
-  { id: 'g1', alt: 'Rogério Déo ajustando a postura de aluno no equipamento' },
-  { id: 'g2', alt: 'Rogério Déo orientando aluno durante o exercício' },
-  { id: 'g3', alt: 'Rogério Déo acompanhando de perto o treino do aluno' },
-  { id: 'g4', alt: 'Rogério Déo concentrado durante a sessão de treino' },
+  { id: 'g1', alt: 'Rogério Déo ajustando a postura de aluno no equipamento', label: 'Precisão nos movimentos' },
+  { id: 'g2', alt: 'Rogério Déo orientando aluno durante o exercício', label: 'Orientação de perto' },
+  { id: 'g4', alt: 'Rogério Déo concentrado durante a sessão de treino', label: 'Atenção aos detalhes' },
 ]
 
 const sports = ['Vôlei', 'Surfe', 'Futebol', 'Tênis', 'Corrida', 'Beach tennis', 'E outras modalidades']
@@ -136,14 +132,6 @@ const career = [
   [40, 'Anos de prática'],
   [35, 'Anos de profissão'],
   [25, 'Anos na arbitragem'],
-]
-
-const forYou = [
-  'Tem 40 anos ou mais e quer ganhar massa muscular de verdade.',
-  'Quer emagrecer e definir sem perder músculo nem se machucar.',
-  'Cansou de ficha genérica e quer alguém ao seu lado corrigindo cada movimento.',
-  'Pratica um esporte e quer render mais com um corpo forte e móvel.',
-  'É homem ou mulher e quer um profissional com experiência de verdade.',
 ]
 
 const faq = [
@@ -211,7 +199,7 @@ function Hero() {
         </h1>
         <div className="hero__row">
           <p className="hero__lead">
-            Treino individual baseado em biomecânica e cinesiologia, com mais de 35 anos de profissão. Para homens e mulheres que querem ganhar músculo, definir e se mover melhor, sem lesão e sem treino genérico.
+            Treinamento individual para ganhar força, melhorar a composição corporal e se movimentar melhor. Técnica, atenção aos detalhes e mais de 35 anos de experiência profissional.
           </p>
           <div className="hero__btns">
             <Btn href={wa()} target="_blank" rel="noopener noreferrer">Quero começar agora</Btn>
@@ -273,11 +261,12 @@ function Method() {
       <div className="wrap">
         <div className="method__head">
           <h2 className="h2">Ciência do movimento aplicada ao seu treino</h2>
-          <p>Rogério é especialista em biomecânica e cinesiologia. Isso significa entender como cada articulação e cada músculo trabalham, e usar esse conhecimento a seu favor.</p>
+          <p>Biomecânica e cinesiologia aplicadas ao seu treino. Sem fórmulas prontas: um caminho pensado para seus objetivos.</p>
         </div>
         <ol className="steps">
-          {method.map((m) => (
+          {method.map((m, i) => (
             <li key={m.title}>
+              <span className="steps__number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3>{m.title}</h3>
               <p>{m.text}</p>
             </li>
@@ -431,7 +420,7 @@ function Gallery() {
       <div className="wrap">
         <h2 className="h2">Do ajuste fino ao último movimento</h2>
         <div className="gallery">
-          {gallery.map((g) => (
+          {gallery.map((g, i) => (
             <figure key={g.id} className="gallery__item">
               <img
                 src={`img/${g.id}-800.webp`}
@@ -439,13 +428,17 @@ function Gallery() {
                 sizes="(max-width: 700px) 50vw, 560px"
                 alt={g.alt} width="800" height="1066" loading="lazy" decoding="async"
               />
+              <figcaption className="gallery__caption">
+                <span>{String(i + 1).padStart(2, '0')}</span>
+                <span>{g.label}</span>
+              </figcaption>
             </figure>
           ))}
         </div>
         <div className="sports">
           <div>
             <h3>Mais força e condicionamento na sua modalidade</h3>
-            <p>Com treinamento funcional, o treino é direcionado ao que o seu esporte pede.</p>
+            <p>O treino também pode fortalecer sua performance fora da academia.</p>
           </div>
           <ul>
             {sports.map((s) => (<li key={s}>{s}</li>))}
@@ -495,26 +488,6 @@ function Results() {
   )
 }
 
-function ForYou() {
-  return (
-    <section className="sec foryou">
-      <div className="wrap foryou__grid">
-        <div className="foryou__head">
-          <h2 className="foryou__title">Esse treino é para você se…</h2>
-          <Btn href={wa()} target="_blank" rel="noopener noreferrer">Quero começar</Btn>
-        </div>
-        <ol className="foryou__list">
-          {forYou.map((t, i) => (
-            <li key={t}>
-              <span className="foryou__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <p>{t}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  )
-}
 
 function Faq() {
   const [open, setOpen] = useState(-1)
@@ -605,7 +578,6 @@ export default function App() {
         <Transformation />
         <Gallery />
         <Results />
-        <ForYou />
         <Faq />
         <FinalCta />
       </main>
