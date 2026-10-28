@@ -318,7 +318,7 @@ function MethodInAction() {
             src="/img/rogerio-acompanhamento.mp4"
             poster="/img/hero-800.webp"
             playsInline
-            preload="none"
+            preload="metadata"
             controls={started}
             onCanPlay={() => setAvailable(true)}
             onError={() => setAvailable(false)}
