@@ -81,10 +81,10 @@ const Ln = ({ i, className = '', children }) => (
 const marquee = ['Biomecânica', 'Cinesiologia', 'Definição corporal', 'Treino funcional', 'Mobilidade', 'Performance', 'Hipertrofia', 'Emagrecimento']
 
 const problems = [
-  { title: 'Articulações pedem cuidado', text: 'Execução errada cobra caro em ombro, joelho e coluna. Cada exercício precisa ser ajustado à sua estrutura.' },
-  { title: 'O metabolismo mudou', text: 'Emagrecer e ganhar massa muscular exige treino e rotina planejados para a sua fase, não para a de um atleta de 20 anos.' },
-  { title: 'Tempo é curto', text: 'Sua agenda é cheia. Por isso cada sessão tem objetivo claro: nada de treino aleatório ou volume sem propósito.' },
-  { title: 'Cada corpo é um', text: 'Ficha de internet ignora seu histórico, suas limitações e seus objetivos. O treino precisa ser desenhado para você.' },
+  { title: 'Articulações pedem cuidado', text: 'Técnica e movimentos ajustados para treinar com segurança.' },
+  { title: 'O metabolismo mudou', text: 'Estratégia para ganhar força e evoluir no seu ritmo.' },
+  { title: 'Tempo é curto', text: 'Cada treino tem um objetivo. Nada de exercícios aleatórios.' },
+  { title: 'Cada corpo é um', text: 'Seu histórico e suas metas orientam cada escolha.' },
 ]
 
 const method = [
@@ -225,10 +225,11 @@ function Problem() {
     <section className="sec problem" id="porque">
       <div className="wrap">
         <h2 className="h2">Ficha pronta não serve para o seu corpo</h2>
-        <p className="problem__sub">Aos 40+, o corpo pede estratégia. Não é treinar mais pesado, é treinar certo. O que funcionava aos 25 pode travar seu resultado e ainda machucar.</p>
+        <p className="problem__sub">Depois dos 40, o treino precisa acompanhar seu corpo, sua rotina e seus objetivos.</p>
         <div className="rows">
-          {problems.map((p) => (
+          {problems.map((p, i) => (
             <article className="row" key={p.title}>
+              <span className="row__number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3>{p.title}</h3>
               <p>{p.text}</p>
             </article>
@@ -285,6 +286,50 @@ function About() {
             <li><strong>Biomecânica e Cinesiologia · UNIGUAÇU</strong><p>Foco em hipertrofia, emagrecimento, definição e condicionamento para quem tem 40+.</p></li>
             <li><strong>Treinamento Funcional · IHP</strong><p>Desenvolvimento das capacidades físicas e da performance esportiva.</p></li>
           </ul>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+function MethodInAction() {
+  const videoRef = useRef(null)
+  const [available, setAvailable] = useState(false)
+  const [started, setStarted] = useState(false)
+
+  const play = () => {
+    if (!available || !videoRef.current) return
+    videoRef.current.play().then(() => setStarted(true)).catch(() => {})
+  }
+
+  return (
+    <section className="sec method-action" aria-labelledby="method-action-title">
+      <div className="wrap method-action__grid">
+        <div className="method-action__copy">
+          <p className="method-action__label">O MÉTODO NA PRÁTICA</p>
+          <h2 className="h2" id="method-action-title">Treinar bem começa com atenção a cada movimento.</h2>
+          <p>Rogério acompanha cada aluno de perto, orienta a execução e adapta os exercícios para uma evolução consistente.</p>
+          <Btn href={wa('Olá, Rogério! Vi seu acompanhamento no site e quero saber como funcionam os treinos.')} target="_blank" rel="noopener noreferrer">Quero treinar com o Rogério</Btn>
+        </div>
+        <div className="method-action__media">
+          <video
+            ref={videoRef}
+            src="/img/rogerio-acompanhamento.mp4"
+            poster="/img/hero-800.webp"
+            playsInline
+            preload="metadata"
+            controls={started}
+            onLoadedMetadata={() => setAvailable(true)}
+            onError={() => setAvailable(false)}
+            onPlay={() => setStarted(true)}
+            aria-label="Rogério Déo acompanhando e orientando os alunos durante o treino"
+            style={{ display: available ? 'block' : 'none' }}
+          />
+          {!available && <img className="method-action__poster" src="/img/hero-800.webp" alt="Rogério Déo orientando o treino de um aluno" loading="lazy" />}
+          {available && !started && <button className="method-action__play" onClick={play} type="button" aria-label="Reproduzir vídeo do acompanhamento">
+            <span aria-hidden="true">▶</span>
+          </button>}
         </div>
       </div>
     </section>
@@ -526,6 +571,7 @@ export default function App() {
         <Marquee />
         <Problem />
         <Method />
+        <MethodInAction />
         <About />
         <Transformation />
         <Gallery />
