@@ -535,9 +535,29 @@ function Transformation() {
               <figcaption className="transf__video-caption">{showingInterview ? 'A transformação em entrevista' : 'Treinamento e esporte'}</figcaption>
             </figure>
             {hasInterview && (
-              <div className="transf__video-tabs" aria-label="Escolha um vídeo">
-                <button type="button" aria-pressed={showingInterview} onClick={() => setSelected('entrevista')} className={showingInterview ? 'is-active' : ''}>Transformação</button>
-                <button type="button" aria-pressed={!showingInterview} onClick={() => setSelected('esporte')} className={!showingInterview ? 'is-active' : ''}>Treino e esporte</button>
+              <div className="transf__video-picker">
+                <div className="transf__video-picker-head">
+                  <strong>2 VÍDEOS DISPONÍVEIS</strong>
+                  <span>Escolha qual assistir</span>
+                </div>
+                <div className="transf__video-tabs" aria-label="Escolha um vídeo">
+                  <button type="button" aria-pressed={showingInterview} onClick={() => setSelected('entrevista')} className={showingInterview ? 'is-active' : ''}>
+                    <img src="/img/rogerio-entrevista-transformacao.webp" alt="" loading="lazy" />
+                    <span className="transf__video-tab-copy">
+                      <strong>Entrevista: transformação</strong>
+                      <small>Vídeo novo</small>
+                    </span>
+                    <span className="transf__video-arrow" aria-hidden="true">▶</span>
+                  </button>
+                  <button type="button" aria-pressed={!showingInterview} onClick={() => setSelected('esporte')} className={!showingInterview ? 'is-active' : ''}>
+                    <img src="/img/g3-800.webp" alt="" loading="lazy" />
+                    <span className="transf__video-tab-copy">
+                      <strong>Treino e esporte</strong>
+                      <small>Vídeo anterior</small>
+                    </span>
+                    <span className="transf__video-arrow" aria-hidden="true">▶</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
