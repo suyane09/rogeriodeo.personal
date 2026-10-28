@@ -382,6 +382,45 @@ function Gallery() {
   )
 }
 
+const featured = {
+  text: [
+    'Personal Déo foi fundamental durante o período de radioterapia para o meu tratamento de câncer de mama. Seus treinos intensos reduziram efeitos colaterais como a fadiga, trazendo mais qualidade de vida e manutenção da massa muscular! Técnica exemplar, seriedade, competência, cuidado e olhar atento aos mínimos detalhes em cada execução dos exercícios, evitando lesões.',
+    'Gratidão ao Dr. Barakat pela indicação do Déo, que, com seu olhar técnico, atento aos detalhes e com o planejamento dos treinos, contribuiu para o meu tratamento e cura.',
+  ],
+  name: 'Dra. Heloisa',
+  time: '1 ano de treino',
+}
+
+const testimonials = [
+  ['Seu trabalho dá um resultado incrível! Claro que cabe ao aluno se dedicar, mas, se bem executado com rotina, o resultado ajuda demais a autoestima.', 'João', '2 anos de treino'],
+  ['Bons resultados. Profissional com bastante conhecimento.', 'Sr. Antônio José', '+8 anos de treino'],
+  ['Mudança de hábitos, correção de postura, mudou meu modo de pensar sobre musculação.', 'Renato Pitta', '+10 anos de treino'],
+]
+
+function Results() {
+  return (
+    <section className="sec results" id="resultados">
+      <div className="wrap">
+        <h2 className="h2">Quem treina com o Rogério fala</h2>
+        <blockquote className="quote quote--feature">
+          <div className="quote__text">
+            {featured.text.map((t) => (<p key={t}>{t}</p>))}
+          </div>
+          <footer><strong>{featured.name}</strong><span>{featured.time}</span></footer>
+        </blockquote>
+        <div className="quotes">
+          {testimonials.map(([t, name, time]) => (
+            <blockquote className="quote" key={name}>
+              <p className="quote__text">{t}</p>
+              <footer><strong>{name}</strong><span>{time}</span></footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function ForYou() {
   return (
     <section className="sec foryou">
@@ -490,6 +529,7 @@ export default function App() {
         <About />
         <Transformation />
         <Gallery />
+        <Results />
         <ForYou />
         <Faq />
         <FinalCta />

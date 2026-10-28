@@ -260,6 +260,20 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(212, 175, 90, .5); } 70% { box-shadow: 0 0 0 18px rgba(212, 175, 90, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 175, 90, 0); } }
 
 /* ---------- responsive ---------- */
+
+/* ---------- depoimentos ---------- */
+.results .h2 { max-width: 12em; text-wrap: balance; }
+.quote { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; margin: 0; padding-top: clamp(22px, 2.6vw, 32px); border-top: 2px solid var(--cream); }
+.quote__text p, p.quote__text { font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.55; color: #d6d0c7; text-wrap: pretty; }
+.quote__text p + p { margin-top: 16px; }
+.quote footer { display: grid; gap: 4px; }
+.quote footer strong { font-family: var(--display); font-stretch: 75%; font-weight: 800; text-transform: uppercase; font-size: 1.3rem; line-height: 1; letter-spacing: 0.02em; color: var(--cream); }
+.quote footer span { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.quote--feature { margin-top: clamp(36px, 5vw, 64px); max-width: 60em; }
+.quote--feature .quote__text p { font-size: clamp(1.25rem, 2.2vw, 1.75rem); line-height: 1.42; font-weight: 500; color: var(--cream); }
+.quote--feature .quote__text p + p { font-size: clamp(1.05rem, 1.5vw, 1.2rem); font-weight: 400; color: #d6d0c7; }
+.quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px clamp(24px, 4vw, 56px); margin-top: clamp(48px, 7vw, 96px); }
+
 @media (max-width: 960px) {
   .nav__burger { display: flex; }
   .nav__links { position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 0; padding: 8px 28px 24px; background: rgba(8, 8, 7, .97); border-bottom: 1px solid var(--line); max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: all .4s var(--ease); }
@@ -291,6 +305,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .faq-sec__head { position: static; }
   .transf__row { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
   .sports { grid-template-columns: 1fr; }
+  .quotes { grid-template-columns: 1fr; }
 }
 @media (max-width: 700px) {
   .wrap { width: calc(100% - 36px); }

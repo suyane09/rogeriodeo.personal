@@ -1,0 +1,113 @@
+diff --git a/README.md b/README.md
+index 37bb9fe..e2b3ee7 100644
+--- a/README.md
++++ b/README.md
+@@ -18,7 +18,7 @@ npm run preview    # testa o build
+ | Telefone / WhatsApp | `PHONE` e `PHONE_LABEL` no topo de `src/App.jsx` |
+ | Textos (problemas, método, FAQ, esportes) | listas `problems`, `method`, `faq`, `sports`, `forYou` em `src/App.jsx` |
+ | Cores e fontes | variáveis `:root` em `src/styles.css` |
+-| Depoimentos | componente `Results` em `src/App.jsx` (ainda não renderizado; ver abaixo) |
++| Depoimentos | `featured` e `testimonials` (acima do componente `Results`) em `src/App.jsx` |
+ 
+ ## Imagens
+ 
+@@ -38,7 +38,7 @@ Depois teste o preview em <https://www.opengraph.xyz> e envie o `sitemap.xml` no
+ 
+ ## Pendências
+ 
+-- [ ] Depoimentos reais: preencher `Results` e incluir `<Results />` no `App` (entre `Gallery` e `ForYouFaq`).
++- [x] Depoimentos reais incluídos (`Results`, entre `Gallery` e `ForYou`).
+ - [ ] Informar cidade/bairro de atendimento no texto e adicionar schema JSON-LD `LocalBusiness`.
+ - [ ] Medir cliques no WhatsApp (Plausible ou GA4).
+ 
+diff --git a/src/App.jsx b/src/App.jsx
+index 7965032..8d4dd74 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -382,6 +382,45 @@ function Gallery() {
+   )
+ }
+ 
++const featured = {
++  text: [
++    'Personal Déo foi fundamental durante o período de radioterapia para o meu tratamento de câncer de mama. Seus treinos intensos reduziram efeitos colaterais como a fadiga, trazendo mais qualidade de vida e manutenção da massa muscular! Técnica exemplar, seriedade, competência, cuidado e olhar atento aos mínimos detalhes em cada execução dos exercícios, evitando lesões.',
++    'Gratidão ao Dr. Barakat pela indicação do Déo, que, com seu olhar técnico, atento aos detalhes e com o planejamento dos treinos, contribuiu para o meu tratamento e cura.',
++  ],
++  name: 'Dra. Heloisa',
++  time: '1 ano de treino',
++}
++
++const testimonials = [
++  ['Seu trabalho dá um resultado incrível! Claro que cabe ao aluno se dedicar, mas, se bem executado com rotina, o resultado ajuda demais a autoestima.', 'João', '2 anos de treino'],
++  ['Bons resultados. Profissional com bastante conhecimento.', 'Sr. Antônio José', '+8 anos de treino'],
++  ['Mudança de hábitos, correção de postura, mudou meu modo de pensar sobre musculação.', 'Renato Pitta', '+10 anos de treino'],
++]
++
++function Results() {
++  return (
++    <section className="sec results" id="resultados">
++      <div className="wrap">
++        <h2 className="h2">Quem treina com o Rogério fala</h2>
++        <blockquote className="quote quote--feature">
++          <div className="quote__text">
++            {featured.text.map((t) => (<p key={t}>{t}</p>))}
++          </div>
++          <footer><strong>{featured.name}</strong><span>{featured.time}</span></footer>
++        </blockquote>
++        <div className="quotes">
++          {testimonials.map(([t, name, time]) => (
++            <blockquote className="quote" key={name}>
++              <p className="quote__text">{t}</p>
++              <footer><strong>{name}</strong><span>{time}</span></footer>
++            </blockquote>
++          ))}
++        </div>
++      </div>
++    </section>
++  )
++}
++
+ function ForYou() {
+   return (
+     <section className="sec foryou">
+@@ -490,6 +529,7 @@ export default function App() {
+         <About />
+         <Transformation />
+         <Gallery />
++        <Results />
+         <ForYou />
+         <Faq />
+         <FinalCta />
+diff --git a/src/styles.css b/src/styles.css
+index ca581c2..eb3e897 100644
+--- a/src/styles.css
++++ b/src/styles.css
+@@ -260,6 +260,20 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
+ @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(212, 175, 90, .5); } 70% { box-shadow: 0 0 0 18px rgba(212, 175, 90, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 175, 90, 0); } }
+ 
+ /* ---------- responsive ---------- */
++
++/* ---------- depoimentos ---------- */
++.results .h2 { max-width: 12em; text-wrap: balance; }
++.quote { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; margin: 0; padding-top: clamp(22px, 2.6vw, 32px); border-top: 2px solid var(--cream); }
++.quote__text p, p.quote__text { font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.55; color: #d6d0c7; text-wrap: pretty; }
++.quote__text p + p { margin-top: 16px; }
++.quote footer { display: grid; gap: 4px; }
++.quote footer strong { font-family: var(--display); font-stretch: 75%; font-weight: 800; text-transform: uppercase; font-size: 1.3rem; line-height: 1; letter-spacing: 0.02em; color: var(--cream); }
++.quote footer span { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
++.quote--feature { margin-top: clamp(36px, 5vw, 64px); max-width: 60em; }
++.quote--feature .quote__text p { font-size: clamp(1.25rem, 2.2vw, 1.75rem); line-height: 1.42; font-weight: 500; color: var(--cream); }
++.quote--feature .quote__text p + p { font-size: clamp(1.05rem, 1.5vw, 1.2rem); font-weight: 400; color: #d6d0c7; }
++.quotes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px clamp(24px, 4vw, 56px); margin-top: clamp(48px, 7vw, 96px); }
++
+ @media (max-width: 960px) {
+   .nav__burger { display: flex; }
+   .nav__links { position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 0; padding: 8px 28px 24px; background: rgba(8, 8, 7, .97); border-bottom: 1px solid var(--line); max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: all .4s var(--ease); }
+@@ -291,6 +305,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
+   .faq-sec__head { position: static; }
+   .transf__row { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
+   .sports { grid-template-columns: 1fr; }
++  .quotes { grid-template-columns: 1fr; }
+ }
+ @media (max-width: 700px) {
+   .wrap { width: calc(100% - 36px); }
