@@ -312,12 +312,15 @@ function About() {
 function MethodInAction() {
   const videoRef = useRef(null)
   usePauseOutsideViewport(videoRef)
-  const [available, setAvailable] = useState(false)
   const [started, setStarted] = useState(false)
+  const [videoError, setVideoError] = useState(false)
 
   const play = () => {
-    if (!available || !videoRef.current) return
-    videoRef.current.play().then(() => setStarted(true)).catch(() => {})
+    const video = videoRef.current
+    if (!video) return
+    video.play().catch(() => {
+      // Keep the play button visible if playback is blocked.
+    })
   }
 
   return (
@@ -325,28 +328,38 @@ function MethodInAction() {
       <div className="wrap method-action__grid">
         <div className="method-action__copy">
           <p className="method-action__label">O MÉTODO NA PRÁTICA</p>
-          <h2 className="h2" id="method-action-title">Treinar bem começa com atenção a cada movimento.</h2>
-          <p>Rogério acompanha cada aluno de perto, orienta a execução e adapta os exercícios para uma evolução consistente.</p>
+          <h2 className="h2" id="method-action-title">A diferença está em cada movimento.</h2>
+          <p>Veja o Rogério orientando alunos, corrigindo a execução e acompanhando cada detalhe do treino.</p>
           <Btn href={wa('Olá, Rogério! Vi seu acompanhamento no site e quero saber como funcionam os treinos.')} target="_blank" rel="noopener noreferrer">Quero treinar com o Rogério</Btn>
         </div>
         <div className="method-action__media">
-          <video
-            ref={videoRef}
-            src="/img/rogerio-acompanhamento.mp4"
-            poster="/img/hero-800.webp"
-            playsInline
-            preload="metadata"
-            controls={started}
-            onLoadedMetadata={() => setAvailable(true)}
-            onError={() => setAvailable(false)}
-            onPlay={() => setStarted(true)}
-            aria-label="Rogério Déo acompanhando e orientando os alunos durante o treino"
-            style={{ display: available ? 'block' : 'none' }}
-          />
-          {!available && <img className="method-action__poster" src="/img/hero-800.webp" alt="Rogério Déo orientando o treino de um aluno" loading="lazy" />}
-          {available && !started && <button className="method-action__play" onClick={play} type="button" aria-label="Reproduzir vídeo do acompanhamento">
-            <span aria-hidden="true">▶</span>
-          </button>}
+          {!videoError ? (
+            <>
+              <video
+                ref={videoRef}
+                src="/img/rogerio-acompanhamento.mp4"
+                poster="/img/hero-800.webp"
+                playsInline
+                preload="none"
+                controls={started}
+                onPlay={() => setStarted(true)}
+                onEnded={() => setStarted(false)}
+                onError={() => setVideoError(true)}
+                aria-label="Rogério Déo orientando alunos durante o treinamento"
+              />
+              {!started && (
+                <button className="method-action__play" onClick={play} type="button" aria-label="Assistir ao vídeo do acompanhamento">
+                  <span className="method-action__play-icon" aria-hidden="true">▶</span>
+                  <span className="method-action__play-caption">ASSISTA AO ACOMPANHAMENTO REAL</span>
+                </button>
+              )}
+            </>
+          ) : (
+            <div className="method-action__fallback" role="status">
+              <img src="/img/hero-800.webp" alt="Rogério Déo orientando aluno na academia" loading="lazy" />
+              <span>Vídeo indisponível neste momento.</span>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -465,14 +478,19 @@ const testimonials = [
 ]
 
 function Results() {
+  const [expanded, setExpanded] = useState(false)
   return (
     <section className="sec results" id="resultados">
       <div className="wrap">
         <h2 className="h2">Quem treina com o Rogério fala</h2>
         <blockquote className="quote quote--feature">
-          <div className="quote__text">
+          <div className={`quote__text ${expanded ? '' : 'quote__text--collapsed'}`} id="featured-review">
             {featured.text.map((t) => (<p key={t}>{t}</p>))}
           </div>
+          <button className="quote__more" type="button" aria-controls="featured-review" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>
+            {expanded ? 'Mostrar menos' : 'Ler depoimento completo'}
+            <span aria-hidden="true">{expanded ? '−' : '+'}</span>
+          </button>
           <footer><strong>{featured.name}</strong><span>{featured.time}</span></footer>
         </blockquote>
         <div className="quotes">
@@ -521,15 +539,21 @@ function FinalCta() {
     <section className="final" id="contato">
       <div className="wrap final__grid">
         <div className="final__copy">
+          <p className="final__eyebrow">SEU PRÓXIMO PASSO</p>
           <h2 className="final__title">Seu melhor corpo não tem idade</h2>
-          <p className="final__text">Chame o Rogério no WhatsApp, conte seu objetivo e comece com quem tem mais de 35 anos de estrada.</p>
+          <p className="final__text">Converse com o Rogério sobre seus objetivos, disponibilidade e possibilidades de acompanhamento.</p>
+          <div className="final__steps" aria-label="Como começar">
+            <span>01 / Conte seu objetivo</span>
+            <span>02 / Tire suas dúvidas</span>
+            <span>03 / Combine os próximos passos</span>
+          </div>
           <div className="final__btns">
             <Btn href={wa()} className="btn--lg" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</Btn>
             <a className="phone" href={`tel:+${PHONE}`}>{PHONE_LABEL}</a>
           </div>
         </div>
         <figure className="final__photo">
-          <img src="img/arbitro.webp" alt="Rogério Déo de terno, árbitro internacional" width="515" height="784" loading="lazy" decoding="async" />
+          <img src="/img/g3-800.webp" srcSet="/img/g3-400.webp 400w, /img/g3-800.webp 800w" sizes="(max-width: 960px) 90vw, 440px" alt="Rogério Déo acompanhando aluno durante o treino" width="800" height="1066" loading="lazy" decoding="async" />
         </figure>
       </div>
     </section>
