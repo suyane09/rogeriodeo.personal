@@ -395,10 +395,10 @@ function MethodInAction() {
                 <video
                   key={current.id}
                   ref={videoRef}
-                  src={current.src}
-                  poster={current.poster || undefined}
+                  src={current.id === 'acompanhamento' ? `${current.src}#t=0.2` : current.src}
+                  poster={current.id === 'acompanhamento' ? undefined : (current.poster || undefined)}
                   playsInline
-                  preload="none"
+                  preload={current.id === 'acompanhamento' ? 'metadata' : 'none'}
                   controls={started}
                   onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
                   onPause={() => setStarted(false)}
@@ -506,8 +506,8 @@ function Transformation() {
       label: 'Rogério Déo fala sobre transformação corporal em entrevista',
     }
     : {
-      src: '/img/transformacao.mp4#t=0.1',
-      poster: '/img/treino-esporte-capa.webp',
+      src: '/img/transformacao.mp4#t=0.2',
+      poster: undefined,
       label: 'Rogério Déo comenta o treinamento para esportes',
     }
 
