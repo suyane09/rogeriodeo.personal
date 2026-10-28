@@ -311,7 +311,7 @@ async function hasVideoFile(src) {
   try {
     const response = await fetch(src, { method: 'HEAD' })
     const type = response.headers.get('content-type') || ''
-    return response.ok && (/video\\//i.test(type) || /application\\/octet-stream/i.test(type))
+    return response.ok && (type.startsWith('video/') || type.startsWith('application/octet-stream'))
   } catch {
     return false
   }
