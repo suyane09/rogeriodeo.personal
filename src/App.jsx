@@ -26,6 +26,33 @@ function useFloatHide() {
   return hide
 }
 
+/* Pause media when the user scrolls away or leaves the browser tab.
+   Returning to the video never resumes playback automatically. */
+function usePauseOutsideViewport(videoRef) {
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio < 0.3) video.pause()
+      },
+      { threshold: [0, 0.3] }
+    )
+    observer.observe(video)
+
+    const pauseWhenHidden = () => {
+      if (document.hidden) video.pause()
+    }
+    document.addEventListener('visibilitychange', pauseWhenHidden)
+
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', pauseWhenHidden)
+    }
+  }, [videoRef])
+}
+
 function useCount(target, start) {
   const [v, setV] = useState(0)
   useEffect(() => {
@@ -295,6 +322,7 @@ function About() {
 
 function MethodInAction() {
   const videoRef = useRef(null)
+  usePauseOutsideViewport(videoRef)
   const [available, setAvailable] = useState(false)
   const [started, setStarted] = useState(false)
 
@@ -338,6 +366,7 @@ function MethodInAction() {
 
 function VideoCover() {
   const ref = useRef(null)
+  usePauseOutsideViewport(ref)
   const [started, setStarted] = useState(false)
   const play = () => {
     setStarted(true)
