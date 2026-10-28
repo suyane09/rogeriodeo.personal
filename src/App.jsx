@@ -592,14 +592,26 @@ function Gallery() {
             </figure>
           ))}
         </div>
-        <div className="sports">
-          <div>
-            <h3>Mais força e condicionamento na sua modalidade</h3>
-            <p>O treino também pode fortalecer sua performance fora da academia.</p>
+        <div className="multisport-showcase" id="multiesportivo" aria-labelledby="multisport-heading">
+          <figure className="multisport-showcase__art">
+            <img
+              src="/img/rogerio-multiesportivo.avif"
+              alt="Arte de Rogério Déo sobre treinamento funcional multiesportivo, força, mobilidade e performance humana"
+              width="560"
+              height="840"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div className="multisport-showcase__content">
+            <p className="multisport-showcase__eyebrow">ALÉM DA MUSCULAÇÃO</p>
+            <h3 id="multisport-heading">Seu esporte pede um corpo preparado.</h3>
+            <p className="multisport-showcase__lead">Força, mobilidade e condicionamento aplicados às exigências de cada modalidade. Um acompanhamento pensado para você se movimentar melhor, dentro e fora da academia.</p>
+            <ul className="multisport-showcase__sports" aria-label="Modalidades esportivas">
+              {sports.map((s) => (<li key={s}>{s}</li>))}
+            </ul>
+            <Btn href={wa('Olá, Rogério! Vi o treinamento funcional multiesportivo e quero saber como posso evoluir na minha modalidade.')} target="_blank" rel="noopener noreferrer">Quero melhorar no meu esporte</Btn>
           </div>
-          <ul>
-            {sports.map((s) => (<li key={s}>{s}</li>))}
-          </ul>
         </div>
       </div>
     </section>
