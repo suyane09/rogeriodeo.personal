@@ -339,17 +339,12 @@ const methodVideos = [
     src: '/img/rogerio-execucao-orientada.mp4', poster: '/img/rogerio-execucao-orientada.webp',
     duration: '52s',
   },
-  {
-    id: 'performance', title: 'Performance', label: 'Movimento e esporte',
-    src: '/img/transformacao.mp4', poster: '/img/g3-800.webp',
-    available: true,
-  },
 ]
 
 function MethodInAction() {
   const videoRef = useRef(null)
   const [activeId, setActiveId] = useState('acompanhamento')
-  const [availableIds, setAvailableIds] = useState(['acompanhamento', 'performance'])
+  const [availableIds, setAvailableIds] = useState(['acompanhamento'])
   const [started, setStarted] = useState(false)
   const [videoError, setVideoError] = useState(false)
   usePauseOutsideViewport(videoRef, activeId)
@@ -360,13 +355,14 @@ function MethodInAction() {
       id: v.id,
       available: await hasVideoFile(v.src),
     }))).then((results) => {
-      if (live) setAvailableIds(['acompanhamento', 'performance', ...results.filter((r) => r.available).map((r) => r.id)])
+      if (live) setAvailableIds(['acompanhamento', ...results.filter((r) => r.available).map((r) => r.id)])
     })
     return () => { live = false }
   }, [])
 
   const current = methodVideos.find((v) => v.id === activeId) || methodVideos[0]
   const videosAvailable = methodVideos.filter((v) => availableIds.includes(v.id))
+  const otherVideos = videosAvailable.filter((v) => v.id !== activeId)
 
   const selectVideo = (id) => {
     if (id === activeId) return
@@ -389,6 +385,10 @@ function MethodInAction() {
           <Btn href={wa('Olá, Rogério! Vi seu acompanhamento no site e quero saber como funcionam os treinos.')} target="_blank" rel="noopener noreferrer">Quero treinar com o Rogério</Btn>
         </div>
         <div className="method-action__watch">
+          <div className="method-action__watch-heading">
+            <span>ASSISTA AGORA</span>
+            <strong>{current.title}</strong>
+          </div>
           <div className="method-action__media">
             {!videoError ? (
               <>
@@ -401,6 +401,7 @@ function MethodInAction() {
                   preload="none"
                   controls={started}
                   onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
+                  onPause={() => setStarted(false)}
                   onEnded={() => setStarted(false)}
                   onError={() => setVideoError(true)}
                   aria-label={`Vídeo: ${current.title} — Rogério Déo`}
@@ -419,20 +420,34 @@ function MethodInAction() {
               </div>
             )}
           </div>
-          <div className="method-action__chooser" aria-label="Escolher vídeo para assistir">
-            {videosAvailable.map((v) => (
-              <button
-                key={v.id}
-                type="button"
-                aria-pressed={activeId === v.id}
-                className={`method-action__choice ${activeId === v.id ? 'is-active' : ''}`}
-                onClick={() => selectVideo(v.id)}
-              >
-                <span className="method-action__thumb"><img src={v.poster} alt="" loading="lazy" /><span aria-hidden="true">▶</span></span>
-                <span className="method-action__choice-title">{v.title}</span>
-              </button>
-            ))}
-          </div>
+          {otherVideos.length > 0 && (
+            <div className="method-action__playlist">
+              <div className="method-action__chooser-heading">
+                <span>VEJA TAMBÉM</span>
+                <small>{otherVideos.length} {otherVideos.length === 1 ? 'vídeo' : 'vídeos'}</small>
+              </div>
+              <div className="method-action__chooser" aria-label="Escolher outro vídeo para assistir">
+                {otherVideos.map((v) => (
+                  <button
+                    key={v.id}
+                    type="button"
+                    className="method-action__choice"
+                    onClick={() => selectVideo(v.id)}
+                    aria-label={`Assistir ${v.title}`}
+                  >
+                    <span className="method-action__thumb">
+                      <img src={v.poster} alt="" loading="lazy" />
+                      <span aria-hidden="true">▶</span>
+                    </span>
+                    <span className="method-action__choice-copy">
+                      <strong className="method-action__choice-title">{v.title}</strong>
+                      <small>{v.label}</small>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -460,6 +475,7 @@ function VideoCover({ src = '/img/transformacao.mp4#t=0.1', poster, label = 'Rog
         preload="none"
         aria-label={label}
         onPlay={(e) => { pauseOtherVideos(e.currentTarget); setStarted(true) }}
+        onPause={() => setStarted(false)}
         onEnded={() => setStarted(false)}
       />
       {!started && (
@@ -473,6 +489,7 @@ function VideoCover({ src = '/img/transformacao.mp4#t=0.1', poster, label = 'Rog
 
 function Transformation() {
   const [hasInterview, setHasInterview] = useState(false)
+  const [selected, setSelected] = useState('entrevista')
   useEffect(() => {
     let live = true
     hasVideoFile('/img/rogerio-entrevista-transformacao.mp4').then((exists) => {
@@ -480,6 +497,19 @@ function Transformation() {
     })
     return () => { live = false }
   }, [])
+
+  const showingInterview = hasInterview && selected === 'entrevista'
+  const currentVideo = showingInterview
+    ? {
+      src: '/img/rogerio-entrevista-transformacao.mp4',
+      poster: '/img/rogerio-entrevista-transformacao.webp',
+      label: 'Rogério Déo fala sobre transformação corporal em entrevista',
+    }
+    : {
+      src: '/img/transformacao.mp4#t=0.1',
+      poster: '/img/g3-800.webp',
+      label: 'Rogério Déo comenta o treinamento para esportes',
+    }
 
   const shots = [
     { id: 'transformacao-frente', cap: 'De frente', alt: 'Transformação de Rogério Déo, de frente: antes, durante e depois' },
@@ -499,17 +529,20 @@ function Transformation() {
           ))}
         </div>
         <div className="transf__row">
-          <figure className="transf__video">
-            {hasInterview ? (
-              <VideoCover
-                src="/img/rogerio-entrevista-transformacao.mp4"
-                poster="/img/rogerio-entrevista-transformacao.webp"
-                label="Rogério Déo fala sobre um caso de transformação corporal em entrevista"
-              />
-            ) : <VideoCover />}
-          </figure>
+          <div className="transf__video-block">
+            <figure className="transf__video">
+              <VideoCover key={currentVideo.src} {...currentVideo} />
+              <figcaption className="transf__video-caption">{showingInterview ? 'A transformação em entrevista' : 'Treinamento e esporte'}</figcaption>
+            </figure>
+            {hasInterview && (
+              <div className="transf__video-tabs" aria-label="Escolha um vídeo">
+                <button type="button" aria-pressed={showingInterview} onClick={() => setSelected('entrevista')} className={showingInterview ? 'is-active' : ''}>Transformação</button>
+                <button type="button" aria-pressed={!showingInterview} onClick={() => setSelected('esporte')} className={!showingInterview ? 'is-active' : ''}>Treino e esporte</button>
+              </div>
+            )}
+          </div>
           <div className="transf__copy">
-            <p>{hasInterview ? 'Uma conversa real sobre transformação, dedicação e acompanhamento.' : 'Rogério explica como o treino focado melhora o seu esporte.'}</p>
+            <p>{showingInterview ? 'Transformações reais começam com dedicação e orientação.' : 'O conhecimento do corpo também faz diferença na prática esportiva.'}</p>
             <Btn href={wa('Olá, Rogério! Vi as transformações no site e quero começar a treinar.')} target="_blank" rel="noopener noreferrer">Quero a minha transformação</Btn>
           </div>
         </div>
