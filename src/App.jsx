@@ -81,10 +81,10 @@ const Ln = ({ i, className = '', children }) => (
 const marquee = ['Biomecânica', 'Cinesiologia', 'Definição corporal', 'Treino funcional', 'Mobilidade', 'Performance', 'Hipertrofia', 'Emagrecimento']
 
 const problems = [
-  { title: 'Articulações pedem cuidado', text: 'Execução errada cobra caro em ombro, joelho e coluna. Cada exercício precisa ser ajustado à sua estrutura.' },
-  { title: 'O metabolismo mudou', text: 'Emagrecer e ganhar massa muscular exige treino e rotina planejados para a sua fase, não para a de um atleta de 20 anos.' },
-  { title: 'Tempo é curto', text: 'Sua agenda é cheia. Por isso cada sessão tem objetivo claro: nada de treino aleatório ou volume sem propósito.' },
-  { title: 'Cada corpo é um', text: 'Ficha de internet ignora seu histórico, suas limitações e seus objetivos. O treino precisa ser desenhado para você.' },
+  { title: 'Articulações pedem cuidado', text: 'Técnica e movimentos ajustados para treinar com segurança.' },
+  { title: 'O metabolismo mudou', text: 'Estratégia para ganhar força e evoluir no seu ritmo.' },
+  { title: 'Tempo é curto', text: 'Cada treino tem um objetivo. Nada de exercícios aleatórios.' },
+  { title: 'Cada corpo é um', text: 'Seu histórico e suas metas orientam cada escolha.' },
 ]
 
 const method = [
@@ -225,10 +225,11 @@ function Problem() {
     <section className="sec problem" id="porque">
       <div className="wrap">
         <h2 className="h2">Ficha pronta não serve para o seu corpo</h2>
-        <p className="problem__sub">Aos 40+, o corpo pede estratégia. Não é treinar mais pesado, é treinar certo. O que funcionava aos 25 pode travar seu resultado e ainda machucar.</p>
+        <p className="problem__sub">Depois dos 40, o treino precisa acompanhar seu corpo, sua rotina e seus objetivos.</p>
         <div className="rows">
-          {problems.map((p) => (
+          {problems.map((p, i) => (
             <article className="row" key={p.title}>
+              <span className="row__number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3>{p.title}</h3>
               <p>{p.text}</p>
             </article>
