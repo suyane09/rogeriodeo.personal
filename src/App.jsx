@@ -146,7 +146,7 @@ const links = [
   ['Método', '#metodo'],
   ['Rogério', '#rogerio'],
   ['Transformação', '#transformacao'],
-  ['Galeria', '#galeria'],
+  ['Anamnese', '#anamnese'],
   ['Dúvidas', '#faq'],
 ]
 
@@ -163,7 +163,7 @@ function Nav() {
   return (
     <header className={`nav ${solid ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
       <div className="wrap nav__in">
-        <a href="#inicio" className="nav__logo" onClick={() => setOpen(false)}>Rogério Déo</a>
+        <a href="#inicio" className="nav__logo nav__brand" onClick={() => setOpen(false)}><img src="/img/rogerio-logo.png" alt="" width="60" height="43" decoding="async" /><span>Rogério Déo</span></a>
         <nav className="nav__links" aria-label="Principal">
           {links.map(([l, h]) => (
             <a key={h} href={h} onClick={() => setOpen(false)}>{l}</a>
@@ -202,7 +202,7 @@ function Hero() {
             Treinamento individual para ganhar força, melhorar a composição corporal e se movimentar melhor. Técnica, atenção aos detalhes e mais de 35 anos de experiência profissional.
           </p>
           <div className="hero__btns">
-            <Btn href={wa()} target="_blank" rel="noopener noreferrer">Quero começar agora</Btn>
+            <Btn href="#anamnese">Quero começar agora</Btn>
             <Btn href="#metodo" variant="ghost">Conhecer o método</Btn>
           </div>
         </div>
@@ -380,10 +380,11 @@ function About() {
     <section className="sec about" id="rogerio">
       <div className="wrap about__grid">
         <figure className="about__photo">
-          <div className="clip"><img src="img/arbitro.webp" alt="Rogério Déo, árbitro internacional de fisiculturismo" width="515" height="784" loading="lazy" decoding="async" /></div>
-          <figcaption>Árbitro internacional de fisiculturismo</figcaption>
+          <div className="clip"><img src="/img/rogerio-retrato.jpg" alt="Retrato profissional de Rogério Déo, de blazer preto com fundo dourado" width="520" height="520" loading="lazy" decoding="async" /></div>
+          <figcaption>Especialista em performance humana</figcaption>
         </figure>
         <div className="about__copy">
+          <img className="about__brand" src="/img/rogerio-logo.png" alt="RD Rogério Déo — Especialista em performance humana. Força, mobilidade e longevidade" width="280" height="190" loading="lazy" decoding="async" />
           <h2 className="h2">Quem julga físicos pelo mundo olha para o seu corpo com atenção aos detalhes</h2>
           <p className="about__text">Rogério Déo vive de musculação desde sempre. Mais de 25 anos como árbitro internacional de fisiculturismo deram a ele um olhar raro para simetria, proporção e qualidade muscular, algo que ele leva para cada aluno.</p>
           <div className="career" role="list" aria-label="Trajetória em anos">
@@ -481,7 +482,7 @@ function MethodInAction() {
           <p className="method-action__label">O MÉTODO NA PRÁTICA</p>
           <h2 className="h2" id="method-action-title">A diferença está em cada movimento.</h2>
           <p>Veja o Rogério acompanhando alunos, corrigindo a execução e aplicando seu conhecimento no treino real.</p>
-          <Btn href={wa('Olá, Rogério! Vi seu acompanhamento no site e quero saber como funcionam os treinos.')} target="_blank" rel="noopener noreferrer">Quero treinar com o Rogério</Btn>
+          <Btn href="#anamnese">Quero treinar com o Rogério</Btn>
         </div>
         <div className="method-action__watch">
           <div className="method-action__watch-heading">
@@ -662,7 +663,7 @@ function Transformation() {
           </div>
           <div className="transf__copy">
             <p>{showingInterview ? 'Transformações reais começam com dedicação e orientação.' : 'O conhecimento do corpo também faz diferença na prática esportiva.'}</p>
-            <Btn href={wa('Olá, Rogério! Vi as transformações no site e quero começar a treinar.')} target="_blank" rel="noopener noreferrer">Quero a minha transformação</Btn>
+            <Btn href="#anamnese">Quero a minha transformação</Btn>
           </div>
         </div>
       </div>
@@ -709,7 +710,7 @@ function Gallery() {
             <ul className="multisport-showcase__sports" aria-label="Modalidades esportivas">
               {sports.map((s) => (<li key={s}>{s}</li>))}
             </ul>
-            <Btn href={wa('Olá, Rogério! Vi o treinamento funcional multiesportivo e quero saber como posso evoluir na minha modalidade.')} target="_blank" rel="noopener noreferrer">Quero melhorar no meu esporte</Btn>
+            <Btn href="#anamnese">Quero melhorar no meu esporte</Btn>
           </div>
         </div>
       </div>
@@ -790,6 +791,83 @@ function Faq() {
   )
 }
 
+
+/* Pré-anamnese de contato. Sem persistência, questões médicas ou envio automático.
+   O questionário clínico do PDF será integrado quando o documento estiver disponível. */
+function InitialAssessment() {
+  const [profile, setProfile] = useState('')
+  const [step, setStep] = useState(1)
+  const [fields, setFields] = useState({ name: '', contact: '', focus: '', modality: '' })
+  const setField = (name, value) => setFields((prev) => ({ ...prev, [name]: value }))
+  const reset = () => { setStep(1); setProfile(''); setFields({ name: '', contact: '', focus: '', modality: '' }) }
+  const message = [
+    'Olá, Rogério! Concluí o pré-cadastro no seu site e gostaria de começar meu acompanhamento.',
+    'Nome: ' + fields.name.trim(),
+    'Formulário escolhido: ' + profile,
+    'Objetivo: ' + fields.focus,
+    'Modalidade desejada: ' + fields.modality,
+    'WhatsApp para retorno: ' + fields.contact.trim(),
+    'Quero receber as orientações para a anamnese completa e a inscrição.'
+  ].join('\\n')
+  return (
+    <section className="sec intake" id="anamnese" aria-labelledby="intake-title">
+      <div className="wrap intake__layout">
+        <div className="intake__intro">
+          <p className="intake__kicker">SEU PRIMEIRO PASSO</p>
+          <h2 className="h2" id="intake-title">Cada corpo tem uma história. Vamos conhecer a sua.</h2>
+          <p>Escolha sua anamnese e comece com algumas informações básicas. O contato com o Rogério vem depois.</p>
+          <div className="intake__info"><span>01 / Escolha seu formulário</span><span>02 / Informe seus objetivos</span><span>03 / Prossiga para o atendimento</span></div>
+          <p className="intake__disclaimer">Esta é uma etapa inicial de contato, não a anamnese clínica completa. Não informe diagnósticos, medicamentos ou dados de saúde neste formulário.</p>
+        </div>
+        <div className="intake__panel">
+          <div className="intake__progress"><span>ETAPA {step} DE 3</span><div aria-hidden="true"><i style={{ width: `${step / 3 * 100}%` }} /></div></div>
+          {step === 1 && (
+            <div>
+              <h3>Escolha seu formulário</h3>
+              <p className="intake__help">Selecione uma opção para iniciar seu pré-cadastro.</p>
+              <div className="intake__choices">
+                {['Anamnese masculina', 'Anamnese feminina'].map((option) => (
+                  <button type="button" className="intake__choice" key={option} onClick={() => {setProfile(option);setStep(2)}}>
+                    <span><strong>{option}</strong><small>Iniciar avaliação</small></span><span aria-hidden="true">↗</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {step === 2 && (
+            <div>
+              <h3>{profile}</h3>
+              <p className="intake__help">Preencha somente os dados de contato. A avaliação de saúde completa será combinada com o profissional.</p>
+              <form className="intake__form" onSubmit={(event) => {event.preventDefault();setStep(3)}}>
+                <label>Seu nome completo<input required autoComplete="name" maxLength={100} value={fields.name} onChange={(event) => setField('name', event.target.value)} placeholder="Como podemos chamar você?" /></label>
+                <label>WhatsApp para contato<input required autoComplete="tel" inputMode="tel" maxLength={24} value={fields.contact} onChange={(event) => setField('contact', event.target.value)} placeholder="(11) 99999-9999" /></label>
+                <label>Principal objetivo<select required value={fields.focus} onChange={(event) => setField('focus', event.target.value)}>
+                  <option value="">Selecione seu objetivo</option>
+                  <option>Ganhar força</option><option>Melhorar a mobilidade</option><option>Hipertrofia e composição corporal</option><option>Performance esportiva</option><option>Longevidade e qualidade de vida</option>
+                </select></label>
+                <label>Formato de acompanhamento<select required value={fields.modality} onChange={(event) => setField('modality', event.target.value)}>
+                  <option value="">Selecione uma preferência</option><option>Presencial</option><option>Orientação personalizada</option><option>Gostaria de conversar sobre as opções</option>
+                </select></label>
+                <div className="intake__actions"><button type="button" className="intake__back" onClick={() => setStep(1)}>Voltar</button><button type="submit" className="btn btn--solid">Continuar</button></div>
+              </form>
+            </div>
+          )}
+          {step === 3 && (
+            <div className="intake__done">
+              <span className="intake__check" aria-hidden="true">✓</span>
+              <h3>Pronto para conversar com o Rogério?</h3>
+              <p>Seu pré-cadastro está preenchido. Toque no botão para abrir o WhatsApp e <strong>enviar sua mensagem</strong>. Nenhum dado foi enviado ou armazenado pelo site.</p>
+              <a className="btn btn--solid" href={wa(message)} target="_blank" rel="noopener noreferrer">Enviar meu pré-cadastro</a>
+              <a className="intake__instagram" href="https://instagram.com/rogeriodeo.personal" target="_blank" rel="noopener noreferrer">Conhecer o Instagram do Rogério ↗</a>
+              <button type="button" className="intake__reset" onClick={reset}>Fazer um novo pré-cadastro</button>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function FinalCta() {
   return (
     <section className="final" id="contato">
@@ -804,7 +882,7 @@ function FinalCta() {
             <span>03 / Combine os próximos passos</span>
           </div>
           <div className="final__btns">
-            <Btn href={wa()} className="btn--lg" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</Btn>
+            <Btn href="#anamnese" className="btn--lg">Começar minha avaliação</Btn>
             <a className="phone" href={`tel:+${PHONE}`}>{PHONE_LABEL}</a>
           </div>
         </div>
@@ -821,6 +899,7 @@ function Footer() {
     <footer className="footer">
       <div className="wrap footer__in">
         <div>
+          <img className="footer__brand" src="/img/rogerio-logo.png" alt="RD Rogério Déo — Especialista em performance humana" width="180" height="121" loading="lazy" decoding="async" />
           <strong>Prof. Rogério Déo</strong>
           <p>Personal Trainer · Força, mobilidade e performance humana</p>
         </div>
@@ -860,6 +939,7 @@ export default function App() {
         <Gallery />
         <Results />
         <Faq />
+        <InitialAssessment />
         <FinalCta />
       </main>
       <Footer />
