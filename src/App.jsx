@@ -808,7 +808,7 @@ function InitialAssessment() {
     'Modalidade desejada: ' + fields.modality,
     'WhatsApp para retorno: ' + fields.contact.trim(),
     'Quero receber as orientações para a anamnese completa e a inscrição.'
-  ].join('\\n')
+  ].join('\n')
   return (
     <section className="sec intake" id="anamnese" aria-labelledby="intake-title">
       <div className="wrap intake__layout">
