@@ -163,7 +163,7 @@ function Nav() {
   return (
     <header className={`nav ${solid ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
       <div className="wrap nav__in">
-        <a href="#inicio" className="nav__logo nav__brand" onClick={() => setOpen(false)}><img src="/img/rogerio-logo.png" alt="" width="60" height="43" decoding="async" /><span>Rogério Déo</span></a>
+        <a href="#inicio" className="nav__logo nav__brand" onClick={() => setOpen(false)}><img src="/img/rogerio-logo-1100.avif" alt="" width="60" height="43" decoding="async" /><span>Rogério Déo</span></a>
         <nav className="nav__links" aria-label="Principal">
           {links.map(([l, h]) => (
             <a key={h} href={h} onClick={() => setOpen(false)}>{l}</a>
@@ -380,7 +380,7 @@ function About() {
     <section className="sec about" id="rogerio">
       <div className="wrap about__grid">
         <figure className="about__photo">
-          <div className="clip"><picture><source srcSet="/img/rogerio-retrato-1200.avif" type="image/avif" /><img src="/img/rogerio-retrato.jpg" alt="Rogério Déo de blazer preto, em retrato profissional com iluminação dourada" width="1200" height="1200" loading="lazy" decoding="async" /></picture></div>
+          <div className="clip"><img src="/img/rogerio-retrato-1200.avif" alt="Rogério Déo de blazer preto, em retrato profissional com iluminação dourada" width="1200" height="1200" loading="lazy" decoding="async" /></div>
           <figcaption>Especialista em performance humana</figcaption>
         </figure>
         <div className="about__copy">
@@ -870,7 +870,7 @@ function Footer() {
     <footer className="footer">
       <div className="wrap footer__in">
         <div>
-          <img className="footer__brand" src="/img/rogerio-logo.png" alt="RD Rogério Déo — Especialista em performance humana" width="180" height="121" loading="lazy" decoding="async" />
+          <img className="footer__brand" src="/img/rogerio-logo-1100.avif" alt="RD Rogério Déo — Especialista em performance humana" width="180" height="121" loading="lazy" decoding="async" />
           <strong>Prof. Rogério Déo</strong>
           <p>Personal Trainer · Força, mobilidade e performance humana</p>
         </div>
