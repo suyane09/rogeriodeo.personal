@@ -384,7 +384,7 @@ function About() {
           <figcaption>Especialista em performance humana</figcaption>
         </figure>
         <div className="about__copy">
-          <h2 className="h2">Quem julga físicos pelo mundo olha para o seu corpo com atenção aos detalhes</h2>
+          <h2 className="h2">Quem julga físicos pelo mundo olha para o seu corpo com atenção nos detalhes</h2>
           <p className="about__text">Rogério Déo vive de musculação desde sempre. Mais de 25 anos como árbitro internacional de fisiculturismo deram a ele um olhar raro para simetria, proporção e qualidade muscular, algo que ele leva para cada aluno.</p>
           <div className="career" role="list" aria-label="Trajetória em anos">
             {career.map(([n, l]) => (
