@@ -1421,3 +1421,79 @@ body { background: var(--bg); color: var(--silver-hi); }
   .assessment__answers { max-height:360px; }
   .assessment__span2 { grid-column:1 / -1; }
 }
+
+
+/* Fluxo obrigatório de avaliação antes do contato:
+   âncora posicionada no formulário, não no início da seção longa. */
+#anamnese-form {
+  scroll-margin-top: calc(var(--nav-h, 64px) + 16px);
+}
+.assessment__selected-plan {
+  margin: 15px 0 20px;
+  padding: 14px 17px;
+  background: rgba(214,181,96,.09);
+  border: 1px solid rgba(214,181,96,.34);
+  border-radius: 8px;
+  color: #e9e1d3;
+  font-size: .88rem;
+  line-height: 1.65;
+}
+.assessment__selected-plan strong { color: var(--gold-hi); }
+.assessment__mandatory-hint {
+  background: rgba(214,181,96,.075);
+  border-left: 3px solid var(--gold);
+  padding: 13px 15px;
+  color: #d8d2c8;
+  font-size: .86rem;
+  line-height: 1.6;
+  margin: 4px 0 16px;
+}
+.assessment__defer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(198,199,196,.22);
+  border-radius: 7px;
+  color: #e2dbcf;
+  font-size: .83rem;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.assessment__defer input {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+.assessment__defer:has(input:checked) {
+  border-color: rgba(214,181,96,.55);
+  background: rgba(214,181,96,.075);
+}
+.assessment__question--invalid {
+  border-left: 3px solid #d8a578;
+  padding-left: 15px;
+}
+.assessment__question--invalid > .assessment__validation { margin-top: 12px; }
+.assessment__saved {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid rgba(214,181,96,.34);
+  border-radius: 8px;
+}
+.assessment__instagram {
+  display: inline-flex;
+  margin: 17px 0 0;
+  color: var(--gold-hi);
+  font-weight: 700;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 5px;
+  line-height: 1.5;
+}
+@media (max-width: 700px) {
+  #anamnese-form { scroll-margin-top: calc(var(--nav-h, 64px) + 12px); }
+  .assessment__question--invalid { padding-left: 10px; }
+}
