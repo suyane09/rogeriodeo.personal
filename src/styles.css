@@ -589,7 +589,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .nav__brand { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
 .nav__brand img { width: 49px; height: 42px; object-fit: cover; object-position: center 22%; border-radius: 4px; flex: none; }
 .nav__brand span { white-space: nowrap; font-family: var(--display); }
-.about__brand { display: block; width: min(245px, 72%); height: auto; margin: 0 0 28px; border: 1px solid rgba(233,184,75,.25); border-radius: 6px; }
 .about__photo .clip { aspect-ratio: 4 / 5; }
 .about__photo .clip img { object-position: 50% 35%; }
 .footer__brand { display: block; width: 150px; height: auto; margin: 0 0 13px; }
@@ -647,3 +646,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
  .nav__brand img { width: 37px; height: 32px; }
  .intake__panel { padding: 18px 13px; }
 }
+
+/* Retrato profissional original: sem ampliar thumbnails nem distorcer a imagem. */
+.about__photo .clip { aspect-ratio: 4 / 5; }
+.about__photo .clip picture { display: block; width: 100%; height: 100%; }
+.about__photo .clip picture img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 34%; }
