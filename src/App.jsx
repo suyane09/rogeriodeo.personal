@@ -611,8 +611,8 @@ function Transformation() {
     }
 
   const shots = [
-    { id: 'transformacao-frente', cap: 'De frente', alt: 'Transformação de Rogério Déo, de frente: antes, durante e depois' },
-    { id: 'transformacao-costas', cap: 'De costas', alt: 'Transformação de Rogério Déo, de costas: antes, durante e depois' },
+    { id: 'transformacao-frente', alt: 'Evolução física de Rogério Déo em três momentos, vista frontal' },
+    { id: 'transformacao-costas', alt: 'Evolução física de Rogério Déo em três momentos, vista posterior' },
   ]
   return (
     <section className="sec transf" id="transformacao">
@@ -623,7 +623,6 @@ function Transformation() {
           {shots.map((g) => (
             <figure key={g.id}>
               <img src={`img/${g.id}.webp`} alt={g.alt} width="1200" height="1200" loading="lazy" decoding="async" />
-              <figcaption>{g.cap}</figcaption>
             </figure>
           ))}
         </div>
