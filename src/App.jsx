@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import InitialAssessment from './InitialAssessment.jsx'
 
 const PHONE = '5511993269771'
 const PHONE_LABEL = '(11) 99326-9771'
@@ -805,54 +806,6 @@ function Faq() {
 }
 
 
-/* A anamnese original está hospedada no Adobe Acrobat.
- * A conclusão do PDF acontece fora do site; nunca simulamos recebimento nem
- * armazenamento de informações médicas. */
-const ANAMNESE_PDF = "https://acrobat.adobe.com/id/urn:aaid:sc:US:a958ce38-14e8-4a5a-8f27-c4087027eb0a"
-function InitialAssessment() {
-  const [profile, setProfile] = useState('')
-  const choose = (choice) => { setProfile(choice) }
-  return (
-    <section className="sec intake" id="anamnese" aria-labelledby="intake-title">
-      <div className="wrap intake__layout">
-        <div className="intake__intro">
-          <p className="intake__kicker">COMECE PELO PRIMEIRO PASSO</p>
-          <h2 className="h2" id="intake-title">Seu treinamento começa com uma avaliação individual.</h2>
-          <p>Antes de iniciar o acompanhamento, preencha a anamnese disponibilizada pelo Rogério. Assim, ele poderá conhecer melhor suas necessidades e objetivos.</p>
-          <div className="intake__info"><span>01 / Selecione sua opção</span><span>02 / Abra e preencha a anamnese</span><span>03 / Converse com o Rogério</span></div>
-          <p className="intake__disclaimer">A anamnese é um documento com informações pessoais e de saúde. Preencha somente no ambiente seguro indicado pelo profissional. O site não recebe, salva ou verifica os dados do PDF.</p>
-        </div>
-        <div className="intake__panel">
-          <div className="intake__progress"><span>ANAMNESE ORIGINAL</span><div aria-hidden="true"><i style={{width:profile ? '100%' : '35%'}} /></div></div>
-          {!profile ? (
-            <div>
-              <h3>Escolha a sua anamnese</h3>
-              <p className="intake__help">Selecione a opção correspondente para prosseguir ao documento compartilhado pelo Rogério.</p>
-              <div className="intake__choices">
-                {['Masculina','Feminina'].map(option => (
-                  <button className="intake__choice" type="button" key={option} onClick={() => choose(option)}>
-                    <span><strong>Anamnese {option.toLowerCase()}</strong><small>Acessar formulário de avaliação</small></span><span aria-hidden="true">↗</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ):(
-            <div className="intake__done">
-              <h3>Anamnese {profile.toLowerCase()}</h3>
-              <p>Abra o documento original e preencha as informações solicitadas. O arquivo fornecido pelo Rogério é o mesmo link para as duas opções; ainda não recebemos versões distintas.</p>
-              <a className="btn btn--solid" href={ANAMNESE_PDF} target="_blank" rel="noopener noreferrer">Abrir anamnese no Adobe Acrobat ↗</a>
-              <p>Depois de preencher e entregar o documento conforme as instruções do Rogério, entre em contato para combinar seus próximos passos.</p>
-              <a className="intake__instagram" href={wa('Olá, Rogério! Acessei o formulário de anamnese no seu site e gostaria de saber os próximos passos.')} target="_blank" rel="noopener noreferrer">Falar com o Rogério no WhatsApp ↗</a>
-              <a className="intake__instagram" href="https://instagram.com/rogeriodeo.personal" target="_blank" rel="noopener noreferrer">Conhecer o Instagram ↗</a>
-              <button type="button" className="intake__reset" onClick={() => setProfile('')}>Voltar e escolher outra opção</button>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function FinalCta() {
   return (
     <section className="final" id="contato">
@@ -925,7 +878,7 @@ export default function App() {
         <Gallery />
         <Results />
         <Faq />
-        <InitialAssessment />
+        <InitialAssessment phone={PHONE} />
         <FinalCta />
       </main>
       <Footer />
