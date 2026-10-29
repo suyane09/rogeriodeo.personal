@@ -868,3 +868,150 @@ body { background: var(--bg); color: var(--silver-hi); }
   border-radius: 0;
   background: transparent;
 }
+
+
+/* ==========================================================
+   ANAMNESE DIGITAL — experiência de preenchimento por etapas
+   ========================================================== */
+.assessment__panel { min-width: 0; }
+.assessment__eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--gold-hi);
+  font-size: .73rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.assessment__form { display: grid; gap: 19px; margin-top: 26px; }
+.assessment__field { display: grid; gap: 8px; min-width: 0; color: #efeeea; }
+.assessment__label-title { font-size: .9rem; font-weight: 650; line-height: 1.55; }
+.assessment__label-title > span { color: var(--gold-hi); }
+.assessment__label-title small { color: var(--muted); font-weight: 400; font-size: .78rem; }
+.assessment__columns { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 14px; }
+.assessment__field :is(input, select, textarea) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  padding: 13px 15px;
+  border: 1px solid rgba(214,181,96,.30);
+  border-radius: 8px;
+  background: #111213;
+  color: #f2f0ec;
+  font-family: var(--body);
+  font-size: 1rem;
+  font-weight: 450;
+  line-height: 1.45;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.assessment__field textarea { resize: vertical; min-height: 84px; }
+.assessment__field :is(input,select,textarea)::placeholder { color: #aaa6a0; }
+.assessment__field :is(input,select,textarea):focus-visible {
+  border-color: var(--gold-hi);
+  box-shadow: 0 0 0 3px rgba(214,181,96,.16);
+}
+.assessment__field select option { background: #121314; color: #f2f0ec; }
+.assessment__validation {
+  margin-top: -8px;
+  color: #f1bf9a;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.assessment__form .intake__actions { margin-top: 10px; }
+.assessment .btn:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: .53;
+  box-shadow: none;
+}
+.assessment__review {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 25px 0;
+}
+.assessment__review > div {
+  min-width: 0;
+  padding: 12px;
+  background: #222324;
+  border: 1px solid rgba(198,199,196,.12);
+  border-radius: 8px;
+}
+.assessment__review dt {
+  color: #c7c9c8;
+  font-size: .73rem;
+  line-height: 1.45;
+}
+.assessment__review dd {
+  margin: 5px 0 0;
+  color: #f4f0e8;
+  font-size: .91rem;
+  font-weight: 650;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.assessment__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #ddd8cf;
+  line-height: 1.58;
+  font-size: .87rem;
+  cursor: pointer;
+  border-top: 1px solid rgba(198,199,196,.18);
+  padding-top: 21px;
+}
+.assessment__consent input {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: #d6b560;
+  cursor: pointer;
+}
+.assessment__send {
+  display: flex;
+  margin-top: 23px;
+  width: 100%;
+  line-height: 1.35;
+  min-height: 56px;
+  text-align: center;
+  padding: 13px 16px;
+}
+.assessment__footnote {
+  margin-top: 15px;
+  color: #bdb8b0;
+  line-height: 1.7;
+  font-size: .78rem;
+}
+.assessment__footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+.assessment .intake__choice small {
+  max-width: 35ch;
+  font-size: .79rem;
+  line-height: 1.55;
+}
+.assessment .intake__choice strong { color: var(--silver-hi); }
+.assessment .intake__choice:hover { transform: translateY(-1px); }
+.assessment .intake__intro > p:not(.intake__kicker):not(.intake__disclaimer) { line-height: 1.75; }
+@media (max-width:700px) {
+  .assessment__review { grid-template-columns: 1fr; gap: 9px; }
+  .assessment__review > div { padding: 12px 14px; }
+  .assessment__columns { grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 10px; }
+  .assessment__field :is(input,select,textarea) { font-size: 16px; }
+  .assessment__send { font-size: .93rem; }
+  .assessment__consent { font-size: .82rem; }
+}
+@media (max-width:359px) {
+  .assessment__columns { grid-template-columns: minmax(0,1fr); }
+  .assessment__form .intake__actions { flex-direction: column-reverse; align-items: stretch; }
+  .assessment__form .intake__actions .btn { width: 100%; }
+}
