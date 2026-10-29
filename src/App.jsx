@@ -380,11 +380,10 @@ function About() {
     <section className="sec about" id="rogerio">
       <div className="wrap about__grid">
         <figure className="about__photo">
-          <div className="clip"><img src="/img/rogerio-retrato.jpg" alt="Retrato profissional de Rogério Déo, de blazer preto com fundo dourado" width="520" height="520" loading="lazy" decoding="async" /></div>
+          <div className="clip"><picture><source srcSet="/img/rogerio-retrato-1200.avif" type="image/avif" /><img src="/img/rogerio-retrato.jpg" alt="Rogério Déo de blazer preto, em retrato profissional com iluminação dourada" width="1200" height="1200" loading="lazy" decoding="async" /></picture></div>
           <figcaption>Especialista em performance humana</figcaption>
         </figure>
         <div className="about__copy">
-          <img className="about__brand" src="/img/rogerio-logo.png" alt="RD Rogério Déo — Especialista em performance humana. Força, mobilidade e longevidade" width="280" height="190" loading="lazy" decoding="async" />
           <h2 className="h2">Quem julga físicos pelo mundo olha para o seu corpo com atenção aos detalhes</h2>
           <p className="about__text">Rogério Déo vive de musculação desde sempre. Mais de 25 anos como árbitro internacional de fisiculturismo deram a ele um olhar raro para simetria, proporção e qualidade muscular, algo que ele leva para cada aluno.</p>
           <div className="career" role="list" aria-label="Trajetória em anos">
