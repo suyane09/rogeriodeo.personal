@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import InitialAssessment from './InitialAssessment.jsx'
+import ServicePlans from './ServicePlans.jsx'
 
 const PHONE = '5511993269771'
 const PHONE_LABEL = '(11) 99326-9771'
@@ -152,7 +153,7 @@ const faq = [
   ['Nunca treinei. Posso começar depois dos 40?', 'Pode. O treino é montado para o seu ponto de partida, com progressão gradual e acompanhamento próximo na execução.'],
   ['Tenho dor ou limitação. Consigo treinar?', 'O conhecimento em biomecânica e cinesiologia ajuda a adaptar os exercícios ao seu corpo. Conte sua situação no primeiro contato.'],
   ['Funciona para mulheres também?', 'Sim. O foco em hipertrofia, emagrecimento e definição atende homens e mulheres a partir dos 40.'],
-  ['Como funcionam valores e horários?', 'Mande uma mensagem no WhatsApp. O Rogério responde com as opções e encontra o melhor horário para a sua rotina.'],
+  ['Como funcionam valores e horários?', 'Você pode comparar os planos na seção Modalidades. O Rogério confirma a disponibilidade e as condições durante o atendimento.'],
 ]
 
 const links = [
@@ -160,8 +161,8 @@ const links = [
   ['Método', '#metodo'],
   ['Rogério', '#rogerio'],
   ['Transformação', '#transformacao'],
+  ['Modalidades', '#modalidades'],
   ['Anamnese', '#anamnese'],
-  ['Dúvidas', '#faq'],
 ]
 
 /* ---------- sections ---------- */
@@ -878,6 +879,7 @@ export default function App() {
         <Gallery />
         <Results />
         <Faq />
+        <ServicePlans />
         <InitialAssessment phone={PHONE} />
         <FinalCta />
       </main>
