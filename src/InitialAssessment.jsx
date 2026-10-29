@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import { serviceFormatOptions, servicePlansByFormat } from './ServicePlans.jsx'
 
 const empty = {
   name: '', age: '', phone: '', city: '', goal: '', goalDetail: '',
   experience: '', days: '', format: '', schedule: '', timeframe: '',
-  routine: '', focus: '', note: '', individual: ''
+  routine: '', focus: '', note: '', individual: '', plan: ''
 }
 
 const goals = [
@@ -18,7 +19,7 @@ const goals = [
 const profiles = {
   masculina: {
     title: 'Anamnese masculina',
-    description: 'Seu planejamento começa com a sua rotina, seus objetivos e a forma como você se movimenta.',
+    description: 'Seu planejamento começa com sua rotina, seus objetivos e a forma como você se movimenta.',
     focusLabel: 'Qual aspecto você quer priorizar?',
     focusOptions: ['Ganho de força e massa muscular', 'Condicionamento e desempenho', 'Mobilidade e recuperação', 'Saúde e qualidade de vida', 'Ainda não sei']
   },
@@ -54,7 +55,7 @@ export default function InitialAssessment({ phone }) {
   const [data, setData] = useState(empty)
   const [accepted, setAccepted] = useState(false)
   const config = profiles[profile]
-  const setField = (key, value) => setData((current) => ({ ...current, [key]: value }))
+  const setField = (key, value) => setData((current) => ({ ...current, [key]: value, ...(key === 'format' ? { plan: '' } : {}) }))
   const scrollTop = () => {
     const section = document.getElementById('anamnese')
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -100,7 +101,8 @@ export default function InitialAssessment({ phone }) {
     '*ROTINA E TREINAMENTO*',
     'Experiência: ' + data.experience,
     'Disponibilidade semanal: ' + data.days,
-    'Formato: ' + data.format,
+    'Modalidade escolhida: ' + data.format,
+    'Plano e valor informado: ' + data.plan,
     'Horário preferido: ' + data.schedule,
     'Pretende começar: ' + data.timeframe,
     'Rotina: ' + data.routine,
@@ -116,7 +118,8 @@ export default function InitialAssessment({ phone }) {
     ['Objetivo', data.goal], ['Prioridade', data.focus],
     ['Experiência', data.experience],
     ['Frequência', data.days],
-    ['Formato', data.format],
+    ['Modalidade', data.format],
+    ['Plano e valor', data.plan],
     ['Horário', data.schedule],
     ['Prazo', data.timeframe],
     ['Rotina', data.routine],
@@ -206,7 +209,9 @@ export default function InitialAssessment({ phone }) {
               <form className="assessment__form" onSubmit={(e) => { e.preventDefault(); next(4) }}>
                 <SelectField id="experience" label="Experiência com musculação ou exercícios" value={data.experience} onChange={setField} values={['Nunca treinei', 'Estou começando ou voltando', 'Até 1 ano', 'Entre 1 e 3 anos', 'Mais de 3 anos']} />
                 <SelectField id="days" label="Quantos dias por semana pode treinar?" value={data.days} onChange={setField} values={['1 a 2 dias', '3 dias', '4 dias', '5 ou mais dias', 'Ainda não sei']} />
-                <SelectField id="format" label="Formato de acompanhamento de preferência" value={data.format} onChange={setField} values={['Presencial', 'Orientação a distância', 'Gostaria de conversar sobre as possibilidades']} />
+                <SelectField id="format" label="Qual modalidade de atendimento deseja?" value={data.format} onChange={setField} values={serviceFormatOptions} />
+                {data.format && <SelectField id="plan" label="Qual plano gostaria de consultar?" value={data.plan} onChange={setField} values={servicePlansByFormat[data.format] || []} />}
+                {data.format === 'Personal trainer presencial' && <p className="assessment__footnote">O valor final depende da frequência semanal e do formato contratado.</p>}
                 <SelectField id="schedule" label="Horário de preferência" value={data.schedule} onChange={setField} values={['Manhã', 'Tarde', 'Noite', 'Horários flexíveis']} />
                 <SelectField id="timeframe" label="Quando pretende começar?" value={data.timeframe} onChange={setField} values={['O quanto antes', 'Nas próximas semanas', 'No próximo mês', 'Ainda estou me organizando']} />
                 <SelectField id="routine" label="Sua rotina de trabalho e movimento" value={data.routine} onChange={setField} values={['Passo grande parte do dia sentado(a)', 'Alterno períodos sentado(a) e em movimento', 'Tenho uma rotina fisicamente ativa', 'Minha rotina varia bastante']} />
