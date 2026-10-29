@@ -38,6 +38,7 @@ const plans = [
   {
     number: '01',
     label: '100% online',
+    format: 'Consultoria 100% online',
     title: 'Consultoria online',
     description: 'Treinamento individualizado após a anamnese, com programa de exercícios disponível no aplicativo para acompanhar e executar seus treinos.',
     info: 'Treine com orientação, onde estiver.',
@@ -55,6 +56,7 @@ const plans = [
   {
     number: '02',
     label: 'Presencial + digital',
+    format: 'Acompanhamento híbrido',
     title: 'Acompanhamento híbrido',
     description: 'Encontros presenciais combinados com treinos pelo aplicativo e orientação online para os outros dias.',
     info: 'Atenção presencial e autonomia entre as sessões.',
@@ -70,6 +72,7 @@ const plans = [
   {
     number: '03',
     label: 'Treino acompanhado',
+    format: 'Personal trainer presencial',
     title: 'Personal trainer presencial',
     description: 'Treinamento com orientação técnica individual, correções na execução e progressão conforme suas necessidades.',
     info: 'Acompanhamento individual durante o treino.',
@@ -83,6 +86,7 @@ const plans = [
   {
     number: '04',
     label: 'Atendimento pontual',
+    format: 'Treinamento presencial avulso',
     title: 'Treinamento presencial avulso',
     description: 'Uma sessão individual para quem busca orientação profissional pontual, acompanhamento técnico e treinamento personalizado.',
     info: 'Orientação individual quando você precisa.',
@@ -93,7 +97,7 @@ const plans = [
   }
 ]
 
-function ServiceCard({ plan }) {
+function ServiceCard({ plan, onSelect }) {
   return (
     <article className="services__card" aria-labelledby={`service-${plan.number}`}>
       <header className="services__card-top">
@@ -122,7 +126,7 @@ function ServiceCard({ plan }) {
             </div>
           )}
           {plan.note && <p className="services__note">{plan.note}</p>}
-          <a className="services__action" href="#anamnese" aria-label={'Iniciar anamnese para ' + plan.title}>
+          <a className="services__action" href="#anamnese-form" onClick={() => onSelect({format: plan.format, plan: plan.items.length ? '' : servicePlansByFormat[plan.format][0]})} aria-label={'Preencher anamnese para ' + plan.title}>
             <span>Iniciar minha avaliação</span><span className="services__action-arrow" aria-hidden="true">↗</span>
           </a>
         </div>
@@ -131,7 +135,7 @@ function ServiceCard({ plan }) {
   )
 }
 
-export default function ServicePlans() {
+export default function ServicePlans({ onSelect }) {
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -171,9 +175,9 @@ export default function ServicePlans() {
           <p>Treinamento personalizado com foco em hipertrofia, emagrecimento, força, mobilidade, performance e longevidade. Programas desenvolvidos de acordo com seus objetivos, suas necessidades e sua rotina.</p>
         </div>
         <div className="services__grid">
-          {plans.map(plan => <ServiceCard key={plan.number} plan={plan} />)}
+          {plans.map(plan => <ServiceCard key={plan.number} plan={plan} onSelect={onSelect} />)}
         </div>
-        <p className="services__footer-note">Antes de iniciar o acompanhamento, você poderá preencher a anamnese inicial e conversar com o Rogério para confirmar o plano e a disponibilidade.</p>
+        <p className="services__footer-note">Para solicitar qualquer plano, é necessário concluir a anamnese antes de seguir para o atendimento. As condições e a disponibilidade serão confirmadas pelo Rogério.</p>
       </div>
     </section>
   )
