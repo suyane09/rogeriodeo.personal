@@ -792,74 +792,46 @@ function Faq() {
 }
 
 
-/* Pré-anamnese de contato. Sem persistência, questões médicas ou envio automático.
-   O questionário clínico do PDF será integrado quando o documento estiver disponível. */
+/* A anamnese original está hospedada no Adobe Acrobat.
+ * A conclusão do PDF acontece fora do site; nunca simulamos recebimento nem
+ * armazenamento de informações médicas. */
+const ANAMNESE_PDF = "https://acrobat.adobe.com/id/urn:aaid:sc:US:a958ce38-14e8-4a5a-8f27-c4087027eb0a"
 function InitialAssessment() {
   const [profile, setProfile] = useState('')
-  const [step, setStep] = useState(1)
-  const [fields, setFields] = useState({ name: '', contact: '', focus: '', modality: '' })
-  const setField = (name, value) => setFields((prev) => ({ ...prev, [name]: value }))
-  const reset = () => { setStep(1); setProfile(''); setFields({ name: '', contact: '', focus: '', modality: '' }) }
-  const message = [
-    'Olá, Rogério! Concluí o pré-cadastro no seu site e gostaria de começar meu acompanhamento.',
-    'Nome: ' + fields.name.trim(),
-    'Formulário escolhido: ' + profile,
-    'Objetivo: ' + fields.focus,
-    'Modalidade desejada: ' + fields.modality,
-    'WhatsApp para retorno: ' + fields.contact.trim(),
-    'Quero receber as orientações para a anamnese completa e a inscrição.'
-  ].join('\n')
+  const choose = (choice) => { setProfile(choice) }
   return (
     <section className="sec intake" id="anamnese" aria-labelledby="intake-title">
       <div className="wrap intake__layout">
         <div className="intake__intro">
-          <p className="intake__kicker">SEU PRIMEIRO PASSO</p>
-          <h2 className="h2" id="intake-title">Cada corpo tem uma história. Vamos conhecer a sua.</h2>
-          <p>Escolha sua anamnese e comece com algumas informações básicas. O contato com o Rogério vem depois.</p>
-          <div className="intake__info"><span>01 / Escolha seu formulário</span><span>02 / Informe seus objetivos</span><span>03 / Prossiga para o atendimento</span></div>
-          <p className="intake__disclaimer">Esta é uma etapa inicial de contato, não a anamnese clínica completa. Não informe diagnósticos, medicamentos ou dados de saúde neste formulário.</p>
+          <p className="intake__kicker">COMECE PELO PRIMEIRO PASSO</p>
+          <h2 className="h2" id="intake-title">Seu treinamento começa com uma avaliação individual.</h2>
+          <p>Antes de iniciar o acompanhamento, preencha a anamnese disponibilizada pelo Rogério. Assim, ele poderá conhecer melhor suas necessidades e objetivos.</p>
+          <div className="intake__info"><span>01 / Selecione sua opção</span><span>02 / Abra e preencha a anamnese</span><span>03 / Converse com o Rogério</span></div>
+          <p className="intake__disclaimer">A anamnese é um documento com informações pessoais e de saúde. Preencha somente no ambiente seguro indicado pelo profissional. O site não recebe, salva ou verifica os dados do PDF.</p>
         </div>
         <div className="intake__panel">
-          <div className="intake__progress"><span>ETAPA {step} DE 3</span><div aria-hidden="true"><i style={{ width: `${step / 3 * 100}%` }} /></div></div>
-          {step === 1 && (
+          <div className="intake__progress"><span>ANAMNESE ORIGINAL</span><div aria-hidden="true"><i style={{width:profile ? '100%' : '35%'}} /></div></div>
+          {!profile ? (
             <div>
-              <h3>Escolha seu formulário</h3>
-              <p className="intake__help">Selecione uma opção para iniciar seu pré-cadastro.</p>
+              <h3>Escolha a sua anamnese</h3>
+              <p className="intake__help">Selecione a opção correspondente para prosseguir ao documento compartilhado pelo Rogério.</p>
               <div className="intake__choices">
-                {['Anamnese masculina', 'Anamnese feminina'].map((option) => (
-                  <button type="button" className="intake__choice" key={option} onClick={() => {setProfile(option);setStep(2)}}>
-                    <span><strong>{option}</strong><small>Iniciar avaliação</small></span><span aria-hidden="true">↗</span>
+                {['Masculina','Feminina'].map(option => (
+                  <button className="intake__choice" type="button" key={option} onClick={() => choose(option)}>
+                    <span><strong>Anamnese {option.toLowerCase()}</strong><small>Acessar formulário de avaliação</small></span><span aria-hidden="true">↗</span>
                   </button>
                 ))}
               </div>
             </div>
-          )}
-          {step === 2 && (
-            <div>
-              <h3>{profile}</h3>
-              <p className="intake__help">Preencha somente os dados de contato. A avaliação de saúde completa será combinada com o profissional.</p>
-              <form className="intake__form" onSubmit={(event) => {event.preventDefault();setStep(3)}}>
-                <label>Seu nome completo<input required autoComplete="name" maxLength={100} value={fields.name} onChange={(event) => setField('name', event.target.value)} placeholder="Como podemos chamar você?" /></label>
-                <label>WhatsApp para contato<input required autoComplete="tel" inputMode="tel" maxLength={24} value={fields.contact} onChange={(event) => setField('contact', event.target.value)} placeholder="(11) 99999-9999" /></label>
-                <label>Principal objetivo<select required value={fields.focus} onChange={(event) => setField('focus', event.target.value)}>
-                  <option value="">Selecione seu objetivo</option>
-                  <option>Ganhar força</option><option>Melhorar a mobilidade</option><option>Hipertrofia e composição corporal</option><option>Performance esportiva</option><option>Longevidade e qualidade de vida</option>
-                </select></label>
-                <label>Formato de acompanhamento<select required value={fields.modality} onChange={(event) => setField('modality', event.target.value)}>
-                  <option value="">Selecione uma preferência</option><option>Presencial</option><option>Orientação personalizada</option><option>Gostaria de conversar sobre as opções</option>
-                </select></label>
-                <div className="intake__actions"><button type="button" className="intake__back" onClick={() => setStep(1)}>Voltar</button><button type="submit" className="btn btn--solid">Continuar</button></div>
-              </form>
-            </div>
-          )}
-          {step === 3 && (
+          ):(
             <div className="intake__done">
-              <span className="intake__check" aria-hidden="true">✓</span>
-              <h3>Pronto para conversar com o Rogério?</h3>
-              <p>Seu pré-cadastro está preenchido. Toque no botão para abrir o WhatsApp e <strong>enviar sua mensagem</strong>. Nenhum dado foi enviado ou armazenado pelo site.</p>
-              <a className="btn btn--solid" href={wa(message)} target="_blank" rel="noopener noreferrer">Enviar meu pré-cadastro</a>
-              <a className="intake__instagram" href="https://instagram.com/rogeriodeo.personal" target="_blank" rel="noopener noreferrer">Conhecer o Instagram do Rogério ↗</a>
-              <button type="button" className="intake__reset" onClick={reset}>Fazer um novo pré-cadastro</button>
+              <h3>Anamnese {profile.toLowerCase()}</h3>
+              <p>Abra o documento original e preencha as informações solicitadas. O arquivo fornecido pelo Rogério é o mesmo link para as duas opções; ainda não recebemos versões distintas.</p>
+              <a className="btn btn--solid" href={ANAMNESE_PDF} target="_blank" rel="noopener noreferrer">Abrir anamnese no Adobe Acrobat ↗</a>
+              <p>Depois de preencher e entregar o documento conforme as instruções do Rogério, entre em contato para combinar seus próximos passos.</p>
+              <a className="intake__instagram" href={wa('Olá, Rogério! Acessei o formulário de anamnese no seu site e gostaria de saber os próximos passos.')} target="_blank" rel="noopener noreferrer">Falar com o Rogério no WhatsApp ↗</a>
+              <a className="intake__instagram" href="https://instagram.com/rogeriodeo.personal" target="_blank" rel="noopener noreferrer">Conhecer o Instagram ↗</a>
+              <button type="button" className="intake__reset" onClick={() => setProfile('')}>Voltar e escolher outra opção</button>
             </div>
           )}
         </div>
@@ -874,7 +846,7 @@ function FinalCta() {
       <div className="wrap final__grid">
         <div className="final__copy">
           <p className="final__eyebrow">SEU PRÓXIMO PASSO</p>
-          <h2 className="final__title">Seu melhor corpo não tem idade</h2>
+          <h2 className="final__title">Sua melhor versão física começa agora.</h2>
           <p className="final__text">Converse com o Rogério sobre seus objetivos, disponibilidade e possibilidades de acompanhamento.</p>
           <div className="final__steps" aria-label="Como começar">
             <span>01 / Conte seu objetivo</span>
