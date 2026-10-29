@@ -814,7 +814,15 @@ body { background: var(--bg); color: var(--silver-hi); }
 }
 .rd-lockup__wordmark {
   width: 208px;
-  aspect-ratio: 1060 / 141;
+  height: auto;
+  aspect-ratio: 1200 / 177;
+  max-width: none;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  border-radius: 0;
+  filter: none;
 }
 .footer__brand-lockup {
   display: inline-flex;
@@ -848,4 +856,15 @@ body { background: var(--bg); color: var(--silver-hi); }
   .footer__brand-lockup .rd-lockup__symbol { width: 79px; }
   .footer__brand-lockup .rd-lockup__wordmark { width: 166px; }
   .footer__brand-lockup .rd-lockup { gap: 6px; }
+}
+
+/* A marca nominativa enviada é um arquivo completo, não um recorte SVG.
+   Evita herdar o corte antigo de 49x42px da navegação. */
+.nav__brand img.rd-lockup__wordmark {
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  object-position: center center;
+  border-radius: 0;
+  background: transparent;
 }
