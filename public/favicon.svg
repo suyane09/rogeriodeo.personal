@@ -1,1 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#080807"/><text x="32" y="45" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-style="italic" font-size="34" fill="#e9b84b">RD</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RD">
+<defs>
+ <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#f7f6f2"/><stop offset=".33" stop-color="#c3c5c4"/>
+  <stop offset=".64" stop-color="#f0efec"/><stop offset="1" stop-color="#979b9a"/>
+ </linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#f4e2a7"/><stop offset=".5" stop-color="#d6b560"/><stop offset="1" stop-color="#9a7533"/>
+ </linearGradient>
+</defs>
+<rect width="64" height="64" rx="12" fill="#0b0c0d"/>
+<rect x="1" y="1" width="62" height="62" rx="11" fill="none" stroke="#d6b560" stroke-opacity=".35"/>
+<text x="30" y="44" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-style="italic" font-weight="900" font-size="36" fill="url(#metal)" stroke="url(#gold)" stroke-width=".7" paint-order="stroke fill">RD</text>
+<path d="M10 49 L54 18" stroke="url(#gold)" stroke-width="2.6" stroke-linecap="round"/>
+</svg>
