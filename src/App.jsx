@@ -163,7 +163,10 @@ function Nav() {
   return (
     <header className={`nav ${solid ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
       <div className="wrap nav__in">
-        <a href="#inicio" className="nav__logo nav__brand" onClick={() => setOpen(false)}><img src="/img/rogerio-logo-1100.avif" alt="" width="60" height="43" decoding="async" /><span>Rogério Déo</span></a>
+        <a href="#inicio" className="nav__logo nav__brand" onClick={() => setOpen(false)} aria-label="Rogério Déo — página inicial">
+          <span className="nav__brand-mark" aria-hidden="true"><img src="/img/rogerio-logo-1100.avif" alt="" width="1100" height="740" decoding="async" /></span>
+          <span className="nav__brand-name">Rogério <em>Déo</em></span>
+        </a>
         <nav className="nav__links" aria-label="Principal">
           {links.map(([l, h]) => (
             <a key={h} href={h} onClick={() => setOpen(false)}>{l}</a>
@@ -869,7 +872,7 @@ function Footer() {
     <footer className="footer">
       <div className="wrap footer__in">
         <div>
-          <img className="footer__brand" src="/img/rogerio-logo-1100.avif" alt="RD Rogério Déo — Especialista em performance humana" width="180" height="121" loading="lazy" decoding="async" />
+          <img className="footer__brand" src="/img/rogerio-logo-1100.avif" alt="RD Rogério Déo — Especialista em performance humana. Força, mobilidade e longevidade." width="1100" height="740" loading="lazy" decoding="async" />
           <strong>Prof. Rogério Déo</strong>
           <p>Personal Trainer · Força, mobilidade e performance humana</p>
         </div>
