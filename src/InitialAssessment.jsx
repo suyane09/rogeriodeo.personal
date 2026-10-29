@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { serviceFormatOptions, servicePlansByFormat } from './ServicePlans.jsx'
 import { questionsByProfile, documentTitles, physicalReview } from './AssessmentSchema.js'
 
@@ -261,9 +261,27 @@ export default function InitialAssessment({phone}) {
   const total=sections.length+3 // escolha + identificação + cinco seções + conclusão
   const complete=step===total-1
   const phoneValid=identity.phone.replace(/\D/g,'').length>=10&&identity.phone.replace(/\D/g,'').length<=13
+  const panelRef = useRef(null)
+  const hasChangedStep = useRef(false)
+
+  // Navega diretamente para o cartão do formulário após a nova etapa ser
+  // renderizada. Antes o scroll era feito para #anamnese, cujo título e
+  // explicações longas ficam acima do formulário (especialmente no celular).
+  useLayoutEffect(() => {
+    if (!hasChangedStep.current) {
+      hasChangedStep.current = true
+      return
+    }
+    const panel = panelRef.current
+    if (!panel) return
+    const nav = document.querySelector('.nav')
+    const navigationHeight = nav?.getBoundingClientRect().height ?? 64
+    const desiredTop = panel.getBoundingClientRect().top + window.scrollY - navigationHeight - 16
+    window.scrollTo({ top: Math.max(0, desiredTop), behavior: 'auto' })
+  }, [step])
+
   const move=(number)=>{
     setStep(number)
-    document.getElementById('anamnese')?.scrollIntoView({behavior:'smooth',block:'start'})
   }
   const changeIdentity=(key,value)=>setIdentity(prev=>({...prev,[key]:value,...(key==='format'?{plan:''}:{})}))
   const changeQuestion=(number,value)=>setAnswers(prev=>({...prev,[number]:value}))
@@ -282,7 +300,7 @@ export default function InitialAssessment({phone}) {
           <button type="button" className="assessment__physical" onClick={printPhysical}>Imprimir ficha de avaliação física em branco ↗</button>
           <p className="intake__disclaimer">A ficha de medidas, circunferências, dobras cutâneas e testes é de uso profissional e fica separada da anamnese preenchida pelo aluno.</p>
         </div>
-        <div className="intake__panel assessment__panel">
+        <div ref={panelRef} className="intake__panel assessment__panel">
           <div className="intake__progress"><span>{step===0?'ESCOLHA O FORMULÁRIO':complete?'REVISÃO E ENVIO':'ETAPA '+step+' DE '+(total-2)}</span>
             <div aria-hidden="true"><i style={{width:(step+1)/total*100+'%'}} /></div>
           </div>
