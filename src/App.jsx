@@ -112,9 +112,7 @@ function BrandLockup() {
       <svg className="rd-lockup__symbol" viewBox="130 42 720 302" preserveAspectRatio="xMidYMid meet" focusable="false">
         <image href="/img/rogerio-logo-1100.avif" x="0" y="0" width="1100" height="740" />
       </svg>
-      <svg className="rd-lockup__wordmark" viewBox="20 343 1060 141" preserveAspectRatio="xMidYMid meet" focusable="false">
-        <image href="/img/rogerio-logo-1100.avif" x="0" y="0" width="1100" height="740" />
-      </svg>
+      <img className="rd-lockup__wordmark" src="/img/rogerio-deo-nome-original.avif" alt="" width="1200" height="177" decoding="async" />
     </span>
   )
 }
