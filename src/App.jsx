@@ -3,9 +3,6 @@ import InitialAssessment from './InitialAssessment.jsx'
 import ServicePlans from './ServicePlans.jsx'
 
 const PHONE = '5511993269771'
-const PHONE_LABEL = '(11) 99326-9771'
-const wa = (msg = 'Olá, Rogério! Quero começar a treinar com você.') =>
-  `https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`
 
 /* ---------- hooks ---------- */
 
@@ -162,7 +159,7 @@ const links = [
   ['Rogério', '#rogerio'],
   ['Transformação', '#transformacao'],
   ['Modalidades', '#modalidades'],
-  ['Anamnese', '#anamnese'],
+  ['Anamnese', '#anamnese-form'],
 ]
 
 /* ---------- sections ---------- */
@@ -185,7 +182,7 @@ function Nav() {
           {links.map(([l, h]) => (
             <a key={h} href={h} onClick={() => setOpen(false)}>{l}</a>
           ))}
-          <a className="nav__cta" href={wa()} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a className="nav__cta" href="#anamnese-form" onClick={() => setOpen(false)}>Iniciar avaliação</a>
         </nav>
         <button className="nav__burger" aria-label="Abrir menu" aria-expanded={open} onClick={() => setOpen(!open)}>
           <i /><i /><i />
@@ -219,7 +216,7 @@ function Hero() {
             Treinamento individual para ganhar força, melhorar a composição corporal e se movimentar melhor. Técnica, atenção aos detalhes e mais de 35 anos de experiência profissional.
           </p>
           <div className="hero__btns">
-            <Btn href="#anamnese">Quero começar agora</Btn>
+            <Btn href="#anamnese-form">Quero começar agora</Btn>
             <Btn href="#metodo" variant="ghost">Conhecer o método</Btn>
           </div>
         </div>
@@ -286,7 +283,7 @@ function Method() {
           ))}
         </ol>
         <div className="method__cta">
-          <Btn href={wa('Olá, Rogério! Quero saber mais sobre o acompanhamento.')} target="_blank" rel="noopener noreferrer">Falar com o Rogério</Btn>
+          <Btn href="#anamnese-form">Começar meu acompanhamento</Btn>
         </div>
       </div>
     </section>
@@ -382,7 +379,7 @@ function TrainingAreas() {
                 {area.paragraphs.map((text) => <p key={text}>{text}</p>)}
                 <h4>{area.question}</h4>
                 <p>{area.answer}</p>
-                <Btn href={wa(`Olá, Rogério! Quero saber mais sobre ${area.title.toLowerCase()}.`)} target="_blank" rel="noopener noreferrer" variant="ghost">Conversar sobre esse objetivo</Btn>
+                <Btn href="#anamnese-form" variant="ghost">Iniciar avaliação para esse objetivo</Btn>
               </div>
             </article>
           ))}
@@ -498,7 +495,7 @@ function MethodInAction() {
           <p className="method-action__label">O MÉTODO NA PRÁTICA</p>
           <h2 className="h2" id="method-action-title">A diferença está em cada movimento.</h2>
           <p>Veja o Rogério acompanhando alunos, corrigindo a execução e aplicando seu conhecimento no treino real.</p>
-          <Btn href="#anamnese">Quero treinar com o Rogério</Btn>
+          <Btn href="#anamnese-form">Quero treinar com o Rogério</Btn>
         </div>
         <div className="method-action__watch">
           <div className="method-action__watch-heading">
@@ -678,7 +675,7 @@ function Transformation() {
           </div>
           <div className="transf__copy">
             <p>{showingInterview ? 'Transformações reais começam com dedicação e orientação.' : 'O conhecimento do corpo também faz diferença na prática esportiva.'}</p>
-            <Btn href="#anamnese">Quero a minha transformação</Btn>
+            <Btn href="#anamnese-form">Quero a minha transformação</Btn>
           </div>
         </div>
       </div>
@@ -725,7 +722,7 @@ function Gallery() {
             <ul className="multisport-showcase__sports" aria-label="Modalidades esportivas">
               {sports.map((s) => (<li key={s}>{s}</li>))}
             </ul>
-            <Btn href="#anamnese">Quero melhorar no meu esporte</Btn>
+            <Btn href="#anamnese-form">Quero melhorar no meu esporte</Btn>
           </div>
         </div>
       </div>
@@ -786,8 +783,8 @@ function Faq() {
       <div className="wrap faq-sec__grid">
         <div className="faq-sec__head">
           <h2 className="h2">Dúvidas frequentes</h2>
-          <p>Não achou o que procurava? Pergunte direto ao Rogério.</p>
-          <Btn href={wa('Olá, Rogério! Tenho uma dúvida sobre o treino.')} variant="ghost" target="_blank" rel="noopener noreferrer">Tirar dúvida no WhatsApp</Btn>
+          <p>Quer esclarecer seu caso com o Rogério? Comece pela anamnese para orientar o atendimento.</p>
+          <Btn href="#anamnese-form" variant="ghost">Preencher anamnese</Btn>
         </div>
         <div className="faq">
           {faq.map(([q, a], i) => (
@@ -821,8 +818,8 @@ function FinalCta() {
             <span>03 / Combine os próximos passos</span>
           </div>
           <div className="final__btns">
-            <Btn href="#anamnese" className="btn--lg">Começar minha avaliação</Btn>
-            <a className="phone" href={`tel:+${PHONE}`}>{PHONE_LABEL}</a>
+            <Btn href="#anamnese-form" className="btn--lg">Começar minha avaliação</Btn>
+            <span className="phone">Contato após a anamnese</span>
           </div>
         </div>
         <figure className="final__photo">
@@ -845,25 +842,27 @@ function Footer() {
         </div>
         <div className="footer__r">
           <p>CREF 005387/SP</p>
-          <a href="https://instagram.com/rogeriodeo.personal" target="_blank" rel="noopener noreferrer">@rogeriodeo.personal</a>
+          <a href="#anamnese-form">Instagram após a avaliação</a>
         </div>
       </div>
     </footer>
   )
 }
 
-function WhatsFloat() {
+function AssessmentFloat() {
   const hide = useFloatHide()
   return (
-    <a className={`wafloat ${hide ? 'wafloat--hide' : ''}`} tabIndex={hide ? -1 : undefined} href={wa()} target="_blank" rel="noopener noreferrer" aria-label="Chamar no WhatsApp">
-      <svg viewBox="0 0 32 32" width="26" height="26" fill="currentColor" aria-hidden="true">
-        <path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.3.6 4.4 1.7 6.3L3 29l7.4-1.9a12.6 12.6 0 005.6 1.3C23 28.4 28.6 22.8 28.6 15.8 28.6 8.6 23 3 16 3zm0 23.200c-1.800 0-3.600-.5-5.100-1.400l-.4-.2-4.400 1.100 1.200-4.300-.3-.4a10.300 10.300 0 01-1.600-5.500C5.400 9.800 10.100 5.200 16 5.200S26.500 9.800 26.500 15.500 21.800 26.200 16 26.200zm5.700-7.700c-.3-.2-1.900-.9-2.200-1s-.5-.2-.7.200-.8 1-1 1.200-.4.200-.7 0a8.500 8.500 0 01-4.200-3.700c-.3-.6.300-.6.900-1.800.1-.2 0-.4 0-.5l-1-2.300c-.2-.6-.5-.5-.7-.5h-.6a1.200 1.200 0 00-.9.400 3.600 3.600 0 00-1.100 2.700 6.300 6.300 0 001.300 3.300 14.300 14.300 0 005.500 4.900c2 .8 2.800.9 3.800.7a3.200 3.200 0 002.100-1.500 2.600 2.600 0 00.2-1.500c-.1-.1-.3-.2-.6-.4z" />
+    <a className={`wafloat ${hide ? 'wafloat--hide' : ''}`} tabIndex={hide ? -1 : undefined} href="#anamnese-form" aria-label="Preencher anamnese antes do atendimento">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="5" y="3" width="14" height="18" rx="2" />
+        <path d="M9 3.5h6M9 9h6M9 13h6M9 17l1.5 1.5L14 15" />
       </svg>
     </a>
   )
 }
 
 export default function App() {
+  const [selectedOffer, setSelectedOffer] = useState(null)
   return (
     <>
       <Nav />
@@ -879,12 +878,12 @@ export default function App() {
         <Gallery />
         <Results />
         <Faq />
-        <ServicePlans />
-        <InitialAssessment phone={PHONE} />
+        <ServicePlans onSelect={setSelectedOffer} />
+        <InitialAssessment phone={PHONE} selectedOffer={selectedOffer} />
         <FinalCta />
       </main>
       <Footer />
-      <WhatsFloat />
+      <AssessmentFloat />
     </>
   )
 }
