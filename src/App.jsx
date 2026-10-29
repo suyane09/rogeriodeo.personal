@@ -104,6 +104,21 @@ const Ln = ({ i, className = '', children }) => (
   </span>
 )
 
+/* Marca RD original: duas janelas de recorte do mesmo arquivo em alta resolução.
+   Sem redesenhar a assinatura nem inserir versões rasterizadas pequenas. */
+function BrandLockup() {
+  return (
+    <span className="rd-lockup" aria-hidden="true">
+      <svg className="rd-lockup__symbol" viewBox="130 42 720 302" preserveAspectRatio="xMidYMid meet" focusable="false">
+        <image href="/img/rogerio-logo-1100.avif" x="0" y="0" width="1100" height="740" />
+      </svg>
+      <svg className="rd-lockup__wordmark" viewBox="20 343 1060 141" preserveAspectRatio="xMidYMid meet" focusable="false">
+        <image href="/img/rogerio-logo-1100.avif" x="0" y="0" width="1100" height="740" />
+      </svg>
+    </span>
+  )
+}
+
 /* ---------- data ---------- */
 const focusAreas = ['Hipertrofia', 'Emagrecimento', 'Mobilidade', 'Condicionamento']
 
@@ -163,9 +178,8 @@ function Nav() {
   return (
     <header className={`nav ${solid ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
       <div className="wrap nav__in">
-        <a href="#inicio" className="nav__logo nav__brand" onClick={() => setOpen(false)} aria-label="Rogério Déo — página inicial">
-          <span className="nav__brand-mark" aria-hidden="true"><img src="/img/rogerio-logo-1100.avif" alt="" width="1100" height="740" decoding="async" /></span>
-          <span className="nav__brand-name">Rogério <em>Déo</em></span>
+        <a href="#inicio" className="nav__logo nav__brand" onClick={() => setOpen(false)} aria-label="RD Rogério Déo — página inicial">
+          <BrandLockup />
         </a>
         <nav className="nav__links" aria-label="Principal">
           {links.map(([l, h]) => (
@@ -872,8 +886,9 @@ function Footer() {
     <footer className="footer">
       <div className="wrap footer__in">
         <div>
-          <img className="footer__brand" src="/img/rogerio-logo-1100.avif" alt="RD Rogério Déo — Especialista em performance humana. Força, mobilidade e longevidade." width="1100" height="740" loading="lazy" decoding="async" />
-          <strong>Prof. Rogério Déo</strong>
+          <a className="footer__brand-lockup" href="#inicio" aria-label="RD Rogério Déo — voltar ao início">
+            <BrandLockup />
+          </a>
           <p>Personal Trainer · Força, mobilidade e performance humana</p>
         </div>
         <div className="footer__r">
