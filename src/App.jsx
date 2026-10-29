@@ -192,10 +192,10 @@ function Hero() {
       <div className="wrap hero__body">
         <p className="hero__id">Rogério Déo, personal trainer · CREF 005387/SP</p>
         <h1 className="hero__title">
-          <Ln i={0}>Hipertrofia e</Ln>
-          <Ln i={1}>emagrecimento</Ln>
-          <Ln i={2} className="ln--gold">depois dos 40</Ln>
-          <Ln i={3} className="ln--sub">com quem entende do corpo</Ln>
+          <Ln i={0}>Força,</Ln>
+          <Ln i={1}>mobilidade e</Ln>
+          <Ln i={2} className="ln--gold">longevidade</Ln>
+          <Ln i={3} className="ln--sub">com quem tem experiência</Ln>
         </h1>
         <div className="hero__row">
           <p className="hero__lead">
@@ -235,8 +235,8 @@ function Problem() {
   return (
     <section className="sec problem" id="porque">
       <div className="wrap">
-        <h2 className="h2">Ficha pronta não serve para o seu corpo</h2>
-        <p className="problem__sub">Depois dos 40, o treino precisa acompanhar seu corpo, sua rotina e seus objetivos.</p>
+        <h2 className="h2">Ficha pronta não serve para você, a individualidade faz a diferença</h2>
+        <p className="problem__sub">Depois dos 40, o treino precisa acompanhar seu biotipo, sua rotina e seus objetivos.</p>
         <div className="rows">
           {problems.map((p, i) => (
             <article className="row" key={p.title}>
@@ -276,6 +276,105 @@ function Method() {
   )
 }
 
+
+/* Áreas de acompanhamento: conteúdo enviado pelo profissional.
+   Os detalhes são opcionais, mantendo a leitura leve no celular. */
+const trainingAreas = [
+  {
+    title: 'Força e longevidade: invista na sua saúde e independência',
+    subtitle: 'Conheça os benefícios do treinamento para sua saúde e autonomia.',
+    paragraphs: [
+      'Envelhecer faz parte da vida. Perder a capacidade de se movimentar, realizar tarefas cotidianas e aproveitar os bons momentos, porém, não precisa ser encarado como algo inevitável.',
+      'A partir dos 40 anos, preservar e desenvolver a força muscular, a mobilidade e o equilíbrio torna-se especialmente importante. Com o passar dos anos, mudanças hormonais, redução da atividade física e outros fatores podem contribuir para a diminuição da massa muscular, da força e da capacidade funcional.',
+      'É nesse contexto que o treinamento físico individualizado assume um papel fundamental.'
+    ],
+    question: 'Por que treinar força depois dos 40?',
+    answer: 'O treinamento de força ajuda a preservar a massa muscular, favorece a autonomia e contribui para realizar as atividades do dia a dia com mais segurança e disposição. O planejamento considera o histórico, as necessidades e as possibilidades de cada pessoa.'
+  },
+  {
+    title: 'Hipertrofia e definição muscular: construa um corpo mais forte',
+    subtitle: 'Descubra como desenvolver músculos e melhorar a composição corporal.',
+    paragraphs: [
+      'Ganhar massa muscular, melhorar a definição e reduzir o excesso de gordura corporal são objetivos possíveis em diferentes fases da vida, inclusive após os 40 anos. Para isso, é importante compreender como o organismo responde ao exercício e por que um treinamento bem planejado faz diferença.'
+    ],
+    question: 'O que é hipertrofia muscular?',
+    answer: 'Hipertrofia é o aumento do tamanho das fibras musculares em resposta a estímulos adequados, principalmente ao treinamento resistido. Quando os músculos são submetidos a uma carga compatível com a capacidade individual, ocorre um processo de adaptação que, associado à recuperação e à nutrição, pode favorecer o desenvolvimento muscular.'
+  },
+  {
+    title: 'Mobilidade e funcionalidade: movimento é qualidade de vida',
+    subtitle: 'Entenda como o movimento pode contribuir para sua qualidade de vida.',
+    paragraphs: [
+      'Ter força é importante, mas saber utilizar essa força com controle, coordenação e liberdade de movimento também faz parte de uma boa condição física.',
+      'A mobilidade está relacionada à capacidade de movimentar as articulações dentro de uma amplitude adequada às necessidades de cada pessoa. Já a funcionalidade envolve a capacidade de utilizar força, equilíbrio, coordenação e mobilidade para realizar atividades do cotidiano e praticar esportes.'
+    ],
+    question: 'Por que trabalhar a mobilidade?',
+    answer: 'A falta de movimento, o sedentarismo, determinadas condições clínicas e as exigências repetitivas da rotina podem limitar a capacidade de movimentação. Exercícios planejados para cada pessoa ajudam a desenvolver amplitude, controle e confiança nos movimentos.'
+  },
+  {
+    title: 'Performance esportiva: prepare seu corpo para o seu esporte',
+    subtitle: 'Saiba como preparar seu corpo para as exigências do esporte.',
+    paragraphs: [
+      'Praticar um esporte exige muito mais do que disposição. Dependendo da modalidade, o corpo precisa produzir força, gerar potência, manter o equilíbrio, mudar de direção, acelerar, desacelerar e sustentar esforços repetidos.',
+      'O treinamento físico direcionado busca desenvolver essas capacidades para que o praticante esteja mais bem preparado para as exigências de sua modalidade.'
+    ],
+    question: 'O que é preparação física para o esporte?',
+    answer: 'É o planejamento de exercícios destinados a desenvolver as capacidades físicas necessárias para uma determinada atividade. A seleção dos estímulos depende do esporte, do nível de experiência, da frequência de prática e dos objetivos de cada atleta ou praticante.'
+  },
+  {
+    title: 'Treinamento personalizado: um plano para sua realidade',
+    subtitle: 'Conheça as possibilidades de treinamento personalizado.',
+    eyebrow: 'Orientação profissional onde você estiver',
+    paragraphs: [
+      'Cada pessoa possui uma rotina, um histórico de atividade física, uma condição física e objetivos próprios. Por isso, um treinamento eficiente não deve ser baseado apenas em exercícios prontos ou em programas genéricos utilizados da mesma maneira para todos.',
+      'O treinamento personalizado considera as características individuais para organizar os exercícios, definir prioridades e acompanhar a evolução de maneira planejada.'
+    ],
+    question: 'Como funciona o atendimento presencial?',
+    answer: 'No atendimento presencial, o planejamento é aplicado com acompanhamento direto durante a sessão. O profissional orienta a execução dos exercícios, ajusta o treino conforme a resposta individual e acompanha a evolução de perto.'
+  }
+]
+
+function TrainingAreas() {
+  const [open, setOpen] = useState(null)
+  return (
+    <section className="sec training-areas" id="atuacao" aria-labelledby="training-areas-title">
+      <div className="wrap">
+        <div className="training-areas__head">
+          <p className="training-areas__eyebrow">TREINAMENTO PARA CADA OBJETIVO</p>
+          <h2 className="h2" id="training-areas-title">Um caminho para cada fase da sua vida</h2>
+          <p>Conheça as possibilidades de acompanhamento. Explore cada área para entender como o treinamento pode ser adaptado à sua realidade.</p>
+        </div>
+        <div className="training-areas__list">
+          {trainingAreas.map((area, i) => (
+            <article className={`training-areas__item ${open === i ? 'is-open' : ''}`} key={area.title}>
+              <div className="training-areas__summary">
+                <span className="training-areas__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div className="training-areas__copy">
+                  {area.eyebrow && <p className="training-areas__item-eyebrow">{area.eyebrow}</p>}
+                  <h3>{area.title}</h3>
+                  <p>{area.subtitle}</p>
+                </div>
+                <button type="button" className="training-areas__toggle"
+                  aria-expanded={open === i}
+                  aria-controls={`training-area-${i}`}
+                  onClick={() => setOpen(open === i ? null : i)}>
+                  <span>{open === i ? 'Mostrar menos' : 'Saiba mais'}</span>
+                  <span aria-hidden="true">{open === i ? '−' : '+'}</span>
+                </button>
+              </div>
+              <div id={`training-area-${i}`} className="training-areas__detail" hidden={open !== i}>
+                {area.paragraphs.map((text) => <p key={text}>{text}</p>)}
+                <h4>{area.question}</h4>
+                <p>{area.answer}</p>
+                <Btn href={wa(`Olá, Rogério! Quero saber mais sobre ${area.title.toLowerCase()}.`)} target="_blank" rel="noopener noreferrer" variant="ghost">Conversar sobre esse objetivo</Btn>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function About() {
   return (
     <section className="sec about" id="rogerio">
@@ -285,7 +384,7 @@ function About() {
           <figcaption>Árbitro internacional de fisiculturismo</figcaption>
         </figure>
         <div className="about__copy">
-          <h2 className="h2">Quem julga físicos pelo mundo olha para o seu</h2>
+          <h2 className="h2">Quem julga físicos pelo mundo olha para o seu corpo com atenção aos detalhes</h2>
           <p className="about__text">Rogério Déo vive de musculação desde sempre. Mais de 25 anos como árbitro internacional de fisiculturismo deram a ele um olhar raro para simetria, proporção e qualidade muscular, algo que ele leva para cada aluno.</p>
           <div className="career" role="list" aria-label="Trajetória em anos">
             {career.map(([n, l]) => (
@@ -519,7 +618,7 @@ function Transformation() {
     <section className="sec transf" id="transformacao">
       <div className="wrap">
         <h2 className="h2">Antes, durante e depois</h2>
-        <p className="transf__sub">A evolução do próprio Rogério, fruto de constância, treino bem executado e disciplina. Veja de frente e de costas.</p>
+        <p className="transf__sub">A evolução do próprio Rogério, fruto de constância, treino bem executado e disciplina.</p>
         <div className="transf__photos">
           {shots.map((g) => (
             <figure key={g.id}>
@@ -631,6 +730,7 @@ const testimonials = [
   ['Seu trabalho dá um resultado incrível! Claro que cabe ao aluno se dedicar, mas, se bem executado com rotina, o resultado ajuda demais a autoestima.', 'João', '2 anos de treino'],
   ['Bons resultados. Profissional com bastante conhecimento.', 'Sr. Antônio José', '+8 anos de treino'],
   ['Mudança de hábitos, correção de postura, mudou meu modo de pensar sobre musculação.', 'Renato Pitta', '+10 anos de treino'],
+  ['Sua dedicação e atenção ao aluno.', 'Antônio de Carvalho', 'Mais de 10 anos de acompanhamento'],
 ]
 
 function Results() {
@@ -753,6 +853,7 @@ export default function App() {
         <FocusAreas />
         <Problem />
         <Method />
+        <TrainingAreas />
         <MethodInAction />
         <About />
         <Transformation />
