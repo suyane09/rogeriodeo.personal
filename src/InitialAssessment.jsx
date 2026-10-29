@@ -314,7 +314,11 @@ export default function InitialAssessment({phone, selectedOffer}) {
     setMissingQuestions([])
     setStep(number)
   }
-  const changeIdentity=(key,value)=>setIdentity(prev=>({...prev,[key]:value,...(key==='format'?{plan:''}:{})}))
+  const changeIdentity=(key,value)=>{
+    setIdentity(prev=>({...prev,[key]:value,...(key==='format'?{plan:''}:{})}))
+    setDocumentOpened(false)
+    setConfirmedSaved(false)
+  }
   const changeQuestion=(number,value)=>{
     setAnswers(prev=>({...prev,[number]:value}))
     if (questionAnswered(value)) setMissingQuestions(prev=>prev.filter(n=>n!==number))
@@ -351,11 +355,12 @@ export default function InitialAssessment({phone, selectedOffer}) {
           <button type="button" className="assessment__physical" onClick={printPhysical}>Imprimir ficha de avaliação física em branco ↗</button>
           <p className="intake__disclaimer">A ficha de medidas, circunferências, dobras cutâneas e testes é de uso profissional e fica separada da anamnese preenchida pelo aluno.</p>
         </div>
-        <div ref={panelRef} className="intake__panel assessment__panel">
+        <div id="anamnese-form" ref={panelRef} className="intake__panel assessment__panel">
           <div className="intake__progress"><span>{step===0?'ESCOLHA O FORMULÁRIO':complete?'REVISÃO E ENVIO':'ETAPA '+step+' DE '+(total-2)}</span>
             <div aria-hidden="true"><i style={{width:(step+1)/total*100+'%'}} /></div>
           </div>
           {step===0 && <div><h3>Escolha sua anamnese</h3>
+            {pickedOffer && <p className="assessment__selected-plan"><strong>Modalidade escolhida:</strong> {pickedOffer}{selectedOffer?.plan && <span> · {selectedOffer.plan}</span>}</p>}
             <p className="intake__help">Os dois modelos seguem as perguntas e a numeração do documento enviado pelo Rogério.</p>
             <div className="intake__choices">
               <button type="button" className="intake__choice" onClick={()=>begin('masculina')}><span><strong>Anamnese masculina</strong><small>30 perguntas · objetivos, treinamento, saúde e hábitos</small></span><span aria-hidden="true">↗</span></button>
@@ -364,13 +369,15 @@ export default function InitialAssessment({phone, selectedOffer}) {
           </div>}
           {step===1 && <Identification data={identity} onChange={changeIdentity} onBack={()=>move(0)} onNext={()=>move(2)} phoneValid={phoneValid}/>}
           {step>=2 && !complete && sections[step-2] && (
-            <form className="assessment__form assessment__questions" onSubmit={e=>{e.preventDefault();move(step+1)}}>
+            <form className="assessment__form assessment__questions" onSubmit={e=>{e.preventDefault();advanceQuestions()}}>
               <span className="assessment__eyebrow">{documentTitles[profile]}</span>
               <h3>{sections[step-2].name}</h3>
               <p className="intake__help">Perguntas {sections[step-2].questions[0].n}–{sections[step-2].questions.at(-1).n} de 30.
                 {sections[step-2].sensitive&&' Esta seção inclui dados sensíveis de saúde. Responda somente o que desejar compartilhar.'}
               </p>
-              {sections[step-2].questions.map(q=><QuestionField key={q.n} question={q} value={answers[q.n]} onChange={changeQuestion}/>)}
+              <p className="assessment__mandatory-hint">Para avançar, responda cada pergunta ou escolha conversar reservadamente. Não é necessário informar detalhes médicos.</p>
+              {missingQuestions.length>0 && <p className="assessment__validation" role="alert">Faltam {missingQuestions.length} pergunta(s) nesta etapa. Responda ou selecione conversa reservada.</p>}
+              {sections[step-2].questions.map(q=><QuestionField key={q.n} question={q} value={answers[q.n]} onChange={changeQuestion} invalid={missingQuestions.includes(q.n)}/>)} 
               <div className="intake__actions"><button className="intake__back" type="button" onClick={()=>move(step-1)}>Anterior</button>
                 <button className="btn btn--solid" type="submit">{step===total-2?'Revisar':'Continuar'}</button></div>
             </form>
@@ -393,11 +400,19 @@ export default function InitialAssessment({phone, selectedOffer}) {
               <span>Confirmo que revisei minhas respostas e autorizo a criação local do documento. Entendo que contém informações pessoais e de saúde, que devo conferir o destinatário e que o site não envia nem salva automaticamente os dados.</span>
             </label>
             <button className="btn btn--solid assessment__send" type="button" disabled={!consent}
-              onClick={()=>printAssessment(profile,identity,answers,sections)}>Gerar documento e salvar como PDF</button>
-            <a className="btn btn--ghost assessment__send" target="_blank" rel="noopener noreferrer" href={phoneLink}>
-              Abrir WhatsApp para anexar o PDF ↗
-            </a>
-            <p className="assessment__footnote">Abra o documento e escolha “Imprimir / salvar como PDF”. No WhatsApp, use o botão de anexar arquivo. O site não consegue anexar nem enviar documentos automaticamente.</p>
+              onClick={prepareDocument}>1. Abrir documento para salvar como PDF</button>
+            {documentOpened && <label className="assessment__consent assessment__saved">
+              <input type="checkbox" checked={confirmedSaved} onChange={e=>setConfirmedSaved(e.target.checked)} />
+              <span>Confirmo que salvei minha anamnese em PDF e estou pronto(a) para anexar o arquivo no WhatsApp.</span>
+            </label>}
+            {documentOpened && confirmedSaved
+              ? <a className="btn btn--ghost assessment__send" target="_blank" rel="noopener noreferrer" href={phoneLink}>
+                  2. Abrir WhatsApp para anexar o PDF ↗
+                </a>
+              : <p className="assessment__footnote">O botão do WhatsApp é liberado após abrir o documento e confirmar que você o salvou em PDF.</p>
+            }
+            {documentOpened && confirmedSaved && <a className="assessment__instagram" href="https://instagram.com/rogeriodeo.personal" target="_blank" rel="noopener noreferrer">Conhecer o Instagram do Rogério ↗</a>}
+            <p className="assessment__footnote">Na janela de impressão, escolha “Salvar como PDF”. Depois, no WhatsApp, anexe o arquivo manualmente. O site não verifica se o PDF foi salvo e não envia dados automaticamente.</p>
             <div className="assessment__footer-actions"><button type="button" className="intake__back" onClick={()=>{setConsent(false);move(total-2)}}>Editar respostas</button>
               <button type="button" className="intake__reset" onClick={reset}>Nova anamnese</button></div>
           </div>}
