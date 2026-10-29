@@ -272,10 +272,25 @@ export default function InitialAssessment({phone, selectedOffer}) {
   const [identity,setIdentity]=useState(empty)
   const [answers,setAnswers]=useState({})
   const [consent,setConsent]=useState(false)
+  const [documentOpened,setDocumentOpened]=useState(false)
+  const [confirmedSaved,setConfirmedSaved]=useState(false)
+  const [missingQuestions,setMissingQuestions]=useState([])
   const sections=useMemo(()=>questionsByProfile[profile]||[],[profile])
   const total=sections.length+3 // escolha + identificação + cinco seções + conclusão
   const complete=step===total-1
   const phoneValid=identity.phone.replace(/\D/g,'').length>=10&&identity.phone.replace(/\D/g,'').length<=13
+  const pickedOffer = selectedOffer?.format || ''
+  useEffect(() => {
+    if (!selectedOffer) return
+    setProfile('')
+    setStep(0)
+    setIdentity({...empty,format:selectedOffer.format || '',plan:selectedOffer.plan || ''})
+    setAnswers({})
+    setConsent(false)
+    setDocumentOpened(false)
+    setConfirmedSaved(false)
+    setMissingQuestions([])
+  }, [selectedOffer])
   const panelRef = useRef(null)
   const hasChangedStep = useRef(false)
 
@@ -296,13 +311,34 @@ export default function InitialAssessment({phone, selectedOffer}) {
   }, [step])
 
   const move=(number)=>{
+    setMissingQuestions([])
     setStep(number)
   }
   const changeIdentity=(key,value)=>setIdentity(prev=>({...prev,[key]:value,...(key==='format'?{plan:''}:{})}))
-  const changeQuestion=(number,value)=>setAnswers(prev=>({...prev,[number]:value}))
-  const begin=(id)=>{setProfile(id);setIdentity(empty);setAnswers({});setConsent(false);move(1)}
-  const reset=()=>{setProfile('');setIdentity(empty);setAnswers({});setConsent(false);move(0)}
-  const phoneLink='https://wa.me/'+phone+'?text='+encodeURIComponent('Olá, Rogério! Preenchi a anamnese profissional do seu site. Vou anexar meu PDF preenchido nesta conversa para você avaliar antes do treinamento.')
+  const changeQuestion=(number,value)=>{
+    setAnswers(prev=>({...prev,[number]:value}))
+    if (questionAnswered(value)) setMissingQuestions(prev=>prev.filter(n=>n!==number))
+    setDocumentOpened(false)
+    setConfirmedSaved(false)
+  }
+  const advanceQuestions = () => {
+    const questions = sections[step-2]?.questions || []
+    const incomplete = questions.filter(q=>!questionAnswered(answers[q.n])).map(q=>q.n)
+    if (incomplete.length) {
+      setMissingQuestions(incomplete)
+      document.getElementById('assessment-question-'+incomplete[0])?.scrollIntoView({behavior:'smooth',block:'center'})
+      return
+    }
+    move(step+1)
+  }
+  const prepareDocument = () => {
+    if (!consent) return
+    const opened = printAssessment(profile,identity,answers,sections)
+    if (opened) setDocumentOpened(true)
+  }
+  const begin=(id)=>{setProfile(id);setIdentity({...empty,format:pickedOffer,plan:selectedOffer?.plan || ''});setAnswers({});setConsent(false);setDocumentOpened(false);setConfirmedSaved(false);move(1)}
+  const reset=()=>{setProfile('');setIdentity(empty);setAnswers({});setConsent(false);setDocumentOpened(false);setConfirmedSaved(false);move(0)}
+  const phoneLink='https://wa.me/'+phone+'?text='+encodeURIComponent('Olá, Rogério! Concluí a anamnese profissional no seu site e salvei o arquivo PDF. Quero enviar o documento para avaliação antes do treinamento.'+(identity.format?' Minha modalidade de interesse: '+identity.format+'.':''))
   return (
     <section className="sec intake assessment assessment--full" id="anamnese" aria-labelledby="intake-title">
       <div className="wrap intake__layout">
