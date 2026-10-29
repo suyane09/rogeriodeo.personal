@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 /**
  * Modalidades e valores informados diretamente pelo profissional.
  * Todos os botões levam à anamnese digital antes do contato comercial.
@@ -93,39 +95,73 @@ const plans = [
 
 function ServiceCard({ plan }) {
   return (
-    <article className="services__card">
+    <article className="services__card" aria-labelledby={`service-${plan.number}`}>
       <header className="services__card-top">
         <span className="services__number">{plan.number}</span>
         <span className="services__type">{plan.label}</span>
       </header>
-      <h3>{plan.title}</h3>
-      <p className="services__description">{plan.description}</p>
-      <p className="services__promise">{plan.info}</p>
-      <div className="services__cost">
-        {plan.prefix && <span className="services__price-prefix">{plan.prefix}</span>}
-        <div className="services__price"><strong>{plan.price}</strong><span>{plan.suffix}</span></div>
-      </div>
-      {plan.items.length > 0 && (
-        <div className="services__plans" aria-label={'Valores de ' + plan.title}>
-          {plan.items.map(([period, price]) => (
-            <div key={period}><span>{period}</span><strong>{price}</strong></div>
-          ))}
+      <div className="services__card-body">
+        <div className="services__overview">
+          <h3 id={`service-${plan.number}`}>{plan.title}</h3>
+          <p className="services__description">{plan.description}</p>
+          <p className="services__promise">{plan.info}</p>
+          <ul className="services__includes">
+            {plan.includes.map(item => <li key={item}>{item}</li>)}
+          </ul>
         </div>
-      )}
-      <ul className="services__includes">
-        {plan.includes.map(item => <li key={item}>{item}</li>)}
-      </ul>
-      {plan.note && <p className="services__note">{plan.note}</p>}
-      <a className="services__action" href="#anamnese" aria-label={'Iniciar anamnese para ' + plan.title}>
-        Iniciar minha avaliação <span aria-hidden="true">↗</span>
-      </a>
+        <div className="services__details">
+          <div className="services__cost">
+            {plan.prefix && <span className="services__price-prefix">{plan.prefix}</span>}
+            <div className="services__price"><strong>{plan.price}</strong><span>{plan.suffix}</span></div>
+          </div>
+          {plan.items.length > 0 && (
+            <div className="services__plans" aria-label={'Valores de ' + plan.title}>
+              {plan.items.map(([period, price]) => (
+                <div key={period}><span>{period}</span><strong>{price}</strong></div>
+              ))}
+            </div>
+          )}
+          {plan.note && <p className="services__note">{plan.note}</p>}
+          <a className="services__action" href="#anamnese" aria-label={'Iniciar anamnese para ' + plan.title}>
+            <span>Iniciar minha avaliação</span><span className="services__action-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
     </article>
   )
 }
 
 export default function ServicePlans() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section || typeof IntersectionObserver === 'undefined' ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const cards = [...section.querySelectorAll('.services__card')]
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        entry.target.classList.add('is-visible')
+        observer.unobserve(entry.target)
+      }
+    }, { threshold: .08, rootMargin: '0px 0px 60px 0px' })
+
+    // Deixa os cards já visíveis totalmente acessíveis, sem animação de atraso.
+    for (const card of cards) {
+      if (card.getBoundingClientRect().top < window.innerHeight * .95) {
+        card.classList.add('is-visible')
+      } else {
+        observer.observe(card)
+      }
+    }
+    section.classList.add('services--motion')
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section className="sec services" id="modalidades" aria-labelledby="services-title">
+    <section ref={sectionRef} className="sec services" id="modalidades" aria-labelledby="services-title">
       <div className="wrap">
         <div className="services__intro">
           <div>
