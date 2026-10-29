@@ -63,16 +63,19 @@ const femaleHabits = [
  q(30,'Como estão seu sono, estresse e disponibilidade para treinar? O que espera alcançar em 6–12 meses?','text')
 ]
 
+const maleObjectives = commonObjectives.map(item => item.n === 5 ? {...item,title:'O que mais o incomoda hoje em relação à sua condição física?'} : item)
+const femaleObjectives = commonObjectives.map(item => item.n === 5 ? {...item,title:'O que mais a incomoda hoje em relação à sua condição física?'} : item)
+
 export const questionsByProfile = {
  masculina: [
-  {name:'Objetivos e expectativas',questions:commonObjectives},
+  {name:'Objetivos e expectativas',questions:maleObjectives},
   {name:'Histórico de treinamento',questions:commonTraining},
   {name:'Saúde, dores e histórico clínico',sensitive:true,questions:commonHealth},
   {name:'Saúde, alimentação e hidratação',sensitive:true,questions:maleHabits.slice(0,7)},
   {name:'Hábitos, rotina e aderência',questions:maleHabits.slice(7)}
  ],
  feminina: [
-  {name:'Objetivos e expectativas',questions:commonObjectives},
+  {name:'Objetivos e expectativas',questions:femaleObjectives},
   {name:'Histórico de treinamento',questions:commonTraining},
   {name:'Saúde, dores e histórico clínico',sensitive:true,questions:commonHealth},
   {name:'Saúde feminina',sensitive:true,questions:femaleHealth},
