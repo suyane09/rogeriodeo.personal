@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { serviceFormatOptions, servicePlansByFormat } from './ServicePlans.jsx'
 import { questionsByProfile, documentTitles, physicalReview } from './AssessmentSchema.js'
 
@@ -15,20 +15,21 @@ const nonEmpty = (value) => Array.isArray(value)
   ? (value.length ? value.join(', ') : 'Não informado')
   : (String(value ?? '').trim() || 'Não informado')
 
-function QuestionField({ question, value, onChange }) {
+function QuestionField({ question, value, onChange, invalid = false }) {
   const data = value || {main:'', detail:'', second:'', third:''}
-  const set = (key,v) => onChange(question.n, {...data,[key]:v})
+  const isDeferred = data.deferred === true
+  const set = (key,v) => onChange(question.n, {...data,[key]:v,deferred:false})
+  const defer = () => onChange(question.n, isDeferred ? {} : {deferred:true})
   const isMulti = question.type === 'multi'
   const selected = isMulti && Array.isArray(data.main) ? data.main : []
   const toggle = (option) => {
-    if (option === 'Não') {
-      set('main',selected.includes('Não') ? [] : ['Não'])
-    } else {
-      set('main',selected.includes(option) ? selected.filter(v=>v!==option) : [...selected.filter(v=>v!=='Não'),option])
-    }
+    const next = option === 'Não'
+      ? (selected.includes('Não') ? [] : ['Não'])
+      : (selected.includes(option) ? selected.filter(v=>v!==option) : [...selected.filter(v=>v!=='Não'),option])
+    onChange(question.n, {...data,main:next,deferred:false})
   }
   return (
-    <fieldset className="assessment__question">
+    <fieldset id={"assessment-question-" + question.n} className={"assessment__question " + (invalid ? "assessment__question--invalid" : "")}>
       <legend><span className="assessment__qnum">{String(question.n).padStart(2,'0')}</span>{question.title}</legend>
       {question.type === 'text' && (
         <textarea aria-label={'Resposta da pergunta ' + question.n} rows={3} maxLength={1500}
@@ -112,12 +113,18 @@ function QuestionField({ question, value, onChange }) {
             onChange={e=>set('detail',e.target.value)} placeholder="Complemento (opcional)" />
         </label>
       )}
-      <p className="assessment__qprivacy">Você pode deixar esta pergunta sem resposta e conversar reservadamente com o profissional.</p>
+      <label className="assessment__defer">
+        <input type="checkbox" checked={isDeferred} onChange={defer} />
+        <span>Prefiro responder esta pergunta em conversa reservada com o Rogério.</span>
+      </label>
+      {invalid && <p className="assessment__validation" role="alert">Responda ou selecione a opção de conversa reservada.</p>}
+      {isDeferred && <p className="assessment__qprivacy">Resposta reservada registrada; esta pergunta não incluirá outros dados no PDF.</p>}
     </fieldset>
   )
 }
 function QuestionAnswer({question,value}) {
   const data=value || {}
+  if (data.deferred) return <div className="assessment__answer"><dt><b>{String(question.n).padStart(2,'0')}.</b> {question.title}</dt><dd>Será respondida em conversa reservada</dd></div>
   const responses=[
     nonEmpty(data.main),
     ...(data.second ? [String(data.second)] : []),
@@ -134,6 +141,7 @@ function QuestionAnswer({question,value}) {
 const escapeWithBreaks = v => escapeHTML(v).replace(/\n/g,'<br>')
 function formatAnswer(question,value) {
   const data=value||{}
+  if (data.deferred) return '<div class="question"><h3>'+question.n+'. '+escapeHTML(question.title)+'</h3><p>Será respondida em conversa reservada com o profissional.</p></div>'
   const parts=[
     nonEmpty(data.main),
     ...(data.second ? [String(data.second)] : []),
@@ -204,7 +212,7 @@ function printAssessment(profile,identity,answers,sections) {
     fields.map(([k,v])=>'<p><b>'+escapeHTML(k)+':</b> '+escapeHTML(nonEmpty(v))+'</p>').join('')+
     '</div>'+full+
     '<p class="notice">Documento preenchido voluntariamente pelo aluno. As respostas não foram armazenadas pelo site. O envio deve ocorrer por anexo, após conferência do destinatário e consentimento do aluno.</p>'
-  newPrintWindow('Anamnese - Rogério Déo - '+identity.name,body)
+  return newPrintWindow('Anamnese - Rogério Déo - '+identity.name,body)
 }
 function Identification({data,onChange,onNext,onBack,phoneValid}) {
   const formFields=[
@@ -251,7 +259,14 @@ function Identification({data,onChange,onNext,onBack,phoneValid}) {
     </form>
   )
 }
-export default function InitialAssessment({phone}) {
+function questionAnswered(value) {
+  if (!value) return false
+  if (value.deferred === true) return true
+  if (Array.isArray(value.main)) return value.main.length > 0
+  return [value.main,value.second,value.third,value.detail].some(v => typeof v === 'string' && v.trim().length > 0)
+}
+
+export default function InitialAssessment({phone, selectedOffer}) {
   const [profile,setProfile]=useState('')
   const [step,setStep]=useState(0)
   const [identity,setIdentity]=useState(empty)
