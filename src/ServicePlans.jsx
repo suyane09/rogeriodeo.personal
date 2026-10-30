@@ -14,10 +14,10 @@ export const serviceFormatOptions = [
 
 export const servicePlansByFormat = {
   'Consultoria 100% online': [
-    'Mensal — R$ 99,90',
-    'Trimestral — R$ 279,90',
-    'Semestral — R$ 549,90',
-    'Anual — R$ 999,90'
+    'Mensal — R$ 129,90',
+    'Trimestral — R$ 359,90',
+    'Semestral — R$ 599,90',
+    'Anual — R$ 1.198,90'
   ],
   'Acompanhamento híbrido': [
     'Semanal — R$ 1.200,00/mês',
@@ -42,16 +42,16 @@ const plans = [
     title: 'Consultoria online',
     description: 'Treinamento individualizado após a anamnese, com programa de exercícios disponível no aplicativo para acompanhar e executar seus treinos.',
     info: 'Treine com orientação, onde estiver.',
-    price: 'R$ 99,90',
+    price: 'R$ 129,90',
     suffix: '/ mês',
     items: [
-      ['Mensal', 'R$ 99,90'],
-      ['Trimestral', 'R$ 279,90'],
-      ['Semestral', 'R$ 549,90'],
-      ['Anual', 'R$ 999,90']
+      ['Mensal', 'R$ 129,90'],
+      ['Trimestral', 'R$ 359,90'],
+      ['Semestral', 'R$ 599,90'],
+      ['Anual', 'R$ 1.198,90']
     ],
     includes: ['Anamnese antes do planejamento', 'Programa individualizado de exercícios', 'Treinos disponibilizados por aplicativo'],
-    note: 'No plano anual, o investimento equivale a aproximadamente R$ 83,33 por mês; o valor total contratado é R$ 999,90.'
+    note: 'No plano anual, o investimento médio equivale a aproximadamente R$ 99,90 por mês; o valor total contratado é R$ 1.198,90.'
   },
   {
     number: '02',
