@@ -1497,3 +1497,45 @@ body { background: var(--bg); color: var(--silver-hi); }
   #anamnese-form { scroll-margin-top: calc(var(--nav-h, 64px) + 12px); }
   .assessment__question--invalid { padding-left: 10px; }
 }
+
+/* Rogério Déo — montagem esportiva solicitada para a abertura.
+   Preserva as cenas no enquadramento e mantém a leitura do título. */
+.hero--multisport .hero__photo {
+  width: min(62%, 850px);
+  background: #0b0c0d;
+}
+.hero--multisport .hero__photo img {
+  object-fit: contain;
+  object-position: center 42%;
+  animation-duration: 1.5s;
+}
+.hero--multisport .hero__photo::after {
+  opacity: .96;
+  background:
+    linear-gradient(90deg, var(--bg) 0%, rgba(11,12,13,.8) 12%, rgba(11,12,13,.03) 52%),
+    linear-gradient(0deg, var(--bg) 0%, rgba(11,12,13,.7) 14%, transparent 48%),
+    linear-gradient(180deg, rgba(11,12,13,.4), transparent 30%);
+}
+@media (max-width: 960px) {
+  .hero--multisport .hero__photo {
+    width: 100%;
+    height: 78svh;
+  }
+  .hero--multisport .hero__photo img {
+    object-fit: contain;
+    object-position: center top;
+  }
+  .hero--multisport .hero__photo::after {
+    opacity: 1;
+    background:
+      linear-gradient(0deg, var(--bg), rgba(11,12,13,.80) 20%, rgba(11,12,13,.05) 62%),
+      linear-gradient(180deg, rgba(11,12,13,.20), transparent 24%);
+  }
+}
+@media (max-width: 600px) {
+  .hero--multisport .hero__photo { height: 77svh; }
+  .hero--multisport .hero__body { padding-top: 51svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero--multisport .hero__photo img { animation: none; }
+}
