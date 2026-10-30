@@ -1539,3 +1539,127 @@ body { background: var(--bg); color: var(--silver-hi); }
 @media (prefers-reduced-motion: reduce) {
   .hero--multisport .hero__photo img { animation: none; }
 }
+
+
+/* ===========================================================
+   MOBILE HERO TYPOGRAPHY HOTFIX | 2026-10-30
+   Previne ampliação automática do texto pelo Safari e garante
+   que título, subtítulo, descrição e botões não excedam a viewport.
+   =========================================================== */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.hero--multisport .hero__body,
+.hero--multisport .hero__row,
+.hero--multisport .hero__btns {
+  min-width: 0;
+}
+.hero--multisport .hero__title,
+.hero--multisport .hero__lead {
+  overflow-wrap: break-word;
+}
+@media (max-width: 960px) {
+  .hero--multisport {
+    width: 100%;
+    min-width: 0;
+  }
+  .hero--multisport .hero__body {
+    position: relative;
+    width: min(100% - 40px, 640px);
+    margin-inline: auto;
+    padding-top: clamp(310px, 51svh, 510px);
+    padding-bottom: 34px;
+  }
+  .hero--multisport .hero__title {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(2.05rem, 6.4vw, 3.35rem);
+    letter-spacing: -.045em;
+    line-height: 1.12;
+  }
+  .hero--multisport .hero__title .ln {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+  .hero--multisport .hero__title .ln--sub {
+    font-size: clamp(.95rem, 2.8vw, 1.2rem);
+    line-height: 1.5;
+    font-weight: 500;
+    letter-spacing: -.015em;
+    margin-top: 16px;
+  }
+  .hero--multisport .hero__row {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .hero--multisport .hero__lead {
+    width: 100%;
+    max-width: 42ch;
+    font-size: clamp(.98rem, 1.7vw, 1.1rem);
+    line-height: 1.72;
+    letter-spacing: 0;
+  }
+  .hero--multisport .hero__btns {
+    display: grid;
+    width: 100%;
+    max-width: 440px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .hero--multisport .hero__btns .btn {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-height: 54px;
+    padding: 15px 16px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+    font-size: 1rem;
+    overflow-wrap: break-word;
+  }
+}
+@media (max-width: 700px) {
+  .hero--multisport .hero__body {
+    width: calc(100% - 36px);
+    padding-top: clamp(275px, 49svh, 455px);
+  }
+  .hero--multisport .hero__id {
+    font-size: .72rem;
+    line-height: 1.5;
+    flex-wrap: wrap;
+    gap: 8px;
+    overflow-wrap: anywhere;
+  }
+  .hero--multisport .hero__title {
+    font-size: clamp(1.85rem, 8vw, 2.6rem);
+    line-height: 1.105;
+    letter-spacing: -.05em;
+    margin-top: 14px;
+  }
+  .hero--multisport .hero__title .ln--sub {
+    font-size: clamp(.94rem, 3.8vw, 1.1rem);
+    line-height: 1.48;
+    margin-top: 13px;
+  }
+  .hero--multisport .hero__lead {
+    font-size: .98rem;
+    line-height: 1.68;
+  }
+}
+@media (max-width: 359px) {
+  .hero--multisport .hero__body { width: calc(100% - 28px); }
+  .hero--multisport .hero__title {
+    font-size: clamp(1.72rem, 8.3vw, 1.94rem);
+  }
+  .hero--multisport .hero__title .ln--sub { font-size: .92rem; }
+  .hero--multisport .hero__btns .btn { font-size: .93rem; }
+}
