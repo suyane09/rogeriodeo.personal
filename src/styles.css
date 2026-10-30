@@ -1663,3 +1663,108 @@ html {
   .hero--multisport .hero__title .ln--sub { font-size: .92rem; }
   .hero--multisport .hero__btns .btn { font-size: .93rem; }
 }
+
+
+/* MOBILE HERO — versão estável sem recorte de letras (2026-10-30) */
+/* As linhas animadas usavam clip-path e margem negativa, o que pode
+   cortar acentos e descendentes como g, p, q e ç no Safari do iPhone. */
+@media (max-width: 960px) {
+  .hero--multisport {
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+    padding-top: 0;
+    overflow: clip;
+  }
+  .hero--multisport .hero__body {
+    min-width: 0;
+    max-width: 640px;
+    padding-bottom: 28px;
+  }
+  .hero--multisport .hero__title {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+    text-wrap: wrap;
+    overflow: visible;
+    line-height: 1.16;
+    letter-spacing: -.042em;
+  }
+  .hero--multisport .hero__title .ln {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    margin: 0;
+    padding: .07em 0 .13em;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    overflow: visible !important;
+    white-space: normal;
+    text-wrap: wrap;
+  }
+  .hero--multisport .hero__title .ln > span {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    animation: none !important;
+    transform: none !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  .hero--multisport .hero__row,
+  .hero--multisport .hero__lead,
+  .hero--multisport .hero__btns { max-width: 100%; min-width: 0; }
+}
+@media (max-width: 700px) {
+  .hero--multisport .hero__body {
+    width: calc(100% - 36px);
+    padding-top: clamp(270px, 47svh, 450px);
+    padding-bottom: 26px;
+  }
+  .hero--multisport .hero__title {
+    font-size: clamp(1.75rem, 7.8vw, 2.5rem);
+    line-height: 1.14;
+    letter-spacing: -.043em;
+    margin-top: 15px;
+  }
+  .hero--multisport .hero__title .ln { padding: .055em 0 .12em; }
+  .hero--multisport .hero__title .ln--sub {
+    font-size: clamp(.9rem, 3.8vw, 1.08rem);
+    line-height: 1.5;
+    letter-spacing: 0;
+    margin-top: 10px;
+    padding-bottom: .16em;
+  }
+  .hero--multisport .hero__lead {
+    font-size: .98rem;
+    line-height: 1.65;
+    overflow-wrap: break-word;
+  }
+  .hero--multisport .hero__btns {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero--multisport .hero__btns .btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 52px;
+    font-size: .98rem;
+    line-height: 1.35;
+    padding: 14px 15px;
+    white-space: normal;
+  }
+}
+@media (max-width: 359px) {
+  .hero--multisport .hero__body { width: calc(100% - 28px); }
+  .hero--multisport .hero__title {
+    font-size: clamp(1.65rem, 7.7vw, 1.9rem);
+  }
+}
