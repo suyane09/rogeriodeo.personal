@@ -1801,8 +1801,25 @@ body { background: var(--bg); color: var(--silver-hi); }
   .hero--editorial .hero__stats { order: 2; }
 }
 @media (max-width: 600px) {
-  .hero--editorial .hero__photo { height: clamp(275px, 85vw, 430px); }
-  .hero--editorial .hero__photo img { object-position: center 30%; }
+  /* A arte original tem proporção aproximada 1024:1143.
+     Antes, 85vw cortava o topo e a parte inferior no celular. */
+  .hero--editorial .hero__photo {
+    height: clamp(330px, 110vw, 520px);
+    aspect-ratio: 1024 / 1143;
+  }
+  .hero--editorial .hero__photo img {
+    object-fit: cover;
+    object-position: center center;
+  }
+  .hero--editorial .hero__photo::after {
+    background: linear-gradient(
+      180deg,
+      rgba(11,12,13,.14) 0%,
+      transparent 58%,
+      rgba(11,12,13,.08) 84%,
+      rgba(11,12,13,.93) 100%
+    );
+  }
   .hero--editorial .hero__body {
     width: calc(100% - 36px);
     padding: 13px 0 35px;
