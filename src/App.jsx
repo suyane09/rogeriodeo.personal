@@ -742,6 +742,7 @@ const testimonials = [
   ['Bons resultados. Profissional com bastante conhecimento.', 'Sr. Antônio José', '+8 anos de treino'],
   ['Mudança de hábitos, correção de postura, mudou meu modo de pensar sobre musculação.', 'Renato Pitta', '+10 anos de treino'],
   ['Sua dedicação e atenção ao aluno.', 'Antônio de Carvalho', 'Mais de 10 anos de acompanhamento'],
+  ['O trabalho feito em conjunto com o Rogério foi excepcional. Pelo fato de ele ser muito criterioso nos apontamentos de execução de cada movimento, adquiri uma consciência corporal incrível e a evolução é constante até hoje! Além do fato de ser pontual, gente boa e com treinos realmente personalizados para o objetivo do aluno', 'Pietro Cavalieri', '3 anos de treinos'],
 ]
 
 function Results() {
