@@ -2032,3 +2032,51 @@ body { background: var(--bg); color: var(--silver-hi); }
 @media (prefers-reduced-motion: reduce) {
   .intake-simple__button { transition: none; }
 }
+
+
+/* RD NAV MOBILE — legibilidade da logo transparente sobre a capa
+   Gradiente aplicado a toda a largura do cabeçalho, dissolvendo-se na foto,
+   sem colocar um retângulo preto atrás do símbolo ou do nome. */
+@media (max-width: 960px) {
+  .nav {
+    isolation: isolate;
+  }
+  .nav::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: calc(var(--nav-h) + 84px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(7,8,9,.97) 0%,
+      rgba(7,8,9,.89) 27%,
+      rgba(7,8,9,.66) 48%,
+      rgba(7,8,9,.33) 70%,
+      rgba(7,8,9,0) 100%
+    );
+    transition: opacity .32s ease;
+  }
+  .nav:not(.nav--solid):not(.nav--open) {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .nav--solid::before,
+  .nav--open::before {
+    opacity: 0;
+  }
+  .nav__in {
+    position: relative;
+    z-index: 1;
+  }
+  .nav__brand .rd-lockup__symbol,
+  .nav__brand .rd-lockup__wordmark {
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,.78));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav::before { transition: none; }
+}
