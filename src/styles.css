@@ -870,6 +870,17 @@ body { background: var(--bg); color: var(--silver-hi); }
   border-radius: 0;
   background: transparent;
 }
+
+/* Integração da marca sobre a fotografia:
+   os arquivos originais têm preto incorporado à imagem.
+   Screen torna esse preto visualmente transparente, preservando
+   o dourado/prata e a marca fixa no cabeçalho. */
+.nav__brand .rd-lockup__symbol,
+.nav__brand img.rd-lockup__wordmark {
+  mix-blend-mode: screen;
+  background-color: transparent;
+}
+
 @media (min-width: 961px) and (max-width: 1200px) {
   .nav__links { gap: clamp(11px, 1.3vw, 17px); }
   .nav__links a:not(.nav__cta) { font-size: .82rem; }
