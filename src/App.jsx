@@ -194,7 +194,7 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="hero hero--multisport" id="inicio">
+    <section className="hero hero--editorial" id="inicio">
       <figure className="hero__photo">
         <img
           src="/img/rogerio-capa-esportiva-original.avif"
