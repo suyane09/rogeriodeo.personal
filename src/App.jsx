@@ -197,10 +197,8 @@ function Hero() {
     <section className="hero" id="inicio">
       <figure className="hero__photo">
         <img
-          src="img/hero-1333.webp"
-          srcSet="img/hero-480.webp 480w, img/hero-800.webp 800w, img/hero-1333.webp 1333w"
-          sizes="(max-width: 900px) 100vw, 68vw"
-          alt="Rogério Déo, personal trainer, orientando aluno na academia" width="1333" height="1777" fetchpriority="high" decoding="async"
+          src="/img/rogerio-multiesportivo.avif"
+          alt="Montagem de Rogério Déo em diferentes atividades esportivas, como musculação, corrida e esportes com bola" width="560" height="840" fetchPriority="high" decoding="async"
         />
       </figure>
       <div className="wrap hero__body">
@@ -213,7 +211,7 @@ function Hero() {
         </h1>
         <div className="hero__row">
           <p className="hero__lead">
-            Treinamento individual para ganhar força, melhorar a composição corporal e se movimentar melhor. Técnica, atenção aos detalhes e mais de 35 anos de experiência profissional.
+            Treinamento com individualidade para ganhar força, melhorar a composição corporal e a mobilidade. Técnica, atenção aos detalhes e mais de 35 anos de experiência profissional.
           </p>
           <div className="hero__btns">
             <Btn href="#anamnese-form">Quero começar agora</Btn>
@@ -395,7 +393,7 @@ function About() {
       <div className="wrap about__grid">
         <figure className="about__photo">
           <div className="clip"><img src="/img/rogerio-retrato-1200.avif" alt="Rogério Déo de blazer preto, em retrato profissional com iluminação dourada" width="1200" height="1200" loading="lazy" decoding="async" /></div>
-          <figcaption>Especialista em performance humana</figcaption>
+          <figcaption>Árbitro internacional de fisiculturismo</figcaption>
         </figure>
         <div className="about__copy">
           <h2 className="h2">Quem julga físicos pelo mundo olha para o seu corpo com atenção nos detalhes</h2>
