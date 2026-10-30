@@ -871,15 +871,29 @@ body { background: var(--bg); color: var(--silver-hi); }
   background: transparent;
 }
 
-/* Integração da marca sobre a fotografia:
-   os arquivos originais têm preto incorporado à imagem.
-   Screen torna esse preto visualmente transparente, preservando
-   o dourado/prata e a marca fixa no cabeçalho. */
-.nav__brand .rd-lockup__symbol,
-.nav__brand img.rd-lockup__wordmark {
-  mix-blend-mode: screen;
-  background-color: transparent;
+/* A marca tem transparência REAL calculada a partir das imagens originais.
+   Screen não remove o preto dos arquivos, por isso foi desativado. */
+.rd-lockup--transparent .rd-lockup__symbol,
+.rd-lockup--transparent .rd-lockup__wordmark {
+  mix-blend-mode: normal;
+  background: transparent;
+  filter: none;
 }
+.rd-lockup--loading .rd-lockup__symbol,
+.rd-lockup--loading .rd-lockup__wordmark { visibility: hidden; }
+.rd-lockup--fallback .rd-lockup__symbol,
+.rd-lockup--fallback .rd-lockup__wordmark { mix-blend-mode: screen; }
+.nav__brand img.rd-lockup__symbol {
+  width: 103px;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  border-radius: 0;
+  background: transparent;
+}
+@media (max-width: 960px) { .nav__brand img.rd-lockup__symbol { width: 91px; } }
+@media (max-width: 700px) { .nav__brand img.rd-lockup__symbol { width: 72px; } }
+@media (max-width: 359px) { .nav__brand img.rd-lockup__symbol { width: 59px; } }
 
 @media (min-width: 961px) and (max-width: 1200px) {
   .nav__links { gap: clamp(11px, 1.3vw, 17px); }
