@@ -808,7 +808,7 @@ function FinalCta() {
       <div className="wrap final__grid">
         <div className="final__copy">
           <p className="final__eyebrow">SEU PRÓXIMO PASSO</p>
-          <h2 className="final__title">Sua melhor versão física começa agora.</h2>
+          <h2 className="final__title">Sua melhor versão começa agora.</h2>
           <p className="final__text">Converse com o Rogério sobre seus objetivos, disponibilidade e possibilidades de acompanhamento.</p>
           <div className="final__steps" aria-label="Como começar">
             <span>01 / Conte seu objetivo</span>
