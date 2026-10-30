@@ -105,13 +105,83 @@ const Ln = ({ i, className = '', children }) => (
 
 /* Marca RD original: duas janelas de recorte do mesmo arquivo em alta resolução.
    Sem redesenhar a assinatura nem inserir versões rasterizadas pequenas. */
+/* Os dois arquivos da marca contêm um fundo quase preto nos pixels.
+   A transparência abaixo remove esse fundo real, em vez de usar
+   mix-blend-mode que só simula transparência sobre fundos escuros.
+   As versões são geradas uma vez no navegador e reutilizadas no cabeçalho/rodapé. */
+let transparentBrandCache = null
+let transparentBrandPromise = null
+
+async function makeBrandTransparent(src, crop) {
+  const image = new Image()
+  image.src = src
+  await image.decode()
+
+  const width = crop?.width || image.naturalWidth
+  const height = crop?.height || image.naturalHeight
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })
+  if (!ctx) throw new Error('Canvas indisponível')
+
+  if (crop) {
+    ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, width, height)
+  } else {
+    ctx.drawImage(image, 0, 0)
+  }
+
+  const imageData = ctx.getImageData(0, 0, width, height)
+  const pixels = imageData.data
+  for (let i = 0; i < pixels.length; i += 4) {
+    const brightness = Math.max(pixels[i], pixels[i + 1], pixels[i + 2])
+    // Preto original: 0% de opacidade; metal prateado e dourado: 100%.
+    const opacity = Math.max(0, Math.min(1, (brightness - 23) / 57))
+    pixels[i + 3] = Math.round(pixels[i + 3] * opacity)
+  }
+  ctx.clearRect(0, 0, width, height)
+  ctx.putImageData(imageData, 0, 0)
+  return canvas.toDataURL('image/png')
+}
+
+function loadTransparentBrand() {
+  if (transparentBrandCache) return Promise.resolve(transparentBrandCache)
+  if (!transparentBrandPromise) {
+    transparentBrandPromise = Promise.all([
+      makeBrandTransparent('/img/rogerio-logo-1100.avif', { x: 130, y: 42, width: 720, height: 302 }),
+      makeBrandTransparent('/img/rogerio-deo-nome-original.avif')
+    ]).then(([symbol, wordmark]) => {
+      transparentBrandCache = { symbol, wordmark }
+      return transparentBrandCache
+    }).catch(() => {
+      // Não impedir que a marca apareça se o navegador bloquear canvas.
+      return { failed: true }
+    })
+  }
+  return transparentBrandPromise
+}
+
 function BrandLockup() {
+  const [brand, setBrand] = useState(transparentBrandCache)
+
+  useEffect(() => {
+    let mounted = true
+    loadTransparentBrand().then(result => {
+      if (mounted) setBrand(result)
+    })
+    return () => { mounted = false }
+  }, [])
+
   return (
-    <span className="rd-lockup" aria-hidden="true">
-      <svg className="rd-lockup__symbol" viewBox="130 42 720 302" preserveAspectRatio="xMidYMid meet" focusable="false">
-        <image href="/img/rogerio-logo-1100.avif" x="0" y="0" width="1100" height="740" />
-      </svg>
-      <img className="rd-lockup__wordmark" src="/img/rogerio-deo-nome-original.avif" alt="" width="1200" height="177" decoding="async" />
+    <span className={`rd-lockup ${brand ? (brand.failed ? 'rd-lockup--fallback' : 'rd-lockup--transparent') : 'rd-lockup--loading'}`} aria-hidden="true">
+      {brand && !brand.failed ? (
+        <img className="rd-lockup__symbol" src={brand.symbol} alt="" width="720" height="302" decoding="async" />
+      ) : (
+        <svg className="rd-lockup__symbol" viewBox="130 42 720 302" preserveAspectRatio="xMidYMid meet" focusable="false">
+          <image href="/img/rogerio-logo-1100.avif" x="0" y="0" width="1100" height="740" />
+        </svg>
+      )}
+      <img className="rd-lockup__wordmark" src={brand && !brand.failed ? brand.wordmark : '/img/rogerio-deo-nome-original.avif'} alt="" width="1200" height="177" decoding="async" />
     </span>
   )
 }
