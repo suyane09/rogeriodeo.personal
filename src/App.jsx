@@ -197,8 +197,8 @@ function Hero() {
     <section className="hero hero--multisport" id="inicio">
       <figure className="hero__photo">
         <img
-          src="/img/rogerio-multiesportivo.avif"
-          alt="Montagem de Rogério Déo em diferentes atividades esportivas, como musculação, corrida e esportes com bola" width="560" height="840" fetchPriority="high" decoding="async"
+          src="/img/rogerio-capa-esportiva-original.avif"
+          alt="Montagem esportiva enviada por Rogério Déo, apresentando musculação, corrida, vôlei, basquete e outras modalidades" width="1024" height="1143" fetchPriority="high" decoding="async"
         />
       </figure>
       <div className="wrap hero__body">
