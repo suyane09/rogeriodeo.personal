@@ -1768,3 +1768,187 @@ html {
     font-size: clamp(1.65rem, 7.7vw, 1.9rem);
   }
 }
+
+
+
+/* ANAMNESE SIMPLIFICADA — Google Forms e confirmação no WhatsApp */
+.intake--simple {
+  background: radial-gradient(ellipse at 82% 12%, rgba(214,181,96,.075), transparent 56%), #111213;
+}
+.intake-simple__layout {
+  display: grid;
+  grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr);
+  gap: clamp(32px, 6vw, 100px);
+  align-items: center;
+}
+.intake-simple__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(16px, 2vw, 24px);
+  min-width: 0;
+}
+.intake-simple__intro .h2 {
+  font-size: clamp(2.1rem, 4.2vw, 4.2rem);
+  line-height: 1.1;
+  max-width: 12ch;
+}
+.intake-simple__intro > p:not(.intake__kicker) {
+  font-size: 1.01rem;
+  line-height: 1.75;
+  color: #d5d0c8;
+  max-width: 44ch;
+}
+.intake-simple__intro .intake-simple__privacy {
+  font-size: .81rem !important;
+  color: #a9a49c !important;
+  max-width: 54ch;
+}
+.intake-simple__card {
+  min-width: 0;
+  padding: clamp(24px, 3.6vw, 45px);
+  background: #1a1b1c;
+  border: 1px solid rgba(214,181,96,.32);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.18);
+  scroll-margin-top: calc(var(--nav-h, 64px) + 20px);
+}
+.intake-simple__choice {
+  display: grid;
+  gap: 5px;
+  margin: 0 0 26px;
+  padding: 13px 16px;
+  border: 1px solid rgba(214,181,96,.27);
+  border-radius: 9px;
+  background: rgba(214,181,96,.075);
+}
+.intake-simple__choice span {
+  color: var(--gold-hi);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.intake-simple__choice strong { font-size: 1rem; line-height: 1.5; color: #f1ede4; }
+.intake-simple__choice small { color: #c2bcb2; font-size: .84rem; }
+.intake-simple__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.intake-simple__number {
+  flex: 0 0 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(214,181,96,.5);
+  background: rgba(214,181,96,.08);
+  border-radius: 50%;
+  color: var(--gold-hi);
+  font-size: .78rem;
+  font-weight: 800;
+}
+.intake-simple__step > div { flex: 1; min-width: 0; }
+.intake-simple__step h3 {
+  font-family: var(--display);
+  font-size: clamp(1.25rem, 2.1vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--silver-hi);
+  line-height: 1.26;
+}
+.intake-simple__step p {
+  color: #c4beb4;
+  font-size: .9rem;
+  margin-top: 8px;
+  line-height: 1.65;
+}
+.intake-simple__button {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 22px 0 0;
+  min-height: 53px;
+  line-height: 1.35;
+  text-align: left;
+  padding: 14px 18px;
+  white-space: normal;
+  font-size: .94rem;
+}
+.intake-simple__button span { flex-shrink: 0; font-size: 1.2rem; }
+.intake-simple__divider {
+  height: 1px;
+  margin: 27px 0;
+  background: rgba(198,199,196,.22);
+}
+.intake-simple__confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 22px;
+  font-size: .89rem;
+  line-height: 1.55;
+  color: #e2ddd5;
+  cursor: pointer;
+}
+.intake-simple__confirm input {
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  flex: 0 0 20px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+.intake-simple__confirm input:disabled { opacity: .5; cursor: not-allowed; }
+.intake-simple__confirm:has(input:disabled) { color: #aaa49b; }
+.intake-simple__locked {
+  border: 1px dashed rgba(198,199,196,.25);
+  border-radius: 9px;
+  padding: 15px;
+  color: #c4beb4;
+  background: #151617;
+  font-size: .83rem;
+  line-height: 1.55;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 17px;
+}
+.intake-simple__locked span { color: var(--gold-hi); font-weight: 800; }
+.intake-simple__note {
+  color: #aaa49a;
+  line-height: 1.65;
+  font-size: .76rem;
+  margin-top: 18px;
+}
+.intake-simple__instagram {
+  display: inline-flex;
+  color: var(--gold-hi);
+  font-size: .88rem;
+  font-weight: 700;
+  margin-top: 16px;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 4px;
+}
+@media (max-width: 900px) {
+  .intake-simple__layout { grid-template-columns: minmax(0,1fr); gap: 29px; }
+  .intake-simple__intro .h2 { max-width: 18ch; }
+}
+@media (max-width: 700px) {
+  .intake-simple__layout { gap: 27px; }
+  .intake-simple__intro .h2 { font-size: clamp(1.9rem, 8vw, 2.7rem); }
+  .intake-simple__intro > p:not(.intake__kicker) { font-size: .97rem; }
+  .intake-simple__card { padding: 23px 18px; }
+  .intake-simple__step { gap: 12px; }
+  .intake-simple__button { font-size: .93rem; }
+}
+@media (max-width: 359px) {
+  .intake-simple__card { padding: 20px 14px; }
+  .intake-simple__step h3 { font-size: 1.2rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intake-simple__button { transition: none; }
+}
