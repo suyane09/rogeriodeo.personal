@@ -194,7 +194,7 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="hero" id="inicio">
+    <section className="hero hero--multisport" id="inicio">
       <figure className="hero__photo">
         <img
           src="/img/rogerio-multiesportivo.avif"
