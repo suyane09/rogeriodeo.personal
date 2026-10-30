@@ -861,12 +861,29 @@ body { background: var(--bg); color: var(--silver-hi); }
 /* A marca nominativa enviada é um arquivo completo, não um recorte SVG.
    Evita herdar o corte antigo de 49x42px da navegação. */
 .nav__brand img.rd-lockup__wordmark {
+  /* Maior especificidade que o antigo .nav__brand img { width: 49px } */
+  width: 230px;
   height: auto;
   max-width: none;
   object-fit: contain;
   object-position: center center;
   border-radius: 0;
   background: transparent;
+}
+@media (min-width: 961px) and (max-width: 1200px) {
+  .nav__links { gap: clamp(11px, 1.3vw, 17px); }
+  .nav__links a:not(.nav__cta) { font-size: .82rem; }
+  .nav__cta { padding: 9px 14px; font-size: .8rem; }
+  .nav__brand img.rd-lockup__wordmark { width: 210px; }
+}
+@media (max-width: 960px) {
+  .nav__brand img.rd-lockup__wordmark { width: 205px; }
+}
+@media (max-width: 700px) {
+  .nav__brand img.rd-lockup__wordmark { width: 170px; }
+}
+@media (max-width: 359px) {
+  .nav__brand img.rd-lockup__wordmark { width: 139px; }
 }
 
 
@@ -1535,6 +1552,7 @@ body { background: var(--bg); color: var(--silver-hi); }
   height: 100%;
   object-fit: cover;
   object-position: center 31%;
+  filter: saturate(1.10) brightness(1.07) contrast(1.025);
   animation: none;
 }
 .hero--editorial .hero__photo::after {
@@ -1546,14 +1564,14 @@ body { background: var(--bg); color: var(--silver-hi); }
   pointer-events: none;
   background:
     linear-gradient(90deg,
-      #0b0c0d 0%,
-      rgba(11,12,13,.97) 7%,
-      rgba(11,12,13,.88) 22%,
-      rgba(11,12,13,.67) 40%,
-      rgba(11,12,13,.22) 68%,
-      rgba(11,12,13,.04) 100%),
-    linear-gradient(0deg, rgba(11,12,13,.88) 0%, rgba(11,12,13,.13) 38%, transparent 68%),
-    linear-gradient(180deg, rgba(11,12,13,.43) 0%, transparent 26%);
+      rgba(11,12,13,.78) 0%,
+      rgba(11,12,13,.55) 12%,
+      rgba(11,12,13,.29) 28%,
+      rgba(11,12,13,.10) 45%,
+      rgba(11,12,13,.025) 68%,
+      transparent 100%),
+    linear-gradient(0deg, rgba(11,12,13,.43) 0%, rgba(11,12,13,.08) 34%, transparent 62%),
+    linear-gradient(180deg, rgba(11,12,13,.24) 0%, transparent 26%);
 }
 .hero--editorial .hero__body {
   position: relative;
