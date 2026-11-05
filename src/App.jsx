@@ -808,7 +808,7 @@ const featured = {
 
 const testimonials = [
   ['Ter a disciplina de treinar, mudanças de treinos, ou seja, não ser repetitivo, atenção à postura e alcançar objetivos.', 'Juliana Capatto'],
-  ['Seu trabalho dá um resultado incrível! Claro que cabe ao aluno se dedicar, mas, se bem executado com rotina, o resultado ajuda demais a autoestima.', 'João Romã'],
+  ['Seu trabalho dá um resultado incrível! Claro que cabe ao aluno se dedicar, mas, se bem executado com rotina, o resultado ajuda demais a autoestima.', 'João Roman'],
   ['Bons resultados. Profissional com bastante conhecimento.', 'Sr. Antônio José'],
   ['Mudança de hábitos, correção de postura, mudou meu modo de pensar sobre musculação.', 'Renato Pitta'],
   ['Sua dedicação e atenção ao aluno.', 'Antônio de Carvalho'],
