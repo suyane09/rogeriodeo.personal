@@ -14,7 +14,6 @@ export const serviceFormatOptions = [
 
 export const servicePlansByFormat = {
   'Consultoria 100% online': [
-    'Mensal — R$ 129,90',
     'Trimestral — R$ 359,90',
     'Semestral — R$ 599,90',
     'Anual — R$ 1.198,90'
@@ -42,10 +41,9 @@ const plans = [
     title: 'Consultoria online',
     description: 'Treinamento individualizado após a anamnese, com programa de exercícios disponível no aplicativo para acompanhar e executar seus treinos.',
     info: 'Treine com orientação, onde estiver.',
-    price: 'R$ 129,90',
-    suffix: '/ mês',
+    price: 'R$ 359,90',
+    suffix: '/ trimestre',
     items: [
-      ['Mensal', 'R$ 129,90'],
       ['Trimestral', 'R$ 359,90'],
       ['Semestral', 'R$ 599,90'],
       ['Anual', 'R$ 1.198,90']

@@ -804,15 +804,15 @@ const featured = {
     'Gratidão ao Dr. Barakat pela indicação do Déo, que, com seu olhar técnico, atento aos detalhes e com o planejamento dos treinos, contribuiu para o meu tratamento e cura.',
   ],
   name: 'Dra. Heloisa',
-  time: '1 ano de treino',
 }
 
 const testimonials = [
-  ['Seu trabalho dá um resultado incrível! Claro que cabe ao aluno se dedicar, mas, se bem executado com rotina, o resultado ajuda demais a autoestima.', 'João', '2 anos de treino'],
-  ['Bons resultados. Profissional com bastante conhecimento.', 'Sr. Antônio José', '+8 anos de treino'],
-  ['Mudança de hábitos, correção de postura, mudou meu modo de pensar sobre musculação.', 'Renato Pitta', '+10 anos de treino'],
-  ['Sua dedicação e atenção ao aluno.', 'Antônio de Carvalho', 'Mais de 10 anos de acompanhamento'],
-  ['O trabalho feito em conjunto com o Rogério foi excepcional. Pelo fato de ele ser muito criterioso nos apontamentos de execução de cada movimento, adquiri uma consciência corporal incrível e a evolução é constante até hoje! Além do fato de ser pontual, gente boa e com treinos realmente personalizados para o objetivo do aluno', 'Pietro Cavalieri', '3 anos de treinos'],
+  ['Ter a disciplina de treinar, mudanças de treinos, ou seja, não ser repetitivo, atenção à postura e alcançar objetivos.', 'Juliana Capatto'],
+  ['Seu trabalho dá um resultado incrível! Claro que cabe ao aluno se dedicar, mas, se bem executado com rotina, o resultado ajuda demais a autoestima.', 'João Romano'],
+  ['Bons resultados. Profissional com bastante conhecimento.', 'Sr. Antônio José'],
+  ['Mudança de hábitos, correção de postura, mudou meu modo de pensar sobre musculação.', 'Renato Pitta'],
+  ['Sua dedicação e atenção ao aluno.', 'Antônio de Carvalho'],
+  ['O trabalho feito em conjunto com o Rogério foi excepcional. Pelo fato de ele ser muito criterioso nos apontamentos de execução de cada movimento, adquiri uma consciência corporal incrível e a evolução é constante até hoje! Além do fato de ser pontual, gente boa e com treinos realmente personalizados para o objetivo do aluno', 'Pietro Cavalieri'],
 ]
 
 function Results() {
@@ -829,13 +829,13 @@ function Results() {
             {expanded ? 'Mostrar menos' : 'Ler depoimento completo'}
             <span aria-hidden="true">{expanded ? '−' : '+'}</span>
           </button>
-          <footer><strong>{featured.name}</strong><span>{featured.time}</span></footer>
+          <footer><strong>{featured.name}</strong></footer>
         </blockquote>
         <div className="quotes">
-          {testimonials.map(([t, name, time]) => (
+          {testimonials.map(([t, name]) => (
             <blockquote className="quote" key={name}>
               <p className="quote__text">{t}</p>
-              <footer><strong>{name}</strong><span>{time}</span></footer>
+              <footer><strong>{name}</strong></footer>
             </blockquote>
           ))}
         </div>
